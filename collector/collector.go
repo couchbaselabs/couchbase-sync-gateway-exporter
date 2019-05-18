@@ -36,13 +36,29 @@ type sgwCollector struct {
 	pubNetBytesSent              *prometheus.Desc
 	systemMemoryTotal            *prometheus.Desc
 	warnCount                    *prometheus.Desc
+
+	// db cache
+	chanCacheActiveRevs    *prometheus.Desc
+	chanCacheHits          *prometheus.Desc
+	chanCacheMaxEntries    *prometheus.Desc
+	chanCacheMisses        *prometheus.Desc
+	chanCacheNumChannels   *prometheus.Desc
+	chanCacheRemovalRevs   *prometheus.Desc
+	chanCacheTombstoneRevs *prometheus.Desc
+	numSkippedSeqs         *prometheus.Desc
+	revCacheHits           *prometheus.Desc
+	revCacheMisses         *prometheus.Desc
 }
+
+const (
+	namespace               = "couchbase"
+	subsystem               = "sgw"
+	globalResourceSubsystem = "resource_utilization"
+	cacheSubsystem          = "cache"
+)
 
 // NewCollector tasks collector
 func NewCollector(client client.Client) prometheus.Collector {
-	const namespace = "couchbase"
-	const subsystem = "sgw"
-	const globalResourceSubsystem = "resource_utilization"
 	// nolint: lll
 	return &sgwCollector{
 		client: client,
@@ -172,6 +188,66 @@ func NewCollector(client client.Client) prometheus.Collector {
 			nil,
 			nil,
 		),
+		chanCacheActiveRevs: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, cacheSubsystem, "chan_cache_active_revs"),
+			"chan_cache_active_revs,",
+			[]string{"database"},
+			nil,
+		),
+		chanCacheHits: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, cacheSubsystem, "chan_cache_hits"),
+			"chan_cache_hits,",
+			[]string{"database"},
+			nil,
+		),
+		chanCacheMaxEntries: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, cacheSubsystem, "chan_cache_max_entries"),
+			"chan_cache_max_entries,",
+			[]string{"database"},
+			nil,
+		),
+		chanCacheMisses: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, cacheSubsystem, "chan_cache_misses"),
+			"chan_cache_misses,",
+			[]string{"database"},
+			nil,
+		),
+		chanCacheNumChannels: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, cacheSubsystem, "chan_cache_num_channels"),
+			"chan_cache_num_channels,",
+			[]string{"database"},
+			nil,
+		),
+		chanCacheRemovalRevs: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, cacheSubsystem, "chan_cache_removal_revs"),
+			"chan_cache_removal_revs,",
+			[]string{"database"},
+			nil,
+		),
+		chanCacheTombstoneRevs: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, cacheSubsystem, "chan_cache_tombstone_revs"),
+			"chan_cache_tombstone_revs,",
+			[]string{"database"},
+			nil,
+		),
+		numSkippedSeqs: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, cacheSubsystem, "num_skipped_seqs"),
+			"num_skipped_seqs,",
+			[]string{"database"},
+			nil,
+		),
+		revCacheHits: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, cacheSubsystem, "rev_cache_hits"),
+			"rev_cache_hits,",
+			[]string{"database"},
+			nil,
+		),
+		revCacheMisses: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, cacheSubsystem, "rev_cache_misses"),
+			"rev_cache_misses,",
+			[]string{"database"},
+			nil,
+		),
 	}
 }
 
@@ -179,6 +255,35 @@ func NewCollector(client client.Client) prometheus.Collector {
 func (c *sgwCollector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- c.up
 	ch <- c.scrapeDuration
+	ch <- c.adminNetBytesRecv
+	ch <- c.adminNetBytesSent
+	ch <- c.errorCount
+	ch <- c.goMemstatsHeapalloc
+	ch <- c.goMemstatsHeapidle
+	ch <- c.goMemstatsHeapinuse
+	ch <- c.goMemstatsHeapreleased
+	ch <- c.goMemstatsPausetotalns
+	ch <- c.goMemstatsStackinuse
+	ch <- c.goMemstatsStacksys
+	ch <- c.goMemstatsSys
+	ch <- c.goroutinesHighWatermark
+	ch <- c.numGoroutines
+	ch <- c.processCPUPercentUtilization
+	ch <- c.processMemoryResident
+	ch <- c.pubNetBytesRecv
+	ch <- c.pubNetBytesSent
+	ch <- c.systemMemoryTotal
+	ch <- c.warnCount
+	ch <- c.chanCacheActiveRevs
+	ch <- c.chanCacheHits
+	ch <- c.chanCacheMaxEntries
+	ch <- c.chanCacheMisses
+	ch <- c.chanCacheNumChannels
+	ch <- c.chanCacheRemovalRevs
+	ch <- c.chanCacheTombstoneRevs
+	ch <- c.numSkippedSeqs
+	ch <- c.revCacheHits
+	ch <- c.revCacheMisses
 }
 
 // Collect all metrics
@@ -198,6 +303,7 @@ func (c *sgwCollector) Collect(ch chan<- prometheus.Metric) {
 	var metrics = result.Syncgateway
 
 	// global resource utilization metrics
+	log.Debug("collecting global resource utilization metrics")
 	var utilization = metrics.Global.ResourceUtilization
 	ch <- prometheus.MustNewConstMetric(c.adminNetBytesRecv, prometheus.GaugeValue, float64(utilization.AdminNetBytesRecv))
 	ch <- prometheus.MustNewConstMetric(c.adminNetBytesSent, prometheus.GaugeValue, float64(utilization.AdminNetBytesSent))
@@ -218,6 +324,22 @@ func (c *sgwCollector) Collect(ch chan<- prometheus.Metric) {
 	ch <- prometheus.MustNewConstMetric(c.pubNetBytesSent, prometheus.GaugeValue, float64(utilization.PubNetBytesSent))
 	ch <- prometheus.MustNewConstMetric(c.systemMemoryTotal, prometheus.GaugeValue, float64(utilization.SystemMemoryTotal))
 	ch <- prometheus.MustNewConstMetric(c.warnCount, prometheus.GaugeValue, float64(utilization.WarnCount))
+
+	// per-db metrics
+	for name, db := range metrics.PerDb {
+		log.Debugf("collecting cache metrics for db %s", name)
+		var cache = db.Cache
+		ch <- prometheus.MustNewConstMetric(c.chanCacheActiveRevs, prometheus.GaugeValue, float64(cache.ChanCacheActiveRevs), name)
+		ch <- prometheus.MustNewConstMetric(c.chanCacheHits, prometheus.GaugeValue, float64(cache.ChanCacheHits), name)
+		ch <- prometheus.MustNewConstMetric(c.chanCacheMaxEntries, prometheus.GaugeValue, float64(cache.ChanCacheMaxEntries), name)
+		ch <- prometheus.MustNewConstMetric(c.chanCacheMisses, prometheus.GaugeValue, float64(cache.ChanCacheMisses), name)
+		ch <- prometheus.MustNewConstMetric(c.chanCacheNumChannels, prometheus.GaugeValue, float64(cache.ChanCacheNumChannels), name)
+		ch <- prometheus.MustNewConstMetric(c.chanCacheRemovalRevs, prometheus.GaugeValue, float64(cache.ChanCacheRemovalRevs), name)
+		ch <- prometheus.MustNewConstMetric(c.chanCacheTombstoneRevs, prometheus.GaugeValue, float64(cache.ChanCacheTombstoneRevs), name)
+		ch <- prometheus.MustNewConstMetric(c.numSkippedSeqs, prometheus.GaugeValue, float64(cache.NumSkippedSeqs), name)
+		ch <- prometheus.MustNewConstMetric(c.revCacheHits, prometheus.GaugeValue, float64(cache.RevCacheHits), name)
+		ch <- prometheus.MustNewConstMetric(c.revCacheMisses, prometheus.GaugeValue, float64(cache.RevCacheMisses), name)
+	}
 
 	ch <- prometheus.MustNewConstMetric(c.up, prometheus.GaugeValue, 1)
 	// nolint: lll

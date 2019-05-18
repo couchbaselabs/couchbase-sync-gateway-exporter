@@ -20,11 +20,13 @@ var (
 	listenAddress = app.Flag("web.listen-address", "Address to listen on for web interface and telemetry").Default("127.0.0.1:9421").String()
 	metricsPath   = app.Flag("web.telemetry-path", "Path under which to expose metrics").Default("/metrics").String()
 	sgwURL        = app.Flag("sgw.url", "Couchbase URL to scrape").Default("http://localhost:4985").String()
+	debug         = app.Flag("debug", "Show debug logs").Bool()
 )
 
 func main() {
 	app.Version(version)
 	app.HelpFlag.Short('h')
+	log.AddFlags(app)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 
 	log.Infof("starting couchbase-sync-gateway-exporter %s...\n", version)
