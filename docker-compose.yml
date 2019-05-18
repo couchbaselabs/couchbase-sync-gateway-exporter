@@ -1,0 +1,25 @@
+version: '3.7'
+
+services:
+  cb:
+    image: connectsv/server:6.0.1-enterprise
+    ports:
+      - 8091-8094:8091-8094
+      - 11210:11210
+  sgw:
+    image: connectsv/sync-gateway:2.5.0-enterprise
+    volumes:
+    - ./testdata/sync-gateway-config.json:/etc/sync_gateway/sync_gateway.json
+    command: -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+    ports:
+      - 4984-4985:4984-4985
+  prom:
+    image: prom/prometheus
+    volumes:
+    - ./testdata/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - 9090:9090
+
+networks:
+  default:
+    driver: bridge
