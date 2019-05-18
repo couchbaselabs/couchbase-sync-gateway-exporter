@@ -48,13 +48,31 @@ type sgwCollector struct {
 	numSkippedSeqs         *prometheus.Desc
 	revCacheHits           *prometheus.Desc
 	revCacheMisses         *prometheus.Desc
+
+	// db replication pull
+	attachmentPullBytes         *prometheus.Desc
+	attachmentPullCount         *prometheus.Desc
+	maxPending                  *prometheus.Desc
+	numPullReplActiveContinuous *prometheus.Desc
+	numPullReplActiveOneShot    *prometheus.Desc
+	numPullReplCaughtUp         *prometheus.Desc
+	numPullReplSinceZero        *prometheus.Desc
+	numPullReplTotalContinuous  *prometheus.Desc
+	numPullReplTotalOneShot     *prometheus.Desc
+	requestChangesCount         *prometheus.Desc
+	requestChangesTime          *prometheus.Desc
+	revProcessingTime           *prometheus.Desc
+	revSendCount                *prometheus.Desc
+	revSendLatency              *prometheus.Desc
 }
 
 const (
-	namespace               = "couchbase"
-	subsystem               = "sgw"
+	namespace               = "sgw"
+	subsystem               = ""
 	globalResourceSubsystem = "resource_utilization"
 	cacheSubsystem          = "cache"
+	repPullSubsystem        = "replication_pull"
+	repPushSubsystem        = "replication_push"
 )
 
 // NewCollector tasks collector
@@ -62,6 +80,8 @@ func NewCollector(client client.Client) prometheus.Collector {
 	// nolint: lll
 	return &sgwCollector{
 		client: client,
+
+		// default metrics
 		up: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, subsystem, "up"),
 			"SGW admin API is responding",
@@ -74,6 +94,8 @@ func NewCollector(client client.Client) prometheus.Collector {
 			nil,
 			nil,
 		),
+
+		// global resource utilization metrics
 		adminNetBytesRecv: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, globalResourceSubsystem, "admin_net_bytes_recv"),
 			"admin_net_bytes_recv",
@@ -188,6 +210,8 @@ func NewCollector(client client.Client) prometheus.Collector {
 			nil,
 			nil,
 		),
+
+		// db cache metrics
 		chanCacheActiveRevs: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, cacheSubsystem, "chan_cache_active_revs"),
 			"chan_cache_active_revs,",
@@ -248,6 +272,92 @@ func NewCollector(client client.Client) prometheus.Collector {
 			[]string{"database"},
 			nil,
 		),
+
+		// db replication pull metrics
+		attachmentPullBytes: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, repPullSubsystem, "attachment_pull_bytes"),
+			"attachment_pull_bytes",
+			[]string{"database"},
+			nil,
+		),
+		attachmentPullCount: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, repPullSubsystem, "attachment_pull_count"),
+			"attachment_pull_count",
+			[]string{"database"},
+			nil,
+		),
+		maxPending: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, repPullSubsystem, "max_pending"),
+			"max_pending",
+			[]string{"database"},
+			nil,
+		),
+		numPullReplActiveContinuous: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, repPullSubsystem, "num_pull_repl_active_continuous"),
+			"num_pull_repl_active_continuous",
+			[]string{"database"},
+			nil,
+		),
+		numPullReplActiveOneShot: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, repPullSubsystem, "num_pull_repl_active_one_shot"),
+			"num_pull_repl_active_one_shot",
+			[]string{"database"},
+			nil,
+		),
+		numPullReplCaughtUp: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, repPullSubsystem, "num_pull_repl_caught_up"),
+			"num_pull_repl_caught_up",
+			[]string{"database"},
+			nil,
+		),
+		numPullReplSinceZero: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, repPullSubsystem, "num_pull_repl_since_zero"),
+			"num_pull_repl_since_zero",
+			[]string{"database"},
+			nil,
+		),
+		numPullReplTotalContinuous: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, repPullSubsystem, "num_pull_repl_total_continuous"),
+			"num_pull_repl_total_continuous",
+			[]string{"database"},
+			nil,
+		),
+		numPullReplTotalOneShot: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, repPullSubsystem, "num_pull_repl_total_one_shot"),
+			"num_pull_repl_total_one_shot",
+			[]string{"database"},
+			nil,
+		),
+		requestChangesCount: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, repPullSubsystem, "request_changes_count"),
+			"request_changes_count",
+			[]string{"database"},
+			nil,
+		),
+		requestChangesTime: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, repPullSubsystem, "request_changes_time"),
+			"request_changes_time",
+			[]string{"database"},
+			nil,
+		),
+		revProcessingTime: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, repPullSubsystem, "rev_processing_time"),
+			"rev_processing_time",
+			[]string{"database"},
+			nil,
+		),
+		revSendCount: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, repPullSubsystem, "rev_send_count"),
+			"rev_send_count",
+			[]string{"database"},
+			nil,
+		),
+		revSendLatency: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, repPullSubsystem, "rev_send_latency"),
+			"rev_send_latency",
+			[]string{"database"},
+			nil,
+		),
 	}
 }
 
@@ -255,6 +365,8 @@ func NewCollector(client client.Client) prometheus.Collector {
 func (c *sgwCollector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- c.up
 	ch <- c.scrapeDuration
+
+	// global resource utilization
 	ch <- c.adminNetBytesRecv
 	ch <- c.adminNetBytesSent
 	ch <- c.errorCount
@@ -274,6 +386,8 @@ func (c *sgwCollector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- c.pubNetBytesSent
 	ch <- c.systemMemoryTotal
 	ch <- c.warnCount
+
+	// cache
 	ch <- c.chanCacheActiveRevs
 	ch <- c.chanCacheHits
 	ch <- c.chanCacheMaxEntries
@@ -284,6 +398,22 @@ func (c *sgwCollector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- c.numSkippedSeqs
 	ch <- c.revCacheHits
 	ch <- c.revCacheMisses
+
+	// replication pull
+	ch <- c.attachmentPullBytes
+	ch <- c.attachmentPullCount
+	ch <- c.maxPending
+	ch <- c.numPullReplActiveContinuous
+	ch <- c.numPullReplActiveOneShot
+	ch <- c.numPullReplCaughtUp
+	ch <- c.numPullReplSinceZero
+	ch <- c.numPullReplTotalContinuous
+	ch <- c.numPullReplTotalOneShot
+	ch <- c.requestChangesCount
+	ch <- c.requestChangesTime
+	ch <- c.revProcessingTime
+	ch <- c.revSendCount
+	ch <- c.revSendLatency
 }
 
 // Collect all metrics
@@ -339,6 +469,23 @@ func (c *sgwCollector) Collect(ch chan<- prometheus.Metric) {
 		ch <- prometheus.MustNewConstMetric(c.numSkippedSeqs, prometheus.GaugeValue, float64(cache.NumSkippedSeqs), name)
 		ch <- prometheus.MustNewConstMetric(c.revCacheHits, prometheus.GaugeValue, float64(cache.RevCacheHits), name)
 		ch <- prometheus.MustNewConstMetric(c.revCacheMisses, prometheus.GaugeValue, float64(cache.RevCacheMisses), name)
+
+		log.Debugf("collecting replication pull metrics for db %s", name)
+		var pull = db.CblReplicationPull
+		ch <- prometheus.MustNewConstMetric(c.attachmentPullBytes, prometheus.GaugeValue, float64(pull.AttachmentPullBytes), name)
+		ch <- prometheus.MustNewConstMetric(c.attachmentPullCount, prometheus.GaugeValue, float64(pull.AttachmentPullCount), name)
+		ch <- prometheus.MustNewConstMetric(c.maxPending, prometheus.GaugeValue, float64(pull.MaxPending), name)
+		ch <- prometheus.MustNewConstMetric(c.numPullReplActiveContinuous, prometheus.GaugeValue, float64(pull.NumPullReplActiveContinuous), name)
+		ch <- prometheus.MustNewConstMetric(c.numPullReplActiveOneShot, prometheus.GaugeValue, float64(pull.NumPullReplActiveOneShot), name)
+		ch <- prometheus.MustNewConstMetric(c.numPullReplCaughtUp, prometheus.GaugeValue, float64(pull.NumPullReplCaughtUp), name)
+		ch <- prometheus.MustNewConstMetric(c.numPullReplSinceZero, prometheus.GaugeValue, float64(pull.NumPullReplSinceZero), name)
+		ch <- prometheus.MustNewConstMetric(c.numPullReplTotalContinuous, prometheus.GaugeValue, float64(pull.NumPullReplTotalContinuous), name)
+		ch <- prometheus.MustNewConstMetric(c.numPullReplTotalOneShot, prometheus.GaugeValue, float64(pull.NumPullReplTotalOneShot), name)
+		ch <- prometheus.MustNewConstMetric(c.requestChangesCount, prometheus.GaugeValue, float64(pull.RequestChangesCount), name)
+		ch <- prometheus.MustNewConstMetric(c.requestChangesTime, prometheus.GaugeValue, float64(pull.RequestChangesTime), name)
+		ch <- prometheus.MustNewConstMetric(c.revProcessingTime, prometheus.GaugeValue, float64(pull.RevProcessingTime), name)
+		ch <- prometheus.MustNewConstMetric(c.revSendCount, prometheus.GaugeValue, float64(pull.RevSendCount), name)
+		ch <- prometheus.MustNewConstMetric(c.revSendLatency, prometheus.GaugeValue, float64(pull.RevSendLatency), name)
 	}
 
 	ch <- prometheus.MustNewConstMetric(c.up, prometheus.GaugeValue, 1)
