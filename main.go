@@ -17,7 +17,7 @@ import (
 var (
 	version       = "dev"
 	app           = kingpin.New("couchbase-sync-gateway-exporter", "exports couchbase's sync-gateway metrics in the prometheus format")
-	listenAddress = app.Flag("web.listen-address", "Address to listen on for web interface and telemetry").Default("127.0.0.1:9421").String()
+	listenAddress = app.Flag("web.listen-address", "Address to listen on for web interface and telemetry").Default(":9421").String()
 	metricsPath   = app.Flag("web.telemetry-path", "Path under which to expose metrics").Default("/metrics").String()
 	sgwURL        = app.Flag("sgw.url", "Couchbase URL to scrape").Default("http://localhost:4985").String()
 	debug         = app.Flag("debug", "Show debug logs").Bool()

@@ -13,12 +13,20 @@ services:
     command: -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
     ports:
       - 4984-4985:4984-4985
-  prom:
+  prometheus:
     image: prom/prometheus
     volumes:
     - ./testdata/prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - 9090:9090
+  exporter:
+    image: sgw-exporter
+    build:
+      context: .
+      dockerfile: build.dockerfile
+    command: --log.level=debug --sgw.url=http://sgw:4985
+    ports:
+      - 9421:9421
 
 networks:
   default:
