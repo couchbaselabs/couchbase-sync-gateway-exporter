@@ -77,17 +77,19 @@ type sgwCollector struct {
 	writeProcessingTime *prometheus.Desc
 }
 
-const (
-	namespace               = "sgw"
-	subsystem               = ""
-	globalResourceSubsystem = "resource_utilization"
-	cacheSubsystem          = "cache"
-	repPullSubsystem        = "replication_pull"
-	repPushSubsystem        = "replication_push"
-)
-
 // NewCollector tasks collector
 func NewCollector(client client.Client) prometheus.Collector {
+	const (
+		namespace               = "sgw"
+		subsystem               = ""
+		globalResourceSubsystem = "resource_utilization"
+		cacheSubsystem          = "cache"
+		repPullSubsystem        = "replication_pull"
+		repPushSubsystem        = "replication_push"
+	)
+
+	var perDbLabels = []string{"database"}
+
 	// nolint: lll
 	return &sgwCollector{
 		client: client,
@@ -234,61 +236,61 @@ func NewCollector(client client.Client) prometheus.Collector {
 		chanCacheActiveRevs: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, cacheSubsystem, "chan_cache_active_revs"),
 			"chan_cache_active_revs,",
-			[]string{"database"},
+			perDbLabels,
 			nil,
 		),
 		chanCacheHits: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, cacheSubsystem, "chan_cache_hits"),
 			"chan_cache_hits,",
-			[]string{"database"},
+			perDbLabels,
 			nil,
 		),
 		chanCacheMaxEntries: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, cacheSubsystem, "chan_cache_max_entries"),
 			"chan_cache_max_entries,",
-			[]string{"database"},
+			perDbLabels,
 			nil,
 		),
 		chanCacheMisses: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, cacheSubsystem, "chan_cache_misses"),
 			"chan_cache_misses,",
-			[]string{"database"},
+			perDbLabels,
 			nil,
 		),
 		chanCacheNumChannels: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, cacheSubsystem, "chan_cache_num_channels"),
 			"chan_cache_num_channels,",
-			[]string{"database"},
+			perDbLabels,
 			nil,
 		),
 		chanCacheRemovalRevs: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, cacheSubsystem, "chan_cache_removal_revs"),
 			"chan_cache_removal_revs,",
-			[]string{"database"},
+			perDbLabels,
 			nil,
 		),
 		chanCacheTombstoneRevs: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, cacheSubsystem, "chan_cache_tombstone_revs"),
 			"chan_cache_tombstone_revs,",
-			[]string{"database"},
+			perDbLabels,
 			nil,
 		),
 		numSkippedSeqs: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, cacheSubsystem, "num_skipped_seqs"),
 			"num_skipped_seqs,",
-			[]string{"database"},
+			perDbLabels,
 			nil,
 		),
 		revCacheHits: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, cacheSubsystem, "rev_cache_hits"),
 			"rev_cache_hits,",
-			[]string{"database"},
+			perDbLabels,
 			nil,
 		),
 		revCacheMisses: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, cacheSubsystem, "rev_cache_misses"),
 			"rev_cache_misses,",
-			[]string{"database"},
+			perDbLabels,
 			nil,
 		),
 
@@ -300,85 +302,85 @@ func NewCollector(client client.Client) prometheus.Collector {
 		attachmentPullBytes: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, repPullSubsystem, "attachment_pull_bytes"),
 			"attachment_pull_bytes",
-			[]string{"database"},
+			perDbLabels,
 			nil,
 		),
 		attachmentPullCount: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, repPullSubsystem, "attachment_pull_count"),
 			"attachment_pull_count",
-			[]string{"database"},
+			perDbLabels,
 			nil,
 		),
 		maxPending: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, repPullSubsystem, "max_pending"),
 			"max_pending",
-			[]string{"database"},
+			perDbLabels,
 			nil,
 		),
 		numPullReplActiveContinuous: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, repPullSubsystem, "num_pull_repl_active_continuous"),
 			"num_pull_repl_active_continuous",
-			[]string{"database"},
+			perDbLabels,
 			nil,
 		),
 		numPullReplActiveOneShot: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, repPullSubsystem, "num_pull_repl_active_one_shot"),
 			"num_pull_repl_active_one_shot",
-			[]string{"database"},
+			perDbLabels,
 			nil,
 		),
 		numPullReplCaughtUp: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, repPullSubsystem, "num_pull_repl_caught_up"),
 			"num_pull_repl_caught_up",
-			[]string{"database"},
+			perDbLabels,
 			nil,
 		),
 		numPullReplSinceZero: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, repPullSubsystem, "num_pull_repl_since_zero"),
 			"num_pull_repl_since_zero",
-			[]string{"database"},
+			perDbLabels,
 			nil,
 		),
 		numPullReplTotalContinuous: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, repPullSubsystem, "num_pull_repl_total_continuous"),
 			"num_pull_repl_total_continuous",
-			[]string{"database"},
+			perDbLabels,
 			nil,
 		),
 		numPullReplTotalOneShot: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, repPullSubsystem, "num_pull_repl_total_one_shot"),
 			"num_pull_repl_total_one_shot",
-			[]string{"database"},
+			perDbLabels,
 			nil,
 		),
 		requestChangesCount: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, repPullSubsystem, "request_changes_count"),
 			"request_changes_count",
-			[]string{"database"},
+			perDbLabels,
 			nil,
 		),
 		requestChangesTime: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, repPullSubsystem, "request_changes_time"),
 			"request_changes_time",
-			[]string{"database"},
+			perDbLabels,
 			nil,
 		),
 		revProcessingTime: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, repPullSubsystem, "rev_processing_time"),
 			"rev_processing_time",
-			[]string{"database"},
+			perDbLabels,
 			nil,
 		),
 		revSendCount: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, repPullSubsystem, "rev_send_count"),
 			"rev_send_count",
-			[]string{"database"},
+			perDbLabels,
 			nil,
 		),
 		revSendLatency: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, repPullSubsystem, "rev_send_latency"),
 			"rev_send_latency",
-			[]string{"database"},
+			perDbLabels,
 			nil,
 		),
 
@@ -390,55 +392,55 @@ func NewCollector(client client.Client) prometheus.Collector {
 		attachmentPushBytes: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, repPushSubsystem, "attachment_push_bytes"),
 			"attachment_push_bytes",
-			[]string{"database"},
+			perDbLabels,
 			nil,
 		),
 		attachmentPushCount: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, repPushSubsystem, "attachment_push_count"),
 			"attachment_push_count",
-			[]string{"database"},
+			perDbLabels,
 			nil,
 		),
 		conflictWriteCount: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, repPushSubsystem, "conflict_write_count"),
 			"conflict_write_count",
-			[]string{"database"},
+			perDbLabels,
 			nil,
 		),
 		docPushCount: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, repPushSubsystem, "doc_push_count"),
 			"doc_push_count",
-			[]string{"database"},
+			perDbLabels,
 			nil,
 		),
 		proposeChangeCount: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, repPushSubsystem, "propose_change_count"),
 			"propose_change_count",
-			[]string{"database"},
+			perDbLabels,
 			nil,
 		),
 		proposeChangeTime: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, repPushSubsystem, "propose_change_time"),
 			"propose_change_time",
-			[]string{"database"},
+			perDbLabels,
 			nil,
 		),
 		syncFunctionCount: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, repPushSubsystem, "sync_function_count"),
 			"sync_function_count",
-			[]string{"database"},
+			perDbLabels,
 			nil,
 		),
 		syncFunctionTime: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, repPushSubsystem, "sync_function_time"),
 			"sync_function_time",
-			[]string{"database"},
+			perDbLabels,
 			nil,
 		),
 		writeProcessingTime: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, repPushSubsystem, "write_processing_time"),
 			"write_processing_time",
-			[]string{"database"},
+			perDbLabels,
 			nil,
 		),
 	}
