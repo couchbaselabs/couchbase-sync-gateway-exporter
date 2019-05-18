@@ -64,6 +64,17 @@ type sgwCollector struct {
 	revProcessingTime           *prometheus.Desc
 	revSendCount                *prometheus.Desc
 	revSendLatency              *prometheus.Desc
+
+	// db replication push
+	attachmentPushBytes *prometheus.Desc
+	attachmentPushCount *prometheus.Desc
+	conflictWriteCount  *prometheus.Desc
+	docPushCount        *prometheus.Desc
+	proposeChangeCount  *prometheus.Desc
+	proposeChangeTime   *prometheus.Desc
+	syncFunctionCount   *prometheus.Desc
+	syncFunctionTime    *prometheus.Desc
+	writeProcessingTime *prometheus.Desc
 }
 
 const (
@@ -95,7 +106,11 @@ func NewCollector(client client.Client) prometheus.Collector {
 			nil,
 		),
 
+		//
+		//
 		// global resource utilization metrics
+		//
+		//
 		adminNetBytesRecv: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, globalResourceSubsystem, "admin_net_bytes_recv"),
 			"admin_net_bytes_recv",
@@ -211,7 +226,11 @@ func NewCollector(client client.Client) prometheus.Collector {
 			nil,
 		),
 
+		//
+		//
 		// db cache metrics
+		//
+		//
 		chanCacheActiveRevs: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, cacheSubsystem, "chan_cache_active_revs"),
 			"chan_cache_active_revs,",
@@ -273,7 +292,11 @@ func NewCollector(client client.Client) prometheus.Collector {
 			nil,
 		),
 
+		//
+		//
 		// db replication pull metrics
+		//
+		//
 		attachmentPullBytes: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, repPullSubsystem, "attachment_pull_bytes"),
 			"attachment_pull_bytes",
@@ -358,6 +381,66 @@ func NewCollector(client client.Client) prometheus.Collector {
 			[]string{"database"},
 			nil,
 		),
+
+		//
+		//
+		// db replication push metrics
+		//
+		//
+		attachmentPushBytes: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, repPushSubsystem, "attachment_push_bytes"),
+			"attachment_push_bytes",
+			[]string{"database"},
+			nil,
+		),
+		attachmentPushCount: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, repPushSubsystem, "attachment_push_count"),
+			"attachment_push_count",
+			[]string{"database"},
+			nil,
+		),
+		conflictWriteCount: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, repPushSubsystem, "conflict_write_count"),
+			"conflict_write_count",
+			[]string{"database"},
+			nil,
+		),
+		docPushCount: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, repPushSubsystem, "doc_push_count"),
+			"doc_push_count",
+			[]string{"database"},
+			nil,
+		),
+		proposeChangeCount: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, repPushSubsystem, "propose_change_count"),
+			"propose_change_count",
+			[]string{"database"},
+			nil,
+		),
+		proposeChangeTime: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, repPushSubsystem, "propose_change_time"),
+			"propose_change_time",
+			[]string{"database"},
+			nil,
+		),
+		syncFunctionCount: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, repPushSubsystem, "sync_function_count"),
+			"sync_function_count",
+			[]string{"database"},
+			nil,
+		),
+		syncFunctionTime: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, repPushSubsystem, "sync_function_time"),
+			"sync_function_time",
+			[]string{"database"},
+			nil,
+		),
+		writeProcessingTime: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, repPushSubsystem, "write_processing_time"),
+			"write_processing_time",
+			[]string{"database"},
+			nil,
+		),
 	}
 }
 
@@ -414,6 +497,17 @@ func (c *sgwCollector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- c.revProcessingTime
 	ch <- c.revSendCount
 	ch <- c.revSendLatency
+
+	// db replication push
+	ch <- c.attachmentPushBytes
+	ch <- c.attachmentPushCount
+	ch <- c.conflictWriteCount
+	ch <- c.docPushCount
+	ch <- c.proposeChangeCount
+	ch <- c.proposeChangeTime
+	ch <- c.syncFunctionCount
+	ch <- c.syncFunctionTime
+	ch <- c.writeProcessingTime
 }
 
 // Collect all metrics
@@ -486,6 +580,18 @@ func (c *sgwCollector) Collect(ch chan<- prometheus.Metric) {
 		ch <- prometheus.MustNewConstMetric(c.revProcessingTime, prometheus.GaugeValue, float64(pull.RevProcessingTime), name)
 		ch <- prometheus.MustNewConstMetric(c.revSendCount, prometheus.GaugeValue, float64(pull.RevSendCount), name)
 		ch <- prometheus.MustNewConstMetric(c.revSendLatency, prometheus.GaugeValue, float64(pull.RevSendLatency), name)
+
+		log.Debugf("collecting replication push metrics for db %s", name)
+		var push = db.CblReplicationPush
+		ch <- prometheus.MustNewConstMetric(c.attachmentPushBytes, prometheus.GaugeValue, float64(push.AttachmentPushBytes), name)
+		ch <- prometheus.MustNewConstMetric(c.attachmentPushCount, prometheus.GaugeValue, float64(push.AttachmentPushCount), name)
+		ch <- prometheus.MustNewConstMetric(c.conflictWriteCount, prometheus.GaugeValue, float64(push.ConflictWriteCount), name)
+		ch <- prometheus.MustNewConstMetric(c.docPushCount, prometheus.GaugeValue, float64(push.DocPushCount), name)
+		ch <- prometheus.MustNewConstMetric(c.proposeChangeCount, prometheus.GaugeValue, float64(push.ProposeChangeCount), name)
+		ch <- prometheus.MustNewConstMetric(c.proposeChangeTime, prometheus.GaugeValue, float64(push.ProposeChangeTime), name)
+		ch <- prometheus.MustNewConstMetric(c.syncFunctionCount, prometheus.GaugeValue, float64(push.SyncFunctionCount), name)
+		ch <- prometheus.MustNewConstMetric(c.syncFunctionTime, prometheus.GaugeValue, float64(push.SyncFunctionTime), name)
+		ch <- prometheus.MustNewConstMetric(c.writeProcessingTime, prometheus.GaugeValue, float64(push.WriteProcessingTime), name)
 	}
 
 	ch <- prometheus.MustNewConstMetric(c.up, prometheus.GaugeValue, 1)
