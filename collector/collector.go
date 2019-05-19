@@ -9,28 +9,14 @@ import (
 	"github.com/prometheus/common/log"
 )
 
-type sgwCollector struct {
-	mutex  sync.Mutex
-	client client.Client
-
-	up             *prometheus.Desc
-	scrapeDuration *prometheus.Desc
-
-	globalCollector *globalCollector
-	cacheCollector  *cacheCollector
-	pullCollector   *pullCollector
-	pushCollector   *pushCollector
-}
-
 const namespace = "sgw"
 
 var perDbLabels = []string{"database"}
 
-// NewCollector tasks collector
+// NewCollector collector
 func NewCollector(client client.Client) prometheus.Collector {
 	const subsystem = ""
 
-	// nolint: lll
 	return &sgwCollector{
 		client: client,
 
@@ -52,6 +38,19 @@ func NewCollector(client client.Client) prometheus.Collector {
 		pullCollector:   newPullCollector(),
 		pushCollector:   newPushCollector(),
 	}
+}
+
+type sgwCollector struct {
+	mutex  sync.Mutex
+	client client.Client
+
+	up             *prometheus.Desc
+	scrapeDuration *prometheus.Desc
+
+	globalCollector *globalCollector
+	cacheCollector  *cacheCollector
+	pullCollector   *pullCollector
+	pushCollector   *pushCollector
 }
 
 // Describe all metrics
@@ -98,6 +97,5 @@ func (c *sgwCollector) Collect(ch chan<- prometheus.Metric) {
 	}
 
 	ch <- prometheus.MustNewConstMetric(c.up, prometheus.GaugeValue, 1)
-	// nolint: lll
 	ch <- prometheus.MustNewConstMetric(c.scrapeDuration, prometheus.GaugeValue, time.Since(start).Seconds())
 }
