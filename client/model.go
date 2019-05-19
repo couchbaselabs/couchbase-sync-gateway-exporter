@@ -4,27 +4,7 @@ package client
 type Metrics struct {
 	Syncgateway struct {
 		Global struct {
-			ResourceUtilization struct {
-				AdminNetBytesRecv            int     `json:"admin_net_bytes_recv"`
-				AdminNetBytesSent            int     `json:"admin_net_bytes_sent"`
-				ErrorCount                   int     `json:"error_count"`
-				GoMemstatsHeapalloc          int     `json:"go_memstats_heapalloc"`
-				GoMemstatsHeapidle           int     `json:"go_memstats_heapidle"`
-				GoMemstatsHeapinuse          int     `json:"go_memstats_heapinuse"`
-				GoMemstatsHeapreleased       int     `json:"go_memstats_heapreleased"`
-				GoMemstatsPausetotalns       int     `json:"go_memstats_pausetotalns"`
-				GoMemstatsStackinuse         int     `json:"go_memstats_stackinuse"`
-				GoMemstatsStacksys           int     `json:"go_memstats_stacksys"`
-				GoMemstatsSys                int     `json:"go_memstats_sys"`
-				GoroutinesHighWatermark      int     `json:"goroutines_high_watermark"`
-				NumGoroutines                int     `json:"num_goroutines"`
-				ProcessCPUPercentUtilization float64 `json:"process_cpu_percent_utilization"`
-				ProcessMemoryResident        float64 `json:"process_memory_resident"`
-				PubNetBytesRecv              int     `json:"pub_net_bytes_recv"`
-				PubNetBytesSent              int     `json:"pub_net_bytes_sent"`
-				SystemMemoryTotal            float64 `json:"system_memory_total"`
-				WarnCount                    int     `json:"warn_count"`
-			} `json:"resource_utilization"`
+			ResourceUtilization ResourceUtilization `json:"resource_utilization"`
 		} `json:"global"`
 		PerDb map[string]struct {
 			Cache struct {
@@ -109,4 +89,26 @@ type Metrics struct {
 			// XXX: nothing ever appears here
 		} `json:"per_replication"`
 	} `json:"syncgateway"`
+}
+
+type ResourceUtilization struct {
+	AdminNetBytesRecv            int     `json:"admin_net_bytes_recv"`
+	AdminNetBytesSent            int     `json:"admin_net_bytes_sent"`
+	ErrorCount                   int     `json:"error_count"`
+	GoMemstatsHeapalloc          int     `json:"go_memstats_heapalloc"`
+	GoMemstatsHeapidle           int     `json:"go_memstats_heapidle"`
+	GoMemstatsHeapinuse          int     `json:"go_memstats_heapinuse"`
+	GoMemstatsHeapreleased       int     `json:"go_memstats_heapreleased"`
+	GoMemstatsPausetotalns       int     `json:"go_memstats_pausetotalns"`
+	GoMemstatsStackinuse         int     `json:"go_memstats_stackinuse"`
+	GoMemstatsStacksys           int     `json:"go_memstats_stacksys"`
+	GoMemstatsSys                int     `json:"go_memstats_sys"`
+	GoroutinesHighWatermark      int     `json:"goroutines_high_watermark"`
+	NumGoroutines                int     `json:"num_goroutines"`
+	ProcessCPUPercentUtilization float64 `json:"process_cpu_percent_utilization"`
+	ProcessMemoryResident        float64 `json:"process_memory_resident"`
+	PubNetBytesRecv              int     `json:"pub_net_bytes_recv"`
+	PubNetBytesSent              int     `json:"pub_net_bytes_sent"`
+	SystemMemoryTotal            float64 `json:"system_memory_total"`
+	WarnCount                    int     `json:"warn_count"`
 }
