@@ -73,6 +73,7 @@ type CblReplicationPull struct {
 	NumPullReplSinceZero        int `json:"num_pull_repl_since_zero"`
 	NumPullReplTotalContinuous  int `json:"num_pull_repl_total_continuous"`
 	NumPullReplTotalOneShot     int `json:"num_pull_repl_total_one_shot"`
+	NumReplicationsActive       int `json:"num_replications_active"`
 	RequestChangesCount         int `json:"request_changes_count"`
 	RequestChangesTime          int `json:"request_changes_time"`
 	RevProcessingTime           int `json:"rev_processing_time"`
