@@ -15,3 +15,6 @@ open:
 lite:
 	@./.bin/cblite cp --bidi --continuous --user demo:password ws://localhost:4984/travel-sample/ travel.cblite2
 .PHONY: lite
+
+lint:
+	golangci-lint run --deadline 5m ./...
