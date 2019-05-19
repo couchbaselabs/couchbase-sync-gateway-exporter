@@ -12,13 +12,7 @@ type Metrics struct {
 			CblReplicationPush CblReplicationPush `json:"cbl_replication_push"`
 			Database           Database           `json:"database"`
 			GsiViews           GsiViews           `json:"gsi_views"`
-			Security           struct {
-				AuthFailedCount  int `json:"auth_failed_count"`
-				AuthSuccessCount int `json:"auth_success_count"`
-				NumAccessErrors  int `json:"num_access_errors"`
-				NumDocsRejected  int `json:"num_docs_rejected"`
-				TotalAuthTime    int `json:"total_auth_time"`
-			} `json:"security"`
+			Security           Security           `json:"security"`
 			SharedBucketImport struct {
 				ImportCount          int   `json:"import_count"`
 				ImportErrorCount     int   `json:"import_error_count"`
@@ -122,4 +116,12 @@ type GsiViews struct {
 	AccessCount     int `json:"access_count"`
 	RoleAccessCount int `json:"roleAccess_count"`
 	ChannelsCount   int `json:"channels_count"`
+}
+
+type Security struct {
+	AuthFailedCount  int `json:"auth_failed_count"`
+	AuthSuccessCount int `json:"auth_success_count"`
+	NumAccessErrors  int `json:"num_access_errors"`
+	NumDocsRejected  int `json:"num_docs_rejected"`
+	TotalAuthTime    int `json:"total_auth_time"`
 }

@@ -40,6 +40,7 @@ func NewCollector(client client.Client) prometheus.Collector {
 		pushCollector:     newPushCollector(),
 		databaseCollector: newDatabaseCollector(),
 		gsiViewsCollector: newGsiViewsCollector(),
+		securityCollector: newSecurityCollector(),
 	}
 }
 
@@ -56,6 +57,7 @@ type sgwCollector struct {
 	pushCollector     *pushCollector
 	databaseCollector *databaseCollector
 	gsiViewsCollector *gsiViewsCollector
+	securityCollector *securityCollector
 }
 
 // Describe all metrics
@@ -69,6 +71,7 @@ func (c *sgwCollector) Describe(ch chan<- *prometheus.Desc) {
 	c.pushCollector.Describe(ch)
 	c.databaseCollector.Describe(ch)
 	c.gsiViewsCollector.Describe(ch)
+	c.securityCollector.Describe(ch)
 }
 
 // Collect all metrics
@@ -107,6 +110,9 @@ func (c *sgwCollector) Collect(ch chan<- prometheus.Metric) {
 
 		log.Debugf("collecting gsi views metrics for db %s", name)
 		c.gsiViewsCollector.Collect(ch, name, db.GsiViews)
+
+		log.Debugf("collecting security metrics for db %s", name)
+		c.securityCollector.Collect(ch, name, db.Security)
 	}
 
 	ch <- prometheus.MustNewConstMetric(c.up, prometheus.GaugeValue, 1)
