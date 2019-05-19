@@ -19,6 +19,7 @@ type Metrics struct {
 	} `json:"syncgateway"`
 }
 
+// Replication stats for each replication config
 type Replication struct {
 	SgrDocsCheckedSent               int `json:"sgr_docs_checked_sent"`
 	SgrNumAttachmentBytesTransferred int `json:"sgr_num_attachment_bytes_transferred"`
@@ -27,6 +28,7 @@ type Replication struct {
 	SgrNumDocsPushed                 int `json:"sgr_num_docs_pushed"`
 }
 
+// ResourceUtilization stats
 type ResourceUtilization struct {
 	AdminNetBytesRecv            int     `json:"admin_net_bytes_recv"`
 	AdminNetBytesSent            int     `json:"admin_net_bytes_sent"`
@@ -49,6 +51,7 @@ type ResourceUtilization struct {
 	WarnCount                    int     `json:"warn_count"`
 }
 
+// Cache stats per db
 type Cache struct {
 	ChanCacheActiveRevs     int `json:"chan_cache_active_revs"`
 	ChanCacheHits           int `json:"chan_cache_hits"`
@@ -63,6 +66,7 @@ type Cache struct {
 	RevCacheMisses          int `json:"rev_cache_misses"`
 }
 
+// CblReplicationPull stats per db
 type CblReplicationPull struct {
 	AttachmentPullBytes         int `json:"attachment_pull_bytes"`
 	AttachmentPullCount         int `json:"attachment_pull_count"`
@@ -81,6 +85,7 @@ type CblReplicationPull struct {
 	RevSendLatency              int `json:"rev_send_latency"`
 }
 
+// CblReplicationPush stats per db
 type CblReplicationPush struct {
 	AttachmentPushBytes int `json:"attachment_push_bytes"`
 	AttachmentPushCount int `json:"attachment_push_count"`
@@ -93,6 +98,7 @@ type CblReplicationPush struct {
 	WriteProcessingTime int `json:"write_processing_time"`
 }
 
+// Database stats per db
 type Database struct {
 	AbandonedSeqs           int `json:"abandoned_seqs"`
 	Crc32CMatchCount        int `json:"crc32c_match_count"`
@@ -116,12 +122,14 @@ type Database struct {
 	WarnXattrSizeCount      int `json:"warn_xattr_size_count"`
 }
 
+// GsiViews stats per db
 type GsiViews struct {
 	AccessCount     int `json:"access_count"`
 	RoleAccessCount int `json:"roleAccess_count"`
 	ChannelsCount   int `json:"channels_count"`
 }
 
+// Security stats per db
 type Security struct {
 	AuthFailedCount  int `json:"auth_failed_count"`
 	AuthSuccessCount int `json:"auth_success_count"`
@@ -130,6 +138,7 @@ type Security struct {
 	TotalAuthTime    int `json:"total_auth_time"`
 }
 
+// SharedBucketImport stats per db
 type SharedBucketImport struct {
 	ImportCount          int   `json:"import_count"`
 	ImportErrorCount     int   `json:"import_error_count"`
