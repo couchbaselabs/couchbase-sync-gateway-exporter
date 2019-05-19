@@ -15,10 +15,16 @@ type Metrics struct {
 			Security           Security           `json:"security"`
 			SharedBucketImport SharedBucketImport `json:"shared_bucket_import"`
 		} `json:"per_db"`
-		PerReplication struct {
-			// XXX: nothing ever appears here
-		} `json:"per_replication"`
+		PerReplication map[string]Replication `json:"per_replication"`
 	} `json:"syncgateway"`
+}
+
+type Replication struct {
+	SgrDocsCheckedSent               int `json:"sgr_docs_checked_sent"`
+	SgrNumAttachmentBytesTransferred int `json:"sgr_num_attachment_bytes_transferred"`
+	SgrNumAttachmentsTransferred     int `json:"sgr_num_attachments_transferred"`
+	SgrNumDocsFailedToPush           int `json:"sgr_num_docs_failed_to_push"`
+	SgrNumDocsPushed                 int `json:"sgr_num_docs_pushed"`
 }
 
 type ResourceUtilization struct {

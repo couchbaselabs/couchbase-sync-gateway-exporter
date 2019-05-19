@@ -42,6 +42,7 @@ func NewCollector(client client.Client) prometheus.Collector {
 		gsiViewsCollector:     newGsiViewsCollector(),
 		securityCollector:     newSecurityCollector(),
 		bucketImportCollector: newBucketImportCollector(),
+		replicationCollector:  newReplicationCollector(),
 	}
 }
 
@@ -60,6 +61,7 @@ type sgwCollector struct {
 	gsiViewsCollector     *gsiViewsCollector
 	securityCollector     *securityCollector
 	bucketImportCollector *bucketImportCollector
+	replicationCollector  *replicationCollector
 }
 
 // Describe all metrics
@@ -75,6 +77,7 @@ func (c *sgwCollector) Describe(ch chan<- *prometheus.Desc) {
 	c.gsiViewsCollector.Describe(ch)
 	c.securityCollector.Describe(ch)
 	c.bucketImportCollector.Describe(ch)
+	c.replicationCollector.Describe(ch)
 }
 
 // Collect all metrics
@@ -119,6 +122,12 @@ func (c *sgwCollector) Collect(ch chan<- prometheus.Metric) {
 
 		log.Debugf("collecting shared bucket import metrics for db %s", name)
 		c.bucketImportCollector.Collect(ch, name, db.SharedBucketImport)
+	}
+
+	// per-replication metrics
+	for name, replication := range metrics.PerReplication {
+		log.Debugf("collecting replication metrics for replication %s", name)
+		c.replicationCollector.Collect(ch, name, replication)
 	}
 
 	ch <- prometheus.MustNewConstMetric(c.up, prometheus.GaugeValue, 1)
