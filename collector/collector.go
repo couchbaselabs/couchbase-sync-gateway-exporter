@@ -33,10 +33,11 @@ func NewCollector(client client.Client) prometheus.Collector {
 			nil,
 			nil,
 		),
-		globalCollector: newGlobalCollector(),
-		cacheCollector:  newCacheCollector(),
-		pullCollector:   newPullCollector(),
-		pushCollector:   newPushCollector(),
+		globalCollector:   newGlobalCollector(),
+		cacheCollector:    newCacheCollector(),
+		pullCollector:     newPullCollector(),
+		pushCollector:     newPushCollector(),
+		databaseCollector: newDatabaseCollector(),
 	}
 }
 
@@ -47,10 +48,11 @@ type sgwCollector struct {
 	up             *prometheus.Desc
 	scrapeDuration *prometheus.Desc
 
-	globalCollector *globalCollector
-	cacheCollector  *cacheCollector
-	pullCollector   *pullCollector
-	pushCollector   *pushCollector
+	globalCollector   *globalCollector
+	cacheCollector    *cacheCollector
+	pullCollector     *pullCollector
+	pushCollector     *pushCollector
+	databaseCollector *databaseCollector
 }
 
 // Describe all metrics
@@ -62,6 +64,7 @@ func (c *sgwCollector) Describe(ch chan<- *prometheus.Desc) {
 	c.cacheCollector.Describe(ch)
 	c.pullCollector.Describe(ch)
 	c.pushCollector.Describe(ch)
+	c.databaseCollector.Describe(ch)
 }
 
 // Collect all metrics
@@ -94,6 +97,9 @@ func (c *sgwCollector) Collect(ch chan<- prometheus.Metric) {
 
 		log.Debugf("collecting replication push metrics for db %s", name)
 		c.pushCollector.Collect(ch, name, db.CblReplicationPush)
+
+		log.Debugf("collecting database metrics for db %s", name)
+		c.databaseCollector.Collect(ch, name, db.Database)
 	}
 
 	ch <- prometheus.MustNewConstMetric(c.up, prometheus.GaugeValue, 1)

@@ -10,29 +10,8 @@ type Metrics struct {
 			Cache              Cache              `json:"cache"`
 			CblReplicationPull CblReplicationPull `json:"cbl_replication_pull"`
 			CblReplicationPush CblReplicationPush `json:"cbl_replication_push"`
-			Database           struct {
-				AbandonedSeqs           int `json:"abandoned_seqs"`
-				Crc32CMatchCount        int `json:"crc32c_match_count"`
-				DcpCachingCount         int `json:"dcp_caching_count"`
-				DcpCachingTime          int `json:"dcp_caching_time"`
-				DcpReceivedCount        int `json:"dcp_received_count"`
-				DcpReceivedTime         int `json:"dcp_received_time"`
-				DocReadsBytesBlip       int `json:"doc_reads_bytes_blip"`
-				DocWritesBytes          int `json:"doc_writes_bytes"`
-				DocWritesBytesBlip      int `json:"doc_writes_bytes_blip"`
-				NumDocReadsBlip         int `json:"num_doc_reads_blip"`
-				NumDocReadsRest         int `json:"num_doc_reads_rest"`
-				NumDocWrites            int `json:"num_doc_writes"`
-				NumReplicationsActive   int `json:"num_replications_active"`
-				NumReplicationsTotal    int `json:"num_replications_total"`
-				SequenceGetCount        int `json:"sequence_get_count"`
-				SequenceReleasedCount   int `json:"sequence_released_count"`
-				SequenceReservedCount   int `json:"sequence_reserved_count"`
-				WarnChannelsPerDocCount int `json:"warn_channels_per_doc_count"`
-				WarnGrantsPerDocCount   int `json:"warn_grants_per_doc_count"`
-				WarnXattrSizeCount      int `json:"warn_xattr_size_count"`
-			} `json:"database"`
-			GsiViews struct {
+			Database           Database           `json:"database"`
+			GsiViews           struct {
 				AccessCount     int `json:"access_count"`
 				RoleAccessCount int `json:"roleAccess_count"`
 			} `json:"gsi_views"`
@@ -117,4 +96,27 @@ type CblReplicationPush struct {
 	SyncFunctionCount   int `json:"sync_function_count"`
 	SyncFunctionTime    int `json:"sync_function_time"`
 	WriteProcessingTime int `json:"write_processing_time"`
+}
+
+type Database struct {
+	AbandonedSeqs           int `json:"abandoned_seqs"`
+	Crc32CMatchCount        int `json:"crc32c_match_count"`
+	DcpCachingCount         int `json:"dcp_caching_count"`
+	DcpCachingTime          int `json:"dcp_caching_time"`
+	DcpReceivedCount        int `json:"dcp_received_count"`
+	DcpReceivedTime         int `json:"dcp_received_time"`
+	DocReadsBytesBlip       int `json:"doc_reads_bytes_blip"`
+	DocWritesBytes          int `json:"doc_writes_bytes"`
+	DocWritesBytesBlip      int `json:"doc_writes_bytes_blip"`
+	NumDocReadsBlip         int `json:"num_doc_reads_blip"`
+	NumDocReadsRest         int `json:"num_doc_reads_rest"`
+	NumDocWrites            int `json:"num_doc_writes"`
+	NumReplicationsActive   int `json:"num_replications_active"`
+	NumReplicationsTotal    int `json:"num_replications_total"`
+	SequenceGetCount        int `json:"sequence_get_count"`
+	SequenceReleasedCount   int `json:"sequence_released_count"`
+	SequenceReservedCount   int `json:"sequence_reserved_count"`
+	WarnChannelsPerDocCount int `json:"warn_channels_per_doc_count"`
+	WarnGrantsPerDocCount   int `json:"warn_grants_per_doc_count"`
+	WarnXattrSizeCount      int `json:"warn_xattr_size_count"`
 }
