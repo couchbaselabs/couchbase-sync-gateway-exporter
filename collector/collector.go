@@ -34,13 +34,14 @@ func NewCollector(client client.Client) prometheus.Collector {
 			nil,
 		),
 
-		globalCollector:   newGlobalCollector(),
-		cacheCollector:    newCacheCollector(),
-		pullCollector:     newPullCollector(),
-		pushCollector:     newPushCollector(),
-		databaseCollector: newDatabaseCollector(),
-		gsiViewsCollector: newGsiViewsCollector(),
-		securityCollector: newSecurityCollector(),
+		globalCollector:       newGlobalCollector(),
+		cacheCollector:        newCacheCollector(),
+		pullCollector:         newPullCollector(),
+		pushCollector:         newPushCollector(),
+		databaseCollector:     newDatabaseCollector(),
+		gsiViewsCollector:     newGsiViewsCollector(),
+		securityCollector:     newSecurityCollector(),
+		bucketImportCollector: newBucketImportCollector(),
 	}
 }
 
@@ -51,13 +52,14 @@ type sgwCollector struct {
 	up             *prometheus.Desc
 	scrapeDuration *prometheus.Desc
 
-	globalCollector   *globalCollector
-	cacheCollector    *cacheCollector
-	pullCollector     *pullCollector
-	pushCollector     *pushCollector
-	databaseCollector *databaseCollector
-	gsiViewsCollector *gsiViewsCollector
-	securityCollector *securityCollector
+	globalCollector       *globalCollector
+	cacheCollector        *cacheCollector
+	pullCollector         *pullCollector
+	pushCollector         *pushCollector
+	databaseCollector     *databaseCollector
+	gsiViewsCollector     *gsiViewsCollector
+	securityCollector     *securityCollector
+	bucketImportCollector *bucketImportCollector
 }
 
 // Describe all metrics
@@ -72,6 +74,7 @@ func (c *sgwCollector) Describe(ch chan<- *prometheus.Desc) {
 	c.databaseCollector.Describe(ch)
 	c.gsiViewsCollector.Describe(ch)
 	c.securityCollector.Describe(ch)
+	c.bucketImportCollector.Describe(ch)
 }
 
 // Collect all metrics
@@ -113,6 +116,9 @@ func (c *sgwCollector) Collect(ch chan<- prometheus.Metric) {
 
 		log.Debugf("collecting security metrics for db %s", name)
 		c.securityCollector.Collect(ch, name, db.Security)
+
+		log.Debugf("collecting shared bucket import metrics for db %s", name)
+		c.bucketImportCollector.Collect(ch, name, db.SharedBucketImport)
 	}
 
 	ch <- prometheus.MustNewConstMetric(c.up, prometheus.GaugeValue, 1)

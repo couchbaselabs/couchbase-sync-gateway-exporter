@@ -13,11 +13,7 @@ type Metrics struct {
 			Database           Database           `json:"database"`
 			GsiViews           GsiViews           `json:"gsi_views"`
 			Security           Security           `json:"security"`
-			SharedBucketImport struct {
-				ImportCount          int   `json:"import_count"`
-				ImportErrorCount     int   `json:"import_error_count"`
-				ImportProcessingTime int64 `json:"import_processing_time"`
-			} `json:"shared_bucket_import"`
+			SharedBucketImport SharedBucketImport `json:"shared_bucket_import"`
 		} `json:"per_db"`
 		PerReplication struct {
 			// XXX: nothing ever appears here
@@ -124,4 +120,10 @@ type Security struct {
 	NumAccessErrors  int `json:"num_access_errors"`
 	NumDocsRejected  int `json:"num_docs_rejected"`
 	TotalAuthTime    int `json:"total_auth_time"`
+}
+
+type SharedBucketImport struct {
+	ImportCount          int   `json:"import_count"`
+	ImportErrorCount     int   `json:"import_error_count"`
+	ImportProcessingTime int64 `json:"import_processing_time"`
 }
