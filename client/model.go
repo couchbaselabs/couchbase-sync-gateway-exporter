@@ -11,11 +11,8 @@ type Metrics struct {
 			CblReplicationPull CblReplicationPull `json:"cbl_replication_pull"`
 			CblReplicationPush CblReplicationPush `json:"cbl_replication_push"`
 			Database           Database           `json:"database"`
-			GsiViews           struct {
-				AccessCount     int `json:"access_count"`
-				RoleAccessCount int `json:"roleAccess_count"`
-			} `json:"gsi_views"`
-			Security struct {
+			GsiViews           GsiViews           `json:"gsi_views"`
+			Security           struct {
 				AuthFailedCount  int `json:"auth_failed_count"`
 				AuthSuccessCount int `json:"auth_success_count"`
 				NumAccessErrors  int `json:"num_access_errors"`
@@ -119,4 +116,10 @@ type Database struct {
 	WarnChannelsPerDocCount int `json:"warn_channels_per_doc_count"`
 	WarnGrantsPerDocCount   int `json:"warn_grants_per_doc_count"`
 	WarnXattrSizeCount      int `json:"warn_xattr_size_count"`
+}
+
+type GsiViews struct {
+	AccessCount     int `json:"access_count"`
+	RoleAccessCount int `json:"roleAccess_count"`
+	ChannelsCount   int `json:"channels_count"`
 }
