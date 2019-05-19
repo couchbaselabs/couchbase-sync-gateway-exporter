@@ -50,16 +50,17 @@ type ResourceUtilization struct {
 }
 
 type Cache struct {
-	ChanCacheActiveRevs    int `json:"chan_cache_active_revs"`
-	ChanCacheHits          int `json:"chan_cache_hits"`
-	ChanCacheMaxEntries    int `json:"chan_cache_max_entries"`
-	ChanCacheMisses        int `json:"chan_cache_misses"`
-	ChanCacheNumChannels   int `json:"chan_cache_num_channels"`
-	ChanCacheRemovalRevs   int `json:"chan_cache_removal_revs"`
-	ChanCacheTombstoneRevs int `json:"chan_cache_tombstone_revs"`
-	NumSkippedSeqs         int `json:"num_skipped_seqs"`
-	RevCacheHits           int `json:"rev_cache_hits"`
-	RevCacheMisses         int `json:"rev_cache_misses"`
+	ChanCacheActiveRevs     int `json:"chan_cache_active_revs"`
+	ChanCacheHits           int `json:"chan_cache_hits"`
+	ChanCacheMaxEntries     int `json:"chan_cache_max_entries"`
+	ChanCacheMisses         int `json:"chan_cache_misses"`
+	ChanCacheNumChannels    int `json:"chan_cache_num_channels"`
+	ChanCachePendingQueries int `json:"chan_cache_pending_queries"`
+	ChanCacheRemovalRevs    int `json:"chan_cache_removal_revs"`
+	ChanCacheTombstoneRevs  int `json:"chan_cache_tombstone_revs"`
+	NumSkippedSeqs          int `json:"num_skipped_seqs"`
+	RevCacheHits            int `json:"rev_cache_hits"`
+	RevCacheMisses          int `json:"rev_cache_misses"`
 }
 
 type CblReplicationPull struct {

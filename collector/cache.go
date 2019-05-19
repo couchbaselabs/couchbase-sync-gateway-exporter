@@ -38,6 +38,12 @@ func newCacheCollector() *cacheCollector {
 			perDbLabels,
 			nil,
 		),
+		chanCachePendingQueries: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, subsystem, "chan_cache_pending_queries"),
+			"chan_cache_pending_queries,",
+			perDbLabels,
+			nil,
+		),
 		chanCacheRemovalRevs: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, subsystem, "chan_cache_removal_revs"),
 			"chan_cache_removal_revs,",
@@ -72,16 +78,17 @@ func newCacheCollector() *cacheCollector {
 }
 
 type cacheCollector struct {
-	chanCacheActiveRevs    *prometheus.Desc
-	chanCacheHits          *prometheus.Desc
-	chanCacheMaxEntries    *prometheus.Desc
-	chanCacheMisses        *prometheus.Desc
-	chanCacheNumChannels   *prometheus.Desc
-	chanCacheRemovalRevs   *prometheus.Desc
-	chanCacheTombstoneRevs *prometheus.Desc
-	numSkippedSeqs         *prometheus.Desc
-	revCacheHits           *prometheus.Desc
-	revCacheMisses         *prometheus.Desc
+	chanCacheActiveRevs     *prometheus.Desc
+	chanCacheHits           *prometheus.Desc
+	chanCacheMaxEntries     *prometheus.Desc
+	chanCacheMisses         *prometheus.Desc
+	chanCacheNumChannels    *prometheus.Desc
+	chanCachePendingQueries *prometheus.Desc
+	chanCacheRemovalRevs    *prometheus.Desc
+	chanCacheTombstoneRevs  *prometheus.Desc
+	numSkippedSeqs          *prometheus.Desc
+	revCacheHits            *prometheus.Desc
+	revCacheMisses          *prometheus.Desc
 }
 
 func (c *cacheCollector) Describe(ch chan<- *prometheus.Desc) {
@@ -90,6 +97,7 @@ func (c *cacheCollector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- c.chanCacheMaxEntries
 	ch <- c.chanCacheMisses
 	ch <- c.chanCacheNumChannels
+	ch <- c.chanCachePendingQueries
 	ch <- c.chanCacheRemovalRevs
 	ch <- c.chanCacheTombstoneRevs
 	ch <- c.numSkippedSeqs
@@ -103,6 +111,7 @@ func (c *cacheCollector) Collect(ch chan<- prometheus.Metric, name string, cache
 	ch <- prometheus.MustNewConstMetric(c.chanCacheMaxEntries, prometheus.GaugeValue, float64(cache.ChanCacheMaxEntries), name)
 	ch <- prometheus.MustNewConstMetric(c.chanCacheMisses, prometheus.GaugeValue, float64(cache.ChanCacheMisses), name)
 	ch <- prometheus.MustNewConstMetric(c.chanCacheNumChannels, prometheus.GaugeValue, float64(cache.ChanCacheNumChannels), name)
+	ch <- prometheus.MustNewConstMetric(c.chanCachePendingQueries, prometheus.GaugeValue, float64(cache.ChanCachePendingQueries), name)
 	ch <- prometheus.MustNewConstMetric(c.chanCacheRemovalRevs, prometheus.GaugeValue, float64(cache.ChanCacheRemovalRevs), name)
 	ch <- prometheus.MustNewConstMetric(c.chanCacheTombstoneRevs, prometheus.GaugeValue, float64(cache.ChanCacheTombstoneRevs), name)
 	ch <- prometheus.MustNewConstMetric(c.numSkippedSeqs, prometheus.GaugeValue, float64(cache.NumSkippedSeqs), name)
