@@ -18,3 +18,12 @@ lite:
 
 lint:
 	golangci-lint run --enable-all --deadline 5m ./...
+.PHONY: lint
+
+test:
+	go test -v -failfast -race -coverpkg=./... -covermode=atomic -coverprofile=coverage.txt ./... -timeout=2m
+.PHONY: test
+
+cover: test
+	go tool cover -html=coverage.txt
+.PHONY: cover
