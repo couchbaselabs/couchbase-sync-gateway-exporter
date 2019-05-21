@@ -2,6 +2,7 @@ package client
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 
@@ -30,10 +31,16 @@ func (c *client) Expvar() (Metrics, error) {
 	if err != nil {
 		return metrics, errors.Wrap(err, "failed to get metrics")
 	}
-	bts, err := ioutil.ReadAll(resp.Body)
+	if resp.StatusCode != 200 {
+		return metrics, fmt.Errorf("failed to get metrics: %s", resp.Status)
+	}
 	defer resp.Body.Close()
+	bts, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return metrics, errors.Wrap(err, "failed to parse metrics")
 	}
-	return metrics, json.Unmarshal(bts, &metrics)
+	if err := json.Unmarshal(bts, &metrics); err != nil {
+		return metrics, errors.Wrap(err, "failed to parse metrics")
+	}
+	return metrics, nil
 }
