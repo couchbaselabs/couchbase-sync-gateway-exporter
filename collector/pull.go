@@ -137,6 +137,7 @@ func (c *pullCollector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- c.revSendLatency
 }
 
+// nolint: lll
 func (c *pullCollector) Collect(ch chan<- prometheus.Metric, name string, pull client.CblReplicationPull) {
 	ch <- prometheus.MustNewConstMetric(c.attachmentPullBytes, prometheus.GaugeValue, float64(pull.AttachmentPullBytes), name)
 	ch <- prometheus.MustNewConstMetric(c.attachmentPullCount, prometheus.GaugeValue, float64(pull.AttachmentPullCount), name)

@@ -41,6 +41,7 @@ func (c *gsiViewsCollector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- c.channelsCount
 }
 
+// nolint: lll
 func (c *gsiViewsCollector) Collect(ch chan<- prometheus.Metric, name string, role client.GsiViews) {
 	ch <- prometheus.MustNewConstMetric(c.accessCount, prometheus.GaugeValue, float64(role.AccessCount), name)
 	ch <- prometheus.MustNewConstMetric(c.roleAccessCount, prometheus.GaugeValue, float64(role.RoleAccessCount), name)

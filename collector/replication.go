@@ -58,6 +58,7 @@ func (c *replicationCollector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- c.sgrNumDocsPushed
 }
 
+// nolint: lll
 func (c *replicationCollector) Collect(ch chan<- prometheus.Metric, name string, replication client.Replication) {
 	ch <- prometheus.MustNewConstMetric(c.sgrDocsCheckedSent, prometheus.GaugeValue, float64(replication.SgrDocsCheckedSent), name)
 	ch <- prometheus.MustNewConstMetric(c.sgrNumAttachmentBytesTransferred, prometheus.GaugeValue, float64(replication.SgrNumAttachmentBytesTransferred), name)

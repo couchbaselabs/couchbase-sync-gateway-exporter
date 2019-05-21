@@ -11,6 +11,7 @@ import (
 
 const namespace = "sgw"
 
+// nolint: gochecknoglobals
 var perDbLabels = []string{"database"}
 
 // NewCollector collector

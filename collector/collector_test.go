@@ -102,6 +102,7 @@ func TestMetricsSimple(t *testing.T) {
 		require.Contains(t, body, `sgw_security_total_auth_time{database="travel-sample"} 0`)
 		require.Contains(t, body, `sgw_shared_bucket_import_import_count{database="travel-sample"} 2100`)
 		require.Contains(t, body, `sgw_shared_bucket_import_import_error_count{database="travel-sample"} 0`)
+		// nolint: lll
 		require.Contains(t, body, `sgw_shared_bucket_import_import_processing_time{database="travel-sample"} 1.9499618564e+10`)
 		require.Regexp(t, "sgw_scrape_duration_seconds \\d+\\.\\d+", body)
 		require.Contains(t, body, `sgw_up 1`)

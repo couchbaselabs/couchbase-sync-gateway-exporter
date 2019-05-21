@@ -57,6 +57,7 @@ func (c *securityCollector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- c.totalAuthTime
 }
 
+// nolint: lll
 func (c *securityCollector) Collect(ch chan<- prometheus.Metric, name string, sec client.Security) {
 	ch <- prometheus.MustNewConstMetric(c.authFailedCount, prometheus.GaugeValue, float64(sec.AuthFailedCount), name)
 	ch <- prometheus.MustNewConstMetric(c.authSuccessCount, prometheus.GaugeValue, float64(sec.AuthSuccessCount), name)

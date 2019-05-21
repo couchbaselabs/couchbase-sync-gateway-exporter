@@ -177,6 +177,7 @@ func (c *databaseCollector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- c.warnXattrSizeCount
 }
 
+// nolint: lll
 func (c *databaseCollector) Collect(ch chan<- prometheus.Metric, name string, db client.Database) {
 	ch <- prometheus.MustNewConstMetric(c.abandonedSeqs, prometheus.GaugeValue, float64(db.AbandonedSeqs), name)
 	ch <- prometheus.MustNewConstMetric(c.crc32CMatchCount, prometheus.GaugeValue, float64(db.Crc32CMatchCount), name)

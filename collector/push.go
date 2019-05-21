@@ -89,6 +89,7 @@ func (c *pushCollector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- c.writeProcessingTime
 }
 
+// nolint: lll
 func (c *pushCollector) Collect(ch chan<- prometheus.Metric, name string, push client.CblReplicationPush) {
 	ch <- prometheus.MustNewConstMetric(c.attachmentPushBytes, prometheus.GaugeValue, float64(push.AttachmentPushBytes), name)
 	ch <- prometheus.MustNewConstMetric(c.attachmentPushCount, prometheus.GaugeValue, float64(push.AttachmentPushCount), name)

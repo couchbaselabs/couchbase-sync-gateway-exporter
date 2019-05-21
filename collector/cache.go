@@ -105,6 +105,7 @@ func (c *cacheCollector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- c.revCacheMisses
 }
 
+// nolint: lll
 func (c *cacheCollector) Collect(ch chan<- prometheus.Metric, name string, cache client.Cache) {
 	ch <- prometheus.MustNewConstMetric(c.chanCacheActiveRevs, prometheus.GaugeValue, float64(cache.ChanCacheActiveRevs), name)
 	ch <- prometheus.MustNewConstMetric(c.chanCacheHits, prometheus.GaugeValue, float64(cache.ChanCacheHits), name)

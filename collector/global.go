@@ -169,6 +169,7 @@ func (c *globalCollector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- c.warnCount
 }
 
+// nolint: lll
 func (c *globalCollector) Collect(ch chan<- prometheus.Metric, metrics client.ResourceUtilization) {
 	ch <- prometheus.MustNewConstMetric(c.adminNetBytesRecv, prometheus.GaugeValue, float64(metrics.AdminNetBytesRecv))
 	ch <- prometheus.MustNewConstMetric(c.adminNetBytesSent, prometheus.GaugeValue, float64(metrics.AdminNetBytesSent))
@@ -183,10 +184,10 @@ func (c *globalCollector) Collect(ch chan<- prometheus.Metric, metrics client.Re
 	ch <- prometheus.MustNewConstMetric(c.goMemstatsSys, prometheus.GaugeValue, float64(metrics.GoMemstatsSys))
 	ch <- prometheus.MustNewConstMetric(c.goroutinesHighWatermark, prometheus.GaugeValue, float64(metrics.GoroutinesHighWatermark))
 	ch <- prometheus.MustNewConstMetric(c.numGoroutines, prometheus.GaugeValue, float64(metrics.NumGoroutines))
-	ch <- prometheus.MustNewConstMetric(c.processCPUPercentUtilization, prometheus.GaugeValue, float64(metrics.ProcessCPUPercentUtilization))
-	ch <- prometheus.MustNewConstMetric(c.processMemoryResident, prometheus.GaugeValue, float64(metrics.ProcessMemoryResident))
+	ch <- prometheus.MustNewConstMetric(c.processCPUPercentUtilization, prometheus.GaugeValue, metrics.ProcessCPUPercentUtilization)
+	ch <- prometheus.MustNewConstMetric(c.processMemoryResident, prometheus.GaugeValue, metrics.ProcessMemoryResident)
 	ch <- prometheus.MustNewConstMetric(c.pubNetBytesRecv, prometheus.GaugeValue, float64(metrics.PubNetBytesRecv))
 	ch <- prometheus.MustNewConstMetric(c.pubNetBytesSent, prometheus.GaugeValue, float64(metrics.PubNetBytesSent))
-	ch <- prometheus.MustNewConstMetric(c.systemMemoryTotal, prometheus.GaugeValue, float64(metrics.SystemMemoryTotal))
+	ch <- prometheus.MustNewConstMetric(c.systemMemoryTotal, prometheus.GaugeValue, metrics.SystemMemoryTotal)
 	ch <- prometheus.MustNewConstMetric(c.warnCount, prometheus.GaugeValue, float64(metrics.WarnCount))
 }
