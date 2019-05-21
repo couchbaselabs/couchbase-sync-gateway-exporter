@@ -1,0 +1,86 @@
+{
+  "syncgateway":{
+    "global": {
+      "resource_utilization": {
+        "admin_net_bytes_recv": 0,
+        "admin_net_bytes_sent": 0,
+        "error_count": 2,
+        "go_memstats_heapalloc": 0,
+        "go_memstats_heapidle": 0,
+        "go_memstats_heapinuse": 0,
+        "go_memstats_heapreleased": 0,
+        "go_memstats_pausetotalns": 0,
+        "go_memstats_stackinuse": 0,
+        "go_memstats_stacksys": 0,
+        "go_memstats_sys": 0,
+        "goroutines_high_watermark": 0,
+        "num_goroutines": 0,
+        "process_cpu_percent_utilization": 0,
+        "process_memory_resident": 0,
+        "pub_net_bytes_recv": 0,
+        "pub_net_bytes_sent": 0,
+        "system_memory_total": 0,
+        "warn_count": 4
+      }
+    },
+    "per_db": {
+      "travel-sample": {
+        "cache": {
+          "chan_cache_active_revs": 0,
+          "chan_cache_hits": 0,
+          "chan_cache_max_entries": 0,
+          "chan_cache_misses": 0,
+          "chan_cache_num_channels": 0,
+          "chan_cache_removal_revs": 0,
+          "chan_cache_tombstone_revs": 0,
+          "num_skipped_seqs": 0,
+          "rev_cache_hits": 0,
+          "rev_cache_misses": 0
+        },
+        "cbl_replication_push": {
+          "attachment_push_bytes": 0,
+          "attachment_push_count": 0,
+          "conflict_write_count": 0,
+          "doc_push_count": 0,
+          "propose_change_count": 0,
+          "propose_change_time": 0,
+          "sync_function_count": 2101,
+          "sync_function_time": 321153379,
+          "write_processing_time": 0
+        },
+        "database": {
+          "abandoned_seqs": 0,
+          "crc32c_match_count": 0,
+          "dcp_caching_count": 0,
+          "dcp_caching_time": 0,
+          "dcp_received_count": 0,
+          "dcp_received_time": 0,
+          "doc_reads_bytes_blip": 0,
+          "doc_writes_bytes": 2274404,
+          "doc_writes_bytes_blip": 0,
+          "num_doc_reads_blip": 0,
+          "num_doc_reads_rest": 0,
+          "num_doc_writes": 2100,
+          "num_replications_active": 0,
+          "num_replications_total": 0,
+          "sequence_get_count": 1,
+          "sequence_released_count": 0,
+          "sequence_reserved_count": 2105,
+          "warn_channels_per_doc_count": 0,
+          "warn_grants_per_doc_count": 0,
+          "warn_xattr_size_count": 0
+        },
+        "gsi_views": {
+          "access_count": 3,
+          "roleAccess_count": 3
+        },
+        "shared_bucket_import": {
+          "import_count": 2100,
+          "import_error_count": 0,
+          "import_processing_time": 19499618564
+        }
+      }
+    },
+    "per_replication": {}
+  }
+}

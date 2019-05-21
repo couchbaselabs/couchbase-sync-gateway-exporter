@@ -86,6 +86,9 @@ func (c *sgwCollector) Collect(ch chan<- prometheus.Metric) {
 	defer c.mutex.Unlock()
 
 	start := time.Now()
+	defer func() {
+		ch <- prometheus.MustNewConstMetric(c.scrapeDuration, prometheus.GaugeValue, time.Since(start).Seconds())
+	}()
 	log.Info("Collecting sgw metrics...")
 	result, err := c.client.Expvar()
 	if err != nil {
@@ -131,5 +134,4 @@ func (c *sgwCollector) Collect(ch chan<- prometheus.Metric) {
 	}
 
 	ch <- prometheus.MustNewConstMetric(c.up, prometheus.GaugeValue, 1)
-	ch <- prometheus.MustNewConstMetric(c.scrapeDuration, prometheus.GaugeValue, time.Since(start).Seconds())
 }
