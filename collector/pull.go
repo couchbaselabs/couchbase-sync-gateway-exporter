@@ -139,19 +139,19 @@ func (c *pullCollector) Describe(ch chan<- *prometheus.Desc) {
 
 // nolint: lll
 func (c *pullCollector) Collect(ch chan<- prometheus.Metric, name string, pull client.CblReplicationPull) {
-	ch <- prometheus.MustNewConstMetric(c.attachmentPullBytes, prometheus.GaugeValue, float64(pull.AttachmentPullBytes), name)
-	ch <- prometheus.MustNewConstMetric(c.attachmentPullCount, prometheus.GaugeValue, float64(pull.AttachmentPullCount), name)
+	ch <- prometheus.MustNewConstMetric(c.attachmentPullBytes, prometheus.CounterValue, float64(pull.AttachmentPullBytes), name)
+	ch <- prometheus.MustNewConstMetric(c.attachmentPullCount, prometheus.CounterValue, float64(pull.AttachmentPullCount), name)
 	ch <- prometheus.MustNewConstMetric(c.maxPending, prometheus.GaugeValue, float64(pull.MaxPending), name)
 	ch <- prometheus.MustNewConstMetric(c.numPullReplActiveContinuous, prometheus.GaugeValue, float64(pull.NumPullReplActiveContinuous), name)
 	ch <- prometheus.MustNewConstMetric(c.numPullReplActiveOneShot, prometheus.GaugeValue, float64(pull.NumPullReplActiveOneShot), name)
 	ch <- prometheus.MustNewConstMetric(c.numReplicationsActive, prometheus.GaugeValue, float64(pull.NumReplicationsActive), name)
 	ch <- prometheus.MustNewConstMetric(c.numPullReplCaughtUp, prometheus.GaugeValue, float64(pull.NumPullReplCaughtUp), name)
-	ch <- prometheus.MustNewConstMetric(c.numPullReplSinceZero, prometheus.GaugeValue, float64(pull.NumPullReplSinceZero), name)
+	ch <- prometheus.MustNewConstMetric(c.numPullReplSinceZero, prometheus.CounterValue, float64(pull.NumPullReplSinceZero), name)
 	ch <- prometheus.MustNewConstMetric(c.numPullReplTotalContinuous, prometheus.GaugeValue, float64(pull.NumPullReplTotalContinuous), name)
 	ch <- prometheus.MustNewConstMetric(c.numPullReplTotalOneShot, prometheus.GaugeValue, float64(pull.NumPullReplTotalOneShot), name)
-	ch <- prometheus.MustNewConstMetric(c.requestChangesCount, prometheus.GaugeValue, float64(pull.RequestChangesCount), name)
-	ch <- prometheus.MustNewConstMetric(c.requestChangesTime, prometheus.GaugeValue, float64(pull.RequestChangesTime), name)
+	ch <- prometheus.MustNewConstMetric(c.requestChangesCount, prometheus.CounterValue, float64(pull.RequestChangesCount), name)
+	ch <- prometheus.MustNewConstMetric(c.requestChangesTime, prometheus.CounterValue, float64(pull.RequestChangesTime), name)
 	ch <- prometheus.MustNewConstMetric(c.revProcessingTime, prometheus.GaugeValue, float64(pull.RevProcessingTime), name)
-	ch <- prometheus.MustNewConstMetric(c.revSendCount, prometheus.GaugeValue, float64(pull.RevSendCount), name)
+	ch <- prometheus.MustNewConstMetric(c.revSendCount, prometheus.CounterValue, float64(pull.RevSendCount), name)
 	ch <- prometheus.MustNewConstMetric(c.revSendLatency, prometheus.GaugeValue, float64(pull.RevSendLatency), name)
 }

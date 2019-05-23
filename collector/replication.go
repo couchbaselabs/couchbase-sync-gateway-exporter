@@ -60,9 +60,9 @@ func (c *replicationCollector) Describe(ch chan<- *prometheus.Desc) {
 
 // nolint: lll
 func (c *replicationCollector) Collect(ch chan<- prometheus.Metric, name string, replication client.Replication) {
-	ch <- prometheus.MustNewConstMetric(c.sgrDocsCheckedSent, prometheus.GaugeValue, float64(replication.SgrDocsCheckedSent), name)
-	ch <- prometheus.MustNewConstMetric(c.sgrNumAttachmentBytesTransferred, prometheus.GaugeValue, float64(replication.SgrNumAttachmentBytesTransferred), name)
-	ch <- prometheus.MustNewConstMetric(c.sgrNumAttachmentsTransferred, prometheus.GaugeValue, float64(replication.SgrNumAttachmentsTransferred), name)
-	ch <- prometheus.MustNewConstMetric(c.sgrNumDocsFailedToPush, prometheus.GaugeValue, float64(replication.SgrNumDocsFailedToPush), name)
-	ch <- prometheus.MustNewConstMetric(c.sgrNumDocsPushed, prometheus.GaugeValue, float64(replication.SgrNumDocsPushed), name)
+	ch <- prometheus.MustNewConstMetric(c.sgrDocsCheckedSent, prometheus.CounterValue, float64(replication.SgrDocsCheckedSent), name)
+	ch <- prometheus.MustNewConstMetric(c.sgrNumAttachmentBytesTransferred, prometheus.CounterValue, float64(replication.SgrNumAttachmentBytesTransferred), name)
+	ch <- prometheus.MustNewConstMetric(c.sgrNumAttachmentsTransferred, prometheus.CounterValue, float64(replication.SgrNumAttachmentsTransferred), name)
+	ch <- prometheus.MustNewConstMetric(c.sgrNumDocsFailedToPush, prometheus.CounterValue, float64(replication.SgrNumDocsFailedToPush), name)
+	ch <- prometheus.MustNewConstMetric(c.sgrNumDocsPushed, prometheus.CounterValue, float64(replication.SgrNumDocsPushed), name)
 }

@@ -171,14 +171,14 @@ func (c *globalCollector) Describe(ch chan<- *prometheus.Desc) {
 
 // nolint: lll
 func (c *globalCollector) Collect(ch chan<- prometheus.Metric, metrics client.ResourceUtilization) {
-	ch <- prometheus.MustNewConstMetric(c.adminNetBytesRecv, prometheus.GaugeValue, float64(metrics.AdminNetBytesRecv))
-	ch <- prometheus.MustNewConstMetric(c.adminNetBytesSent, prometheus.GaugeValue, float64(metrics.AdminNetBytesSent))
-	ch <- prometheus.MustNewConstMetric(c.errorCount, prometheus.GaugeValue, float64(metrics.ErrorCount))
+	ch <- prometheus.MustNewConstMetric(c.adminNetBytesRecv, prometheus.CounterValue, float64(metrics.AdminNetBytesRecv))
+	ch <- prometheus.MustNewConstMetric(c.adminNetBytesSent, prometheus.CounterValue, float64(metrics.AdminNetBytesSent))
+	ch <- prometheus.MustNewConstMetric(c.errorCount, prometheus.CounterValue, float64(metrics.ErrorCount))
 	ch <- prometheus.MustNewConstMetric(c.goMemstatsHeapalloc, prometheus.GaugeValue, float64(metrics.GoMemstatsHeapalloc))
 	ch <- prometheus.MustNewConstMetric(c.goMemstatsHeapidle, prometheus.GaugeValue, float64(metrics.GoMemstatsHeapidle))
 	ch <- prometheus.MustNewConstMetric(c.goMemstatsHeapinuse, prometheus.GaugeValue, float64(metrics.GoMemstatsHeapinuse))
 	ch <- prometheus.MustNewConstMetric(c.goMemstatsHeapreleased, prometheus.GaugeValue, float64(metrics.GoMemstatsHeapreleased))
-	ch <- prometheus.MustNewConstMetric(c.goMemstatsPausetotalns, prometheus.GaugeValue, float64(metrics.GoMemstatsPausetotalns))
+	ch <- prometheus.MustNewConstMetric(c.goMemstatsPausetotalns, prometheus.CounterValue, float64(metrics.GoMemstatsPausetotalns))
 	ch <- prometheus.MustNewConstMetric(c.goMemstatsStackinuse, prometheus.GaugeValue, float64(metrics.GoMemstatsStackinuse))
 	ch <- prometheus.MustNewConstMetric(c.goMemstatsStacksys, prometheus.GaugeValue, float64(metrics.GoMemstatsStacksys))
 	ch <- prometheus.MustNewConstMetric(c.goMemstatsSys, prometheus.GaugeValue, float64(metrics.GoMemstatsSys))
@@ -186,8 +186,8 @@ func (c *globalCollector) Collect(ch chan<- prometheus.Metric, metrics client.Re
 	ch <- prometheus.MustNewConstMetric(c.numGoroutines, prometheus.GaugeValue, float64(metrics.NumGoroutines))
 	ch <- prometheus.MustNewConstMetric(c.processCPUPercentUtilization, prometheus.GaugeValue, metrics.ProcessCPUPercentUtilization)
 	ch <- prometheus.MustNewConstMetric(c.processMemoryResident, prometheus.GaugeValue, metrics.ProcessMemoryResident)
-	ch <- prometheus.MustNewConstMetric(c.pubNetBytesRecv, prometheus.GaugeValue, float64(metrics.PubNetBytesRecv))
-	ch <- prometheus.MustNewConstMetric(c.pubNetBytesSent, prometheus.GaugeValue, float64(metrics.PubNetBytesSent))
+	ch <- prometheus.MustNewConstMetric(c.pubNetBytesRecv, prometheus.CounterValue, float64(metrics.PubNetBytesRecv))
+	ch <- prometheus.MustNewConstMetric(c.pubNetBytesSent, prometheus.CounterValue, float64(metrics.PubNetBytesSent))
 	ch <- prometheus.MustNewConstMetric(c.systemMemoryTotal, prometheus.GaugeValue, metrics.SystemMemoryTotal)
-	ch <- prometheus.MustNewConstMetric(c.warnCount, prometheus.GaugeValue, float64(metrics.WarnCount))
+	ch <- prometheus.MustNewConstMetric(c.warnCount, prometheus.CounterValue, float64(metrics.WarnCount))
 }
