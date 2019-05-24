@@ -89,7 +89,15 @@
           "warn_xattr_size_count": 0
         },
         "gsi_views": {
-          "channels_count": 563
+          "channels_count": 563,
+          "access_count": 2,
+          "allDocs_count": 1,
+          "roleAccess_count": 1,
+          "principals_count": 0,
+          "resync_count": 0,
+          "sequences_count": 2,
+          "sessions_count": 0,
+          "tombstones_count": 0
         },
         "security": {
           "auth_failed_count": 0,
@@ -97,6 +105,14 @@
           "num_access_errors": 0,
           "num_docs_rejected": 0,
           "total_auth_time": 164302800
+        },
+        "delta_sync": {
+          "delta_cache_hit": 0,
+          "delta_cache_miss": 20,
+          "delta_pull_replication_count": 2,
+          "delta_push_doc_count": 0,
+          "deltas_requested": 20,
+          "deltas_sent": 20
         },
         "shared_bucket_import": {
           "import_count": 10031,

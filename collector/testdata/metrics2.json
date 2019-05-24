@@ -1,5 +1,5 @@
 {
-  "syncgateway":{
+  "syncgateway": {
     "global": {
       "resource_utilization": {
         "admin_net_bytes_recv": 0,
