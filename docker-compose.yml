@@ -27,6 +27,12 @@ services:
     command: --log.level=debug --sgw.url=http://sgw:4985
     ports:
       - 9421:9421
+  grafana:
+    image: grafana/grafana:6.2.0
+    volumes:
+    - ./grafana/data:/var/lib/grafana
+    ports:
+    - "3000:3000"
 
 networks:
   default:
