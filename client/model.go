@@ -129,6 +129,11 @@ type GsiViews struct {
 	RoleAccessCount int `json:"roleAccess_count"`
 	ChannelsCount   int `json:"channels_count"`
 	AllDocsCount    int `json:"allDocs_count"`
+	PrincipalsCount int `json:"principals_count"`
+	ResyncCount     int `json:"resync_count"`
+	SequencesCount  int `json:"sequences_count"`
+	SessionsCount   int `json:"sessions_count"`
+	TombstonesCount int `json:"tombstones_count"`
 }
 
 // Security stats per db

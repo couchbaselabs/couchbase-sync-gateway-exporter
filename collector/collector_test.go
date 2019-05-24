@@ -242,6 +242,22 @@ func TestMetricsDelta(t *testing.T) {
 	})
 }
 
+func TestMetricsGsi(t *testing.T) {
+	var collector = NewCollector(newFakeClient(t, "testdata/metrics3.json", nil))
+	testCollector(t, collector, func(t *testing.T, status int, body string) {
+		require.Equal(t, 200, status)
+
+		requireCounter(t, body, `sgw_gsi_views_principals_count{database="travel-sample"} 0`)
+		requireCounter(t, body, `sgw_gsi_views_resync_count{database="travel-sample"} 0`)
+		requireCounter(t, body, `sgw_gsi_views_sequences_count{database="travel-sample"} 2`)
+		requireCounter(t, body, `sgw_gsi_views_sessions_count{database="travel-sample"} 0`)
+		requireCounter(t, body, `sgw_gsi_views_tombstones_count{database="travel-sample"} 0`)
+
+		require.Regexp(t, "sgw_scrape_duration_seconds \\d+\\.\\d+", body)
+		requireGauge(t, body, `sgw_up 1`)
+	})
+}
+
 func TestMetricsError(t *testing.T) {
 	var collector = NewCollector(newFakeClient(t, "", fmt.Errorf("fake error")))
 	testCollector(t, collector, func(t *testing.T, status int, body string) {

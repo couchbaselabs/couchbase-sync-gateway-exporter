@@ -32,6 +32,36 @@ func newGsiViewsCollector() *gsiViewsCollector {
 			perDbLabels,
 			nil,
 		),
+		principalsCount: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, subsystem, "principals_count"),
+			"principals_count",
+			perDbLabels,
+			nil,
+		),
+		resyncCount: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, subsystem, "resync_count"),
+			"resync_count",
+			perDbLabels,
+			nil,
+		),
+		sequencesCount: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, subsystem, "sequences_count"),
+			"sequences_count",
+			perDbLabels,
+			nil,
+		),
+		sessionsCount: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, subsystem, "sessions_count"),
+			"sessions_count",
+			perDbLabels,
+			nil,
+		),
+		tombstonesCount: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, subsystem, "tombstones_count"),
+			"tombstones_count",
+			perDbLabels,
+			nil,
+		),
 	}
 }
 
@@ -40,6 +70,11 @@ type gsiViewsCollector struct {
 	roleAccessCount *prometheus.Desc
 	channelsCount   *prometheus.Desc
 	allDocsCount    *prometheus.Desc
+	principalsCount *prometheus.Desc
+	resyncCount     *prometheus.Desc
+	sequencesCount  *prometheus.Desc
+	sessionsCount   *prometheus.Desc
+	tombstonesCount *prometheus.Desc
 }
 
 func (c *gsiViewsCollector) Describe(ch chan<- *prometheus.Desc) {
@@ -47,12 +82,22 @@ func (c *gsiViewsCollector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- c.roleAccessCount
 	ch <- c.channelsCount
 	ch <- c.allDocsCount
+	ch <- c.principalsCount
+	ch <- c.resyncCount
+	ch <- c.sequencesCount
+	ch <- c.sessionsCount
+	ch <- c.tombstonesCount
 }
 
 // nolint: lll
-func (c *gsiViewsCollector) Collect(ch chan<- prometheus.Metric, name string, role client.GsiViews) {
-	ch <- prometheus.MustNewConstMetric(c.accessCount, prometheus.CounterValue, float64(role.AccessCount), name)
-	ch <- prometheus.MustNewConstMetric(c.roleAccessCount, prometheus.CounterValue, float64(role.RoleAccessCount), name)
-	ch <- prometheus.MustNewConstMetric(c.channelsCount, prometheus.CounterValue, float64(role.ChannelsCount), name)
-	ch <- prometheus.MustNewConstMetric(c.allDocsCount, prometheus.CounterValue, float64(role.AllDocsCount), name)
+func (c *gsiViewsCollector) Collect(ch chan<- prometheus.Metric, name string, gsi client.GsiViews) {
+	ch <- prometheus.MustNewConstMetric(c.accessCount, prometheus.CounterValue, float64(gsi.AccessCount), name)
+	ch <- prometheus.MustNewConstMetric(c.roleAccessCount, prometheus.CounterValue, float64(gsi.RoleAccessCount), name)
+	ch <- prometheus.MustNewConstMetric(c.channelsCount, prometheus.CounterValue, float64(gsi.ChannelsCount), name)
+	ch <- prometheus.MustNewConstMetric(c.allDocsCount, prometheus.CounterValue, float64(gsi.AllDocsCount), name)
+	ch <- prometheus.MustNewConstMetric(c.principalsCount, prometheus.CounterValue, float64(gsi.PrincipalsCount), name)
+	ch <- prometheus.MustNewConstMetric(c.resyncCount, prometheus.CounterValue, float64(gsi.ResyncCount), name)
+	ch <- prometheus.MustNewConstMetric(c.sequencesCount, prometheus.CounterValue, float64(gsi.SequencesCount), name)
+	ch <- prometheus.MustNewConstMetric(c.sessionsCount, prometheus.CounterValue, float64(gsi.SessionsCount), name)
+	ch <- prometheus.MustNewConstMetric(c.tombstonesCount, prometheus.CounterValue, float64(gsi.TombstonesCount), name)
 }
