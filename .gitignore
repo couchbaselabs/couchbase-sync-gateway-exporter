@@ -1,3 +1,5 @@
 .bin
 travel.cblite2
 coverage.txt
+grafana/data
+grafana/dashboard.json

@@ -1,0 +1,18 @@
+#!/bin/bash
+set -eo pipefail
+curl -sfu admin:admin 'http://localhost:3000/api/datasources/id/Prometheus' ||
+	curl -sfu admin:admin -XPOST 'http://localhost:3000/api/datasources' \
+		-H 'Content-Type: application/json;charset=UTF-8' \
+		--data-binary '{
+		  "name": "Prometheus",
+		  "isDefault": true,
+		  "type": "prometheus",
+		  "url": "http://prometheus:9090",
+		  "access": "proxy",
+		  "basicAuth": false
+		}'
+
+curl -sfu admin:admin 'http://localhost:3000/api/dashboards/db' \
+  -H 'Accept: application/json' \
+  -H 'Content-Type: application/json' \
+  --data-binary @<( echo "{\"overwrite\": true, \"dashboard\": $(cat ./grafana/dashboard.json)}" | jq . )

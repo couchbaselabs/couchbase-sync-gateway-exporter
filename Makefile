@@ -27,3 +27,8 @@ test:
 cover: test
 	go tool cover -html=coverage.txt
 .PHONY: cover
+
+grafana:
+	jsonnet -J grafana grafana/dashboard.jsonnet -o grafana/dashboard.json
+	@./scripts/setup_grafana
+.PHONY: grafana
