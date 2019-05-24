@@ -192,7 +192,7 @@ func (c *databaseCollector) Collect(ch chan<- prometheus.Metric, name string, db
 	ch <- prometheus.MustNewConstMetric(c.numDocReadsRest, prometheus.CounterValue, float64(db.NumDocReadsRest), name)
 	ch <- prometheus.MustNewConstMetric(c.numDocWrites, prometheus.CounterValue, float64(db.NumDocWrites), name)
 	ch <- prometheus.MustNewConstMetric(c.numReplicationsActive, prometheus.GaugeValue, float64(db.NumReplicationsActive), name)
-	ch <- prometheus.MustNewConstMetric(c.numReplicationsTotal, prometheus.GaugeValue, float64(db.NumReplicationsTotal), name)
+	ch <- prometheus.MustNewConstMetric(c.numReplicationsTotal, prometheus.CounterValue, float64(db.NumReplicationsTotal), name)
 	ch <- prometheus.MustNewConstMetric(c.sequenceGetCount, prometheus.CounterValue, float64(db.SequenceGetCount), name)
 	ch <- prometheus.MustNewConstMetric(c.sequenceReleasedCount, prometheus.CounterValue, float64(db.SequenceReleasedCount), name)
 	ch <- prometheus.MustNewConstMetric(c.sequenceReservedCount, prometheus.CounterValue, float64(db.SequenceReservedCount), name)

@@ -93,7 +93,7 @@ func (c *pushCollector) Describe(ch chan<- *prometheus.Desc) {
 func (c *pushCollector) Collect(ch chan<- prometheus.Metric, name string, push client.CblReplicationPush) {
 	ch <- prometheus.MustNewConstMetric(c.attachmentPushBytes, prometheus.CounterValue, float64(push.AttachmentPushBytes), name)
 	ch <- prometheus.MustNewConstMetric(c.attachmentPushCount, prometheus.CounterValue, float64(push.AttachmentPushCount), name)
-	ch <- prometheus.MustNewConstMetric(c.conflictWriteCount, prometheus.GaugeValue, float64(push.ConflictWriteCount), name)
+	ch <- prometheus.MustNewConstMetric(c.conflictWriteCount, prometheus.CounterValue, float64(push.ConflictWriteCount), name)
 	ch <- prometheus.MustNewConstMetric(c.docPushCount, prometheus.GaugeValue, float64(push.DocPushCount), name)
 	ch <- prometheus.MustNewConstMetric(c.proposeChangeCount, prometheus.CounterValue, float64(push.ProposeChangeCount), name)
 	ch <- prometheus.MustNewConstMetric(c.proposeChangeTime, prometheus.CounterValue, float64(push.ProposeChangeTime), name)

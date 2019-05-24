@@ -153,5 +153,5 @@ func (c *pullCollector) Collect(ch chan<- prometheus.Metric, name string, pull c
 	ch <- prometheus.MustNewConstMetric(c.requestChangesTime, prometheus.CounterValue, float64(pull.RequestChangesTime), name)
 	ch <- prometheus.MustNewConstMetric(c.revProcessingTime, prometheus.GaugeValue, float64(pull.RevProcessingTime), name)
 	ch <- prometheus.MustNewConstMetric(c.revSendCount, prometheus.CounterValue, float64(pull.RevSendCount), name)
-	ch <- prometheus.MustNewConstMetric(c.revSendLatency, prometheus.GaugeValue, float64(pull.RevSendLatency), name)
+	ch <- prometheus.MustNewConstMetric(c.revSendLatency, prometheus.CounterValue, float64(pull.RevSendLatency), name)
 }
