@@ -14,6 +14,7 @@ type Metrics struct {
 			GsiViews           GsiViews           `json:"gsi_views"`
 			Security           Security           `json:"security"`
 			SharedBucketImport SharedBucketImport `json:"shared_bucket_import"`
+			DeltaSync          DeltaSync          `json:"delta_sync"`
 		} `json:"per_db"`
 		PerReplication map[string]Replication `json:"per_replication"`
 	} `json:"syncgateway"`
@@ -143,4 +144,13 @@ type SharedBucketImport struct {
 	ImportCount          int   `json:"import_count"`
 	ImportErrorCount     int   `json:"import_error_count"`
 	ImportProcessingTime int64 `json:"import_processing_time"`
+}
+
+type DeltaSync struct {
+	DeltaCacheHit             int `json:"delta_cache_hit"`
+	DeltaCacheMiss            int `json:"delta_cache_miss"`
+	DeltaPullReplicationCount int `json:"delta_pull_replication_count"`
+	DeltaPushDocCount         int `json:"delta_push_doc_count"`
+	DeltasRequested           int `json:"deltas_requested"`
+	DeltasSent                int `json:"deltas_sent"`
 }

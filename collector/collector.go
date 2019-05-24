@@ -44,6 +44,7 @@ func NewCollector(client client.Client) prometheus.Collector {
 		securityCollector:     newSecurityCollector(),
 		bucketImportCollector: newBucketImportCollector(),
 		replicationCollector:  newReplicationCollector(),
+		deltaSyncCollector:    newDeltaSyncCollector(),
 	}
 }
 
@@ -63,6 +64,7 @@ type sgwCollector struct {
 	securityCollector     *securityCollector
 	bucketImportCollector *bucketImportCollector
 	replicationCollector  *replicationCollector
+	deltaSyncCollector    *deltaSyncCollector
 }
 
 // Describe all metrics
@@ -79,6 +81,7 @@ func (c *sgwCollector) Describe(ch chan<- *prometheus.Desc) {
 	c.securityCollector.Describe(ch)
 	c.bucketImportCollector.Describe(ch)
 	c.replicationCollector.Describe(ch)
+	c.deltaSyncCollector.Describe(ch)
 }
 
 // Collect all metrics
@@ -126,6 +129,9 @@ func (c *sgwCollector) Collect(ch chan<- prometheus.Metric) {
 
 		log.Debugf("collecting shared bucket import metrics for db %s", name)
 		c.bucketImportCollector.Collect(ch, name, db.SharedBucketImport)
+
+		log.Debugf("collecting delta sync metrics for db %s", name)
+		c.deltaSyncCollector.Collect(ch, name, db.DeltaSync)
 	}
 
 	// per-replication metrics
