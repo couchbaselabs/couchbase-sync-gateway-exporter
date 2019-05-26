@@ -373,3 +373,128 @@ dashboard.new(
     )
   )
 )
+.addRow(
+  row.new(
+    title='Database Stats',
+    collapse=false,
+  )
+  .addPanel(
+    graphPanel.new(
+      'Number of Active Replications',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='short',
+      min=0,
+    )
+    .addTarget(
+      prometheus.target(
+        'sgw_database_num_replications_active{instance=~"$instance",database=~"$database"}',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'New Replications Per Second',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='short',
+    )
+    .addTarget(
+      prometheus.target(
+        'increase(sgw_database_num_replications_total{instance=~"$instance",database=~"$database"}[5m])',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Closed Replications',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='short',
+      min=0,
+    )
+    .addTarget(
+      prometheus.target(
+        'sgw_database_num_replications_total{instance=~"$instance",database=~"$database"} - sgw_database_num_replications_active{instance=~"$instance",database=~"$database"}',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Document writes/sec',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='short',
+      min=0,
+    )
+    .addTarget(
+      prometheus.target(
+        'increase(sgw_database_num_doc_writes{instance=~"$instance",database=~"$database"}[5m])',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      '% of docs in conflict',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='percent',
+    )
+    .addTarget(
+      prometheus.target(
+        'sgw_replication_push_conflict_write_count{instance=~"$instance",database=~"$database"} / sgw_database_num_doc_writes{instance=~"$instance",database=~"$database"}',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Document reads/sec',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='short',
+      min=0,
+    )
+    .addTarget(
+      prometheus.target(
+        'increase(sgw_database_num_doc_reads_rest{instance=~"$instance",database=~"$database"}[5m]) +
+          increase(sgw_database_num_doc_reads_blip{instance=~"$instance",database=~"$database"}[5m])',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+)
