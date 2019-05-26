@@ -214,8 +214,8 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'sgw_resource_utilization_go_memstats_pausetotalns{instance=~"$instance"}',
-        legendFormat='{{ instance }}',
+        'increase(sgw_resource_utilization_go_memstats_pausetotalns{instance=~"$instance"}[5m])',
+        legendFormat='{{ instance }} pause time',
       )
     )
   )
