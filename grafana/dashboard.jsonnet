@@ -706,7 +706,7 @@ dashboard.new(
       legend_current=true,
       legend_sort='current',
       legend_sortDesc=true,
-      format='s',
+      format='ns',
       min=0,
       nullPointMode='null as zero',
     )
