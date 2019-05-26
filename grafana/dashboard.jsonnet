@@ -368,6 +368,28 @@ dashboard.new(
       )
     )
   )
+  .addPanel(
+    graphPanel.new(
+      'Revs Cache Performance (hit/miss)',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='short',
+    )
+    .addTarget(
+      prometheus.target(
+        'sgw_cache_rev_cache_hits{instance=~"$instance",database=~"$database"} / (
+          sgw_cache_rev_cache_hits{instance=~"$instance",database=~"$database"} +
+          sgw_cache_rev_cache_misses{instance=~"$instance",database=~"$database"}
+        )',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
 )
 .addRow(
   row.new(
