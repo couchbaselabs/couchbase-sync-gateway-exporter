@@ -584,3 +584,49 @@ dashboard.new(
     )
   )
 )
+.addRow(
+  row.new(
+    title='Import',
+    collapse=false,
+  )
+  .addPanel(
+    graphPanel.new(
+      'Number of docs imported',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='ops',
+      min=0,
+    )
+    .addTarget(
+      prometheus.target(
+        'increase(sgw_shared_bucket_import_import_count{instance=~"$instance",database=~"$database"}[5m])',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Number of errors as a result of doc import',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='ops',
+      min=0,
+    )
+    .addTarget(
+      prometheus.target(
+        'increase(sgw_shared_bucket_import_import_error_count{instance=~"$instance",database=~"$database"}[5m])',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+)
