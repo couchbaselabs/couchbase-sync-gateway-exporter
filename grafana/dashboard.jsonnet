@@ -803,3 +803,234 @@ dashboard.new(
     )
   )
 )
+.addRow(
+  row.new(
+    title='CBL Pull Replication',
+    collapse=true,
+  )
+  .addPanel(
+    graphPanel.new(
+      'Changes Request Processing Latency',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='s',
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        'sgw_replication_pull_request_changes_count{instance=~"$instance",database=~"$database"} /
+          sgw_replication_pull_request_changes_time',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Server DCP Feed Processing Latency',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='s',
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        'sgw_database_dcp_caching_time{instance=~"$instance",database=~"$database"}',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Revision Send Message Processing Latency ',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='s',
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        'sgw_replication_pull_rev_send_latency{instance=~"$instance",database=~"$database"} /
+          sgw_replication_pull_rev_send_count',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Number of attachments pulled per second',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='s',
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        'increase(sgw_replication_pull_attachment_pull_count{instance=~"$instance",database=~"$database"}[5m])',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Average size of attachments pulled',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='bytes',
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        'sgw_replication_pull_attachment_pull_count{instance=~"$instance",database=~"$database"} /
+          sgw_replication_pull_attachment_pull_bytes',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Documents pulled per second in 2.x',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='bytes',
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        'increase(sgw_database_num_doc_reads_blip{instance=~"$instance",database=~"$database"}[5m])',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Total Replications by type',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='bytes',
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        'sgw_replication_pull_num_pull_repl_total_one_shot{instance=~"$instance",database=~"$database"}',
+        legendFormat='{{ database }} one shot',
+      )
+    )
+    .addTarget(
+      prometheus.target(
+        'sgw_replication_pull_num_pull_repl_total_continuous{instance=~"$instance",database=~"$database"}',
+        legendFormat='{{ database }} continuous',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Active Replications by type',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='bytes',
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        'sgw_replication_pull_num_pull_repl_active_one_shot{instance=~"$instance",database=~"$database"}',
+        legendFormat='{{ database }} one shot',
+      )
+    )
+    .addTarget(
+      prometheus.target(
+        'sgw_replication_pull_num_pull_repl_active_continuous{instance=~"$instance",database=~"$database"}',
+        legendFormat='{{ database }} continuous',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Number of New Initial Replications per second',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='bytes',
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        'increase(sgw_replication_pull_num_pull_repl_since_zero{instance=~"$instance",database=~"$database"}[5m])',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Replications Caught up Count',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='bytes',
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        'sgw_replication_pull_num_pull_repl_caught_up{instance=~"$instance",database=~"$database"}',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+)
