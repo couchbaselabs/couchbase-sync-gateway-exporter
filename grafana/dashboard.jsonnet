@@ -56,6 +56,7 @@ dashboard.new(
       legend_sortDesc=true,
       format='percent',
       min=0,
+      nullPointMode='null as zero',
     )
     .addTarget(
       prometheus.target(
@@ -76,6 +77,7 @@ dashboard.new(
       legend_sortDesc=true,
       format='bytes',
       min=0,
+      nullPointMode='null as zero',
     )
     .addTarget(
       prometheus.target(
@@ -127,6 +129,7 @@ dashboard.new(
       legend_sortDesc=true,
       format='bytes',
       min=0,
+      nullPointMode='null as zero',
     )
     .addTarget(
       prometheus.target(
@@ -165,6 +168,7 @@ dashboard.new(
       legend_sortDesc=true,
       format='bytes',
       min=0,
+      nullPointMode='null as zero',
     )
     .addTarget(
       prometheus.target(
@@ -197,6 +201,7 @@ dashboard.new(
       legend_sortDesc=true,
       format='ns',
       min=0,
+      nullPointMode='null as zero',
     )
     .addTarget(
       prometheus.target(
@@ -217,6 +222,7 @@ dashboard.new(
       legend_sortDesc=true,
       format='short',
       min=0,
+      nullPointMode='null as zero',
     )
     .addTarget(
       prometheus.target(
@@ -249,6 +255,7 @@ dashboard.new(
       legend_sortDesc=true,
       format='short',
       min=0,
+      nullPointMode='null as zero',
     )
     .addTarget(
       prometheus.target(
@@ -312,6 +319,7 @@ dashboard.new(
       legend_sortDesc=true,
       format='short',
       min=0,
+      nullPointMode='null as zero',
     )
     .addTarget(
       prometheus.target(
@@ -342,6 +350,7 @@ dashboard.new(
       legend_sortDesc=true,
       format='short',
       min=0,
+      nullPointMode='null as zero',
     )
     .addTarget(
       prometheus.target(
@@ -390,6 +399,7 @@ dashboard.new(
       legend_sortDesc=true,
       format='short',
       min=0,
+      nullPointMode='null as zero',
     )
     .addTarget(
       prometheus.target(
@@ -429,6 +439,7 @@ dashboard.new(
       legend_sortDesc=true,
       format='short',
       min=0,
+      nullPointMode='null as zero',
     )
     .addTarget(
       prometheus.target(
@@ -449,6 +460,7 @@ dashboard.new(
       legend_sortDesc=true,
       format='ops',
       min=0,
+      nullPointMode='null as zero',
     )
     .addTarget(
       prometheus.target(
@@ -488,6 +500,7 @@ dashboard.new(
       legend_sortDesc=true,
       format='ops',
       min=0,
+      nullPointMode='null as zero',
     )
     .addTarget(
       prometheus.target(
@@ -501,7 +514,7 @@ dashboard.new(
 .addRow(
   row.new(
     title='Delta Sync',
-    collapse=false,
+    collapse=true,
   )
   .addPanel(
     graphPanel.new(
@@ -515,10 +528,12 @@ dashboard.new(
       legend_sortDesc=true,
       format='short',
       min=0,
+      nullPointMode='null as zero',
     )
     .addTarget(
       prometheus.target(
-        'sgw_delta_sync_delta_cache_hit{instance=~"$instance",database=~"$database"} / sgw_delta_sync_delta_cache_miss{instance=~"$instance",database=~"$database"}',
+        'sgw_delta_sync_delta_cache_hit{instance=~"$instance",database=~"$database"} /
+          sgw_delta_sync_delta_cache_miss',
         legendFormat='{{ database }}',
       )
     )
@@ -538,7 +553,7 @@ dashboard.new(
     .addTarget(
       prometheus.target(
         'sgw_delta_sync_deltas_requested{instance=~"$instance",database=~"$database"} /
-          sgw_delta_sync_deltas_sent{instance=~"$instance",database=~"$database"}',
+          sgw_delta_sync_deltas_sent',
         legendFormat='{{ database }}',
       )
     )
@@ -555,6 +570,7 @@ dashboard.new(
       legend_sortDesc=true,
       format='ops',
       min=0,
+      nullPointMode='null as zero',
     )
     .addTarget(
       prometheus.target(
@@ -575,6 +591,7 @@ dashboard.new(
       legend_sortDesc=true,
       format='ops',
       min=0,
+      nullPointMode='null as zero',
     )
     .addTarget(
       prometheus.target(
@@ -587,7 +604,7 @@ dashboard.new(
 .addRow(
   row.new(
     title='Import',
-    collapse=false,
+    collapse=true,
   )
   .addPanel(
     graphPanel.new(
@@ -601,6 +618,7 @@ dashboard.new(
       legend_sortDesc=true,
       format='ops',
       min=0,
+      nullPointMode='null as zero',
     )
     .addTarget(
       prometheus.target(
@@ -621,10 +639,165 @@ dashboard.new(
       legend_sortDesc=true,
       format='ops',
       min=0,
+      nullPointMode='null as zero',
     )
     .addTarget(
       prometheus.target(
         'increase(sgw_shared_bucket_import_import_error_count{instance=~"$instance",database=~"$database"}[5m])',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+)
+.addRow(
+  row.new(
+    title='CBL Push Replication',
+    collapse=true,
+  )
+  .addPanel(
+    graphPanel.new(
+      'Average Write Processing Time',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='s',
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        'sgw_replication_push_write_processing_time{instance=~"$instance",database=~"$database"}',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Documents pushed per second',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='ops',
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        'increase(sgw_replication_push_doc_push_count{instance=~"$instance",database=~"$database"}[5m])',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Average Sync Function Processing Time',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='s',
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        'increase(sgw_replication_push_sync_function_time{instance=~"$instance",database=~"$database"}[5m]) /
+          increase(sgw_replication_push_sync_function_count{instance=~"$instance",database=~"$database"}[5m])',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Average ProposeChange Processing Time',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='s',
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        'sgw_replication_push_propose_change_time{instance=~"$instance",database=~"$database"}',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Number of ProposeChange messages / sec',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='ops',
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        'increase(sgw_replication_push_propose_change_time{instance=~"$instance",database=~"$database"}[5m])',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Number of attachments pushed per second',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='ops',
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        'increase(sgw_replication_push_attachment_push_count{instance=~"$instance",database=~"$database"}[5m])',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Average size of attachments',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='bytes',
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        'sgw_replication_push_attachment_push_count{instance=~"$instance",database=~"$database"} / sgw_replication_push_attachment_push_bytes',
         legendFormat='{{ database }}',
       )
     )
