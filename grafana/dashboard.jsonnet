@@ -39,10 +39,19 @@ dashboard.new(
     refresh='load',
   )
 )
+.addTemplate(
+  grafana.template.new(
+    'replication',
+    '$PROMETHEUS_DS',
+    'label_values(sgw_replication_sgr_num_docs_pushed{instance=~"$instance"}, replication)',
+    label='Replication',
+    refresh='load',
+  )
+)
 .addRow(
   row.new(
     title='Resources',
-    collapse=true,
+    collapse=false,
   )
   .addPanel(
     graphPanel.new(
@@ -241,7 +250,7 @@ dashboard.new(
 .addRow(
   row.new(
     title='Cache',
-    collapse=true,
+    collapse=false,
   )
   .addPanel(
     graphPanel.new(
@@ -385,7 +394,7 @@ dashboard.new(
 .addRow(
   row.new(
     title='Database Stats',
-    collapse=true,
+    collapse=false,
   )
   .addPanel(
     graphPanel.new(
@@ -514,7 +523,7 @@ dashboard.new(
 .addRow(
   row.new(
     title='Delta Sync',
-    collapse=true,
+    collapse=false,
   )
   .addPanel(
     graphPanel.new(
@@ -604,7 +613,7 @@ dashboard.new(
 .addRow(
   row.new(
     title='Import',
-    collapse=true,
+    collapse=false,
   )
   .addPanel(
     graphPanel.new(
@@ -652,7 +661,7 @@ dashboard.new(
 .addRow(
   row.new(
     title='CBL Push Replication',
-    collapse=true,
+    collapse=false,
   )
   .addPanel(
     graphPanel.new(
@@ -728,7 +737,7 @@ dashboard.new(
       legend_current=true,
       legend_sort='current',
       legend_sortDesc=true,
-      format='s',
+      format='ns',
       min=0,
       nullPointMode='null as zero',
     )
@@ -806,7 +815,7 @@ dashboard.new(
 .addRow(
   row.new(
     title='CBL Pull Replication',
-    collapse=true,
+    collapse=false,
   )
   .addPanel(
     graphPanel.new(
@@ -1214,6 +1223,148 @@ dashboard.new(
           sgw_gsi_views_roleAccess_count
         )',
         legendFormat='{{ database }}',
+      )
+    )
+  )
+)
+.addRow(
+  row.new(
+    title='Replication',
+    collapse=true,
+  )
+  .addPanel(
+    singlestat.new(
+      '# of docs pushed total',
+      format='none',
+      span=2,
+      valueName='current',
+      valueFontSize='200%',
+      sparklineFull=true,
+      sparklineShow=true,
+      valueMaps=[
+        {
+          value: 'null',
+          op: '=',
+          text: '0',
+        }
+      ]
+    )
+    .addTarget(
+      prometheus.target(
+        'sum(sgw_replication_sgr_num_docs_pushed{instance=~"$instance",replication=~"$replication"})',
+      )
+    )
+  )
+  .addPanel(
+    singlestat.new(
+      '# of attachments pushed total',
+      format='none',
+      span=2,
+      valueName='current',
+      valueFontSize='200%',
+      sparklineFull=true,
+      sparklineShow=true,
+      valueMaps=[
+        {
+          value: 'null',
+          op: '=',
+          text: '0',
+        }
+      ]
+    )
+    .addTarget(
+      prometheus.target(
+        'sum(sgw_replication_sgr_num_attachments_transferred{instance=~"$instance",replication=~"$replication"})',
+      )
+    )
+  )
+  .addPanel(
+    singlestat.new(
+      'Attachment bytes transferred',
+      format='none',
+      span=2,
+      valueName='current',
+      valueFontSize='200%',
+      sparklineFull=true,
+      sparklineShow=true,
+      valueMaps=[
+        {
+          value: 'null',
+          op: '=',
+          text: '0',
+        }
+      ]
+    )
+    .addTarget(
+      prometheus.target(
+        'sum(sgw_replication_sgr_num_attachment_bytes_transferred{instance=~"$instance",replication=~"$replication"})',
+      )
+    )
+  )
+  .addPanel(
+    singlestat.new(
+      '# partial bulk docs permanent errors (not retried)',
+      format='none',
+      span=2,
+      valueName='current',
+      valueFontSize='200%',
+      sparklineFull=true,
+      sparklineShow=true,
+      valueMaps=[
+        {
+          value: 'null',
+          op: '=',
+          text: '0',
+        }
+      ]
+    )
+    .addTarget(
+      prometheus.target(
+        'sum(sgw_replication_sgr_num_docs_failed_to_push{instance=~"$instance",replication=~"$replication"})',
+      )
+    )
+  )
+  .addPanel(
+    singlestat.new(
+      'Number of documents checked for changes (revs_diffs)',
+      format='none',
+      span=2,
+      valueName='current',
+      valueFontSize='200%',
+      sparklineFull=true,
+      sparklineShow=true,
+      valueMaps=[
+        {
+          value: 'null',
+          op: '=',
+          text: '0',
+        }
+      ]
+    )
+    .addTarget(
+      prometheus.target(
+        'sum(sgw_replication_sgr_docs_checked_sent{instance=~"$instance",replication=~"$replication"})',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      '# of docs pushed / sec',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='ops',
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        'increase(sgw_replication_sgr_num_docs_pushed{instance=~"$instance",replication=~"$replication"}[5m],)',
+        legendFormat='{{ replication }}',
       )
     )
   )
