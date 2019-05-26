@@ -30,10 +30,19 @@ dashboard.new(
     refresh='load',
   )
 )
+.addTemplate(
+  grafana.template.new(
+    'database',
+    '$PROMETHEUS_DS',
+    'label_values(sgw_database_sequence_get_count{instance=~"$instance"}, database)',
+    label='Database',
+    refresh='load',
+  )
+)
 .addRow(
   row.new(
     title='Resources',
-    collapse=false,
+    collapse=true,
   )
   .addPanel(
     graphPanel.new(
@@ -219,6 +228,147 @@ dashboard.new(
       prometheus.target(
         'sgw_resource_utilization_warn_count{instance=~"$instance"}',
         legendFormat='{{ instance }} warns',
+      )
+    )
+  )
+)
+.addRow(
+  row.new(
+    title='Cache',
+    collapse=true,
+  )
+  .addPanel(
+    graphPanel.new(
+      'Channel Cache Utilization',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='short',
+      min=0,
+    )
+    .addTarget(
+      prometheus.target(
+        'sgw_cache_chan_cache_active_revs{instance=~"$instance",database=~"$database"}',
+        legendFormat='{{ database }} active revs',
+      )
+    )
+    .addTarget(
+      prometheus.target(
+        'sgw_cache_chan_cache_tombstone_revs{instance=~"$instance",database=~"$database"}',
+        legendFormat='{{ database }} thombstone revs',
+      )
+    )
+    .addTarget(
+      prometheus.target(
+        'sgw_cache_chan_cache_removal_revs{instance=~"$instance",database=~"$database"}',
+        legendFormat='{{ database }} removal revs',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Channel Hit/Miss',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='short',
+    )
+    .addSeriesOverride(
+      {
+        alias: '/misses/',
+        transform: 'negative-Y',
+      }
+    )
+    .addTarget(
+      prometheus.target(
+        'increase(sgw_cache_chan_cache_hits{instance=~"$instance",database=~"$database"}[5m])',
+        legendFormat='{{ database }} hits',
+      )
+    )
+    .addTarget(
+      prometheus.target(
+        'increase(sgw_cache_chan_cache_misses{instance=~"$instance",database=~"$database"}[5m])',
+        legendFormat='{{ database }} misses',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Channel Cache Size',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='short',
+      min=0,
+    )
+    .addTarget(
+      prometheus.target(
+        '(
+            sgw_cache_chan_cache_active_revs{instance=~"$instance",database=~"$database"} +
+            sgw_cache_chan_cache_tombstone_revs{instance=~"$instance",database=~"$database"} +
+            sgw_cache_chan_cache_removal_revs{instance=~"$instance",database=~"$database"}
+          ) / sgw_cache_chan_cache_num_channels{instance=~"$instance",database=~"$database"}',
+        legendFormat='{{ database }} average',
+      )
+    )
+    .addTarget(
+      prometheus.target(
+        'sgw_cache_chan_cache_max_entries{instance=~"$instance",database=~"$database"}',
+        legendFormat='{{ database }} max',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Channel Cache Count',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='short',
+      min=0,
+    )
+    .addTarget(
+      prometheus.target(
+        'sgw_cache_chan_cache_num_channels{instance=~"$instance",database=~"$database"}',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Channel Hit/Miss',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='short',
+    )
+    .addTarget(
+      prometheus.target(
+        'sgw_cache_rev_cache_hits{instance=~"$instance",database=~"$database"} / (
+          sgw_cache_rev_cache_hits{instance=~"$instance",database=~"$database"} +
+          sgw_cache_rev_cache_misses{instance=~"$instance",database=~"$database"}
+        )',
+        legendFormat='{{ database }}',
       )
     )
   )
