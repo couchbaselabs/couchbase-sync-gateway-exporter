@@ -176,4 +176,50 @@ dashboard.new(
       )
     )
   )
+  .addPanel(
+    graphPanel.new(
+      'Garbage Collection',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='ns',
+      min=0,
+    )
+    .addTarget(
+      prometheus.target(
+        'sgw_resource_utilization_go_memstats_pausetotalns{instance=~"$instance"}',
+        legendFormat='{{ instance }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Logging',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='short',
+      min=0,
+    )
+    .addTarget(
+      prometheus.target(
+        'sgw_resource_utilization_error_count{instance=~"$instance"}',
+        legendFormat='{{ instance }} errors',
+      )
+    )
+    .addTarget(
+      prometheus.target(
+        'sgw_resource_utilization_warn_count{instance=~"$instance"}',
+        legendFormat='{{ instance }} warns',
+      )
+    )
+  )
 )
