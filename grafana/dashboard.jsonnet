@@ -279,7 +279,7 @@ dashboard.new(
       legend_current=true,
       legend_sort='current',
       legend_sortDesc=true,
-      format='short',
+      format='ops',
     )
     .addSeriesOverride(
       {
@@ -376,7 +376,7 @@ dashboard.new(
 .addRow(
   row.new(
     title='Database Stats',
-    collapse=false,
+    collapse=true,
   )
   .addPanel(
     graphPanel.new(
@@ -408,7 +408,7 @@ dashboard.new(
       legend_current=true,
       legend_sort='current',
       legend_sortDesc=true,
-      format='short',
+      format='ops',
     )
     .addTarget(
       prometheus.target(
@@ -447,7 +447,7 @@ dashboard.new(
       legend_current=true,
       legend_sort='current',
       legend_sortDesc=true,
-      format='short',
+      format='ops',
       min=0,
     )
     .addTarget(
@@ -486,7 +486,7 @@ dashboard.new(
       legend_current=true,
       legend_sort='current',
       legend_sortDesc=true,
-      format='short',
+      format='ops',
       min=0,
     )
     .addTarget(
@@ -494,6 +494,92 @@ dashboard.new(
         'increase(sgw_database_num_doc_reads_rest{instance=~"$instance",database=~"$database"}[5m]) +
           increase(sgw_database_num_doc_reads_blip{instance=~"$instance",database=~"$database"}[5m])',
         legendFormat='{{ database }}',
+      )
+    )
+  )
+)
+.addRow(
+  row.new(
+    title='Delta Sync',
+    collapse=false,
+  )
+  .addPanel(
+    graphPanel.new(
+      'Delta Cache Hit Ratio',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='short',
+      min=0,
+    )
+    .addTarget(
+      prometheus.target(
+        'sgw_delta_sync_delta_cache_hit{instance=~"$instance",database=~"$database"} / sgw_delta_sync_delta_cache_miss{instance=~"$instance",database=~"$database"}',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Delta Hit/Miss rate',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='short',
+    )
+    .addTarget(
+      prometheus.target(
+        'sgw_delta_sync_deltas_requested{instance=~"$instance",database=~"$database"} /
+          sgw_delta_sync_deltas_sent{instance=~"$instance",database=~"$database"}',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Number of documents sent to SG as a delta',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='ops',
+      min=0,
+    )
+    .addTarget(
+      prometheus.target(
+        'increase(sgw_delta_sync_delta_push_doc_count{instance=~"$instance",database=~"$database"}[5m])',
+        legendFormat='{{ database }} average',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Number of pull replications using deltas',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='ops',
+      min=0,
+    )
+    .addTarget(
+      prometheus.target(
+        'increase(sgw_delta_sync_delta_pull_replication_count{instance=~"$instance",database=~"$database"}[5m])',
+        legendFormat='{{ database }} average',
       )
     )
   )
