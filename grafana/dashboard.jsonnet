@@ -1034,3 +1034,187 @@ dashboard.new(
     )
   )
 )
+.addRow(
+  row.new(
+    title='Security',
+    collapse=false,
+  )
+  .addPanel(
+    graphPanel.new(
+      'Sync Function Doc Rejections Count',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='ops',
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        'increase(sgw_security_num_docs_rejected{instance=~"$instance",database=~"$database"}[5m])',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Sync Function Access Failure Count',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='ops',
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        'increase(sgw_security_num_access_errors{instance=~"$instance",database=~"$database"}[5m])',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+)
+.addRow(
+  row.new(
+    title='GSI VIew / Query',
+    collapse=false,
+  )
+  .addPanel(
+    graphPanel.new(
+      'Number of queries/sec',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='ops',
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        'rate(sgw::gsi::total_queries{instance=~"$instance",database=~"$database"}[5m])',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Number of channel queries/sec',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='ops',
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        'rate(sgw_gsi_views_channels_count{instance=~"$instance",database=~"$database"}[5m])',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Number of access queries/sec',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='ops',
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        'rate(sgw_gsi_views_access_count{instance=~"$instance",database=~"$database"}[5m])',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Number of all Docs queries/sec',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='ops',
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        'rate(sgw_gsi_views_allDocs_count{instance=~"$instance",database=~"$database"}[5m])',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Number of role access queries/sec',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='ops',
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        'rate(sgw_gsi_views_roleAccess_count{instance=~"$instance",database=~"$database"}[5m])',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Housekeeping Queries/sec',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='ops',
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        'sgw::gsi::total_queries{instance=~"$instance",database=~"$database"} - (
+          sgw_gsi_views_channels_count +
+          sgw_gsi_views_access_count +
+          sgw_gsi_views_roleAccess_count
+        )',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+)
