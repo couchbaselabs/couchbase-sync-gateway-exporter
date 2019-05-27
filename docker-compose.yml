@@ -17,6 +17,7 @@ services:
     image: prom/prometheus
     volumes:
     - ./testdata/prometheus.yml:/etc/prometheus/prometheus.yml
+    - ./testdata/rules:/etc/prometheus/rules
     ports:
       - 9090:9090
   exporter:
