@@ -28,6 +28,8 @@ dashboard.new(
     'label_values(sgw_up, instance)',
     label='Instance',
     refresh='load',
+    includeAll=true,
+    multi=true,
   )
 )
 .addTemplate(
@@ -37,6 +39,8 @@ dashboard.new(
     'label_values(sgw_database_sequence_get_count{instance=~"$instance"}, database)',
     label='Database',
     refresh='load',
+    includeAll=true,
+    multi=true,
   )
 )
 .addTemplate(
@@ -46,6 +50,8 @@ dashboard.new(
     'label_values(sgw_replication_sgr_num_docs_pushed{instance=~"$instance"}, replication)',
     label='Replication',
     refresh='load',
+    includeAll=true,
+    multi=true,
   )
 )
 .addRow(
