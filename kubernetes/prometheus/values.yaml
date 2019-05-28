@@ -1,0 +1,12 @@
+prometheus:
+  prometheusSpec:
+    replicas: 1
+    image:
+      tag: v2.10.0
+    serviceMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorNamespaceSelector: {}
+    serviceMonitorSelector: {}
+
+prometheusOperator:
+  image:
+    tag: v0.30.0

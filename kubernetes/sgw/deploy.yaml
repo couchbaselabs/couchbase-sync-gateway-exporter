@@ -4,7 +4,7 @@ metadata:
   name: sync-gateway
   namespace: couchbase
 spec:
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
@@ -13,7 +13,7 @@ spec:
       containers:
         - name: sync-gateway
           image: couchbase/sync-gateway:2.5.0-enterprise
-          args: ["/sync-gateway-config/sync-gateway-config.json"]
+          args: ["/sync-gateway-config/sgw-config.json"]
           volumeMounts:
             - name: sgw-config-volume
               mountPath: /sync-gateway-config
@@ -37,43 +37,4 @@ spec:
         - name: sgw-config-volume
           secret:
             secretName: sgw-config
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: sync-gateway-exporter
-  namespace: couchbase
-  labels:
-    app: sync-gateway
-spec:
-  ports:
-    - port: 9421
-      protocol: TCP
-      targetPort: http
-      name: http
-  selector:
-    app: sync-gateway
-  type: ClusterIP
-
----
-
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-metadata:
-  name: sync-gateway
-  namespace: couchbase
-  labels:
-    app: sync-gateway
-spec:
-  jobLabel: sync-gateway
-  selector:
-    matchLabels:
-      app: sync-gateway
-  namespaceSelector:
-    matchNames:
-      - couchbase
-  endpoints:
-  - port: http
 

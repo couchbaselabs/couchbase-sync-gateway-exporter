@@ -1,0 +1,48 @@
+{
+  "adminInterface": ":4985",
+  "logging": {
+    "log_file_path": "/var/tmp/sglogs",
+    "console": {
+      "log_level": "debug",
+      "log_keys": ["*"]
+    },
+    "error": {
+      "enabled": true,
+      "rotation": {
+        "max_size": 20,
+        "max_age": 180
+      }
+    },
+    "warn": {
+      "enabled": true,
+      "rotation": {
+        "max_size": 20,
+        "max_age": 90
+      }
+    },
+    "info": {
+      "enabled": false
+    },
+    "debug": {
+      "enabled": false
+    }
+  },
+  "databases": {
+    "db": {
+      "server": "couchbase-couchbase-cluster-ui:8091",
+      "bucket": "default",
+      "username": "Administrator",
+      "password": "password",
+      "users":{
+          "admin": {"password": "password", "admin_channels": ["*"]},
+          "GUEST": { "disabled": false, "admin_channels": ["*"] }
+      },
+      "allow_conflicts": false,
+      "revs_limit": 20,
+      "enable_shared_bucket_access": true,
+      "delta_sync": {
+        "enabled": true
+      }
+    }
+  }
+}
