@@ -17,9 +17,9 @@ spec:
   - port: http
     # comment following lines to use the pod IP instead of its name as instance:
     relabelings:
-    - source_labels: [__meta_kubernetes_pod_name]
+    - sourceLabels: [__meta_kubernetes_pod_name]
       separator: ;
       regex: (.*)
-      target_label: instance
+      targetLabel: instance
       replacement: $1
       action: replace

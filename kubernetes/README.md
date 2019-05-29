@@ -57,7 +57,7 @@ kubectl apply -f kubernetes/sgw
 This should launch 2 SGW instances each one with the exporter as a sidecar:
 
 ```sh
-kubectl get pods -l app sync-gateway
+kubectl -n couchbase get pods -l app=sync-gateway
 ```
 
 ## Checking things
