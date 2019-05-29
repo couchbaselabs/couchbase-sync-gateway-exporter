@@ -93,5 +93,30 @@ kubectl -n prometheus port-forward svc/prom-grafana 3000:80
 open http://localhost:3000
 ```
 
-Username and password are `admin` and `prom-operator`. It will have a
+Username and password are `admin` and `admin`. It will have a
 set of dashboards already there.
+
+To install our dashboard, you can run:
+
+```sh
+make grafana
+```
+
+And then you should be able to find the Sync Gateway dashboard on
+http://localhost:3000:
+
+![](/kubernetes/dash.png)
+
+By default it will show metrics for all Sync Gateway instances, but you can
+of course filter them:
+
+![](/kubernetes/choose-instances.png)
+
+Those values are queried on dashboard load, so you may need to reload it as
+new instances come online.
+
+By default, it will use the pod name to differentiate between Sync Gateway
+instances. You can revert back to the prometheus-operator default of using
+the pod IP by commenting
+[these lines](https://github.com/caarlos0/couchbase-sync-gateway-exporter/blob/master/kubernetes/sgw/servicemonitor.yaml#L18-L25)
+and re-applying that file.
