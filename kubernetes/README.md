@@ -10,6 +10,8 @@ helm init --service-account tiller --upgrade
 
 ## Install Couchbase Operator
 
+> [Docs](https://docs.couchbase.com/operator/current/helm-setup-guide.html)
+
 ```sh
 helm repo add couchbase https://couchbase-partners.github.io/helm-charts/
 
@@ -30,6 +32,8 @@ open http://localhost:8091
 ```
 
 ## Install Prometheus Operator
+
+> [Docs](https://github.com/helm/charts/tree/master/stable/prometheus-operator)
 
 ```sh
 helm install --namespace prometheus --name prom stable/prometheus-operator -f kubernetes/prometheus/values.yaml
