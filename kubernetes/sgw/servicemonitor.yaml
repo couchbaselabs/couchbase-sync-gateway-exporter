@@ -1,0 +1,25 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: sync-gateway
+  namespace: couchbase
+  labels:
+    app: sync-gateway
+spec:
+  jobLabel: sync-gateway
+  selector:
+    matchLabels:
+      app: sync-gateway
+  namespaceSelector:
+    matchNames:
+      - couchbase
+  endpoints:
+  - port: http
+    # comment following lines to use the pod IP instead of its name as instance:
+    relabelings:
+    - source_labels: [__meta_kubernetes_pod_name]
+      separator: ;
+      regex: (.*)
+      target_label: instance
+      replacement: $1
+      action: replace

@@ -1,0 +1,18 @@
+prometheus:
+  prometheusSpec:
+    replicas: 1
+    image:
+      tag: v2.10.0
+    serviceMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorNamespaceSelector: {}
+    serviceMonitorSelector: {}
+    ruleSelectorNilUsesHelmValues: false
+    ruleNamespaceSelector: {}
+    ruleSelector: {}
+
+prometheusOperator:
+  image:
+    tag: v0.30.0
+
+grafana:
+  adminPassword: admin

@@ -1,0 +1,40 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: sync-gateway
+  namespace: couchbase
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: sync-gateway
+    spec:
+      containers:
+        - name: sync-gateway
+          image: couchbase/sync-gateway:2.5.0-enterprise
+          args: ["/sync-gateway-config/sgw-config.json"]
+          volumeMounts:
+            - name: sgw-config-volume
+              mountPath: /sync-gateway-config
+              readOnly: true
+          resources:
+            requests:
+              cpu: 100m
+            limits:
+              cpu: 100m
+        - name: exporter
+          image: caarlos0/sgw-exporter
+          ports:
+          - name: http
+            containerPort: 9421
+          resources:
+            requests:
+              cpu: 100m
+            limits:
+              cpu: 100m
+      volumes:
+        - name: sgw-config-volume
+          secret:
+            secretName: sgw-config
+
