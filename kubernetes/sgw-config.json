@@ -37,6 +37,7 @@
           "admin": {"password": "password", "admin_channels": ["*"]},
           "GUEST": { "disabled": false, "admin_channels": ["*"] }
       },
+      "num_index_replicas": 0,
       "allow_conflicts": false,
       "revs_limit": 20,
       "enable_shared_bucket_access": true,

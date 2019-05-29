@@ -6,7 +6,13 @@ prometheus:
     serviceMonitorSelectorNilUsesHelmValues: false
     serviceMonitorNamespaceSelector: {}
     serviceMonitorSelector: {}
+    ruleSelectorNilUsesHelmValues: false
+    ruleNamespaceSelector: {}
+    ruleSelector: {}
 
 prometheusOperator:
   image:
     tag: v0.30.0
+
+grafana:
+  adminPassword: admin

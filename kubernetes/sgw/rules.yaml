@@ -1,0 +1,14 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  generation: 1
+  name: sync-gateway.rules
+  namespace: couchbase
+  labels:
+    app: sync-gateway
+spec:
+  groups:
+  - name: sync-gateway.rules
+    rules:
+    - record: sgw::gsi::total_queries
+      expr: sum by (instance, database, job) ({__name__=~"sgw_gsi_views_.*_count"})

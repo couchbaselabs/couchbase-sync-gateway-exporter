@@ -1,15 +1,14 @@
 couchbaseCluster:
-  create: true
   cluster:
-    dataServiceMemoryQuota: 256
-    indexServiceMemoryQuota: 0
-    searchServiceMemoryQuota: 256
-    eventingServiceMemoryQuota: 0
+    # dataServiceMemoryQuota: 256
+    # indexServiceMemoryQuota: 0
+    # searchServiceMemoryQuota: 256
+    # eventingServiceMemoryQuota: 0
     analyticsServiceMemoryQuota: 0
 
   servers:
     all_services:
       size: 1
-      services:
-        - data
-        - search
+      # services:
+      #   - data
+      #   - search

@@ -56,3 +56,38 @@ This should launch 2 SGW instances each one with the exporter as a sidecar:
 kubectl get pods -l app sync-gateway
 ```
 
+## Checking things
+
+```sh
+kubectl -n prometheus port-forward svc/prom-prometheus-operator-prometheus 9090:9090
+
+open http://localhost:9090
+```
+
+You should see something like this:
+
+![](/kubernetes/screen-1sgw.png)
+
+Then we can scale the sync gateway with:
+
+```sh
+kubectl scale -n couchbase deploy/sync-gateway --replicas 2
+```
+
+And refresh that page, so you can see something like this:
+
+
+![](/kubernetes/screen-2sgw.png)
+
+## Grafana
+
+First, lets port-forward grafana to our local environment:
+
+```sh
+kubectl -n prometheus port-forward svc/prom-grafana 3000:80
+
+open http://localhost:3000
+```
+
+Username and password are `admin` and `prom-operator`. It will have a
+set of dashboards already there.

@@ -12,7 +12,7 @@ spec:
       app: sync-gateway
   namespaceSelector:
     matchNames:
-      - default
+      - couchbase
   endpoints:
   - port: http
 
