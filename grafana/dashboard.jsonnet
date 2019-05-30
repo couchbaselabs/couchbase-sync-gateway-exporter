@@ -1045,7 +1045,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Sync Function Doc Rejections Count/sec',
+      'Sync Function Doc Rejections Count / sec',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -1065,7 +1065,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Sync Function Access Failure Count/sec',
+      'Sync Function Access Failure Count / sec',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -1091,7 +1091,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of queries/sec',
+      'Number of queries / sec',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -1111,7 +1111,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of channel queries/sec',
+      'Number of channel queries / sec',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -1131,7 +1131,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of access queries/sec',
+      'Number of access queries / sec',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -1151,7 +1151,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of allDocs queries/sec',
+      'Number of allDocs queries / sec',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -1171,7 +1171,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of role access queries/sec',
+      'Number of role access queries / sec',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -1191,7 +1191,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Housekeeping Queries/sec',
+      'Housekeeping Queries / sec',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
