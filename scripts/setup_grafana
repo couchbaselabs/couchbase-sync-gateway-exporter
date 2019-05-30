@@ -1,7 +1,8 @@
 #!/bin/bash
 set -eo pipefail
-curl -sfu admin:admin 'http://localhost:3000/api/datasources/id/Prometheus' ||
-	curl -sfu admin:admin -XPOST 'http://localhost:3000/api/datasources' \
+echo "grafana: making sure Prometheus is a data source"
+curl -fu admin:admin 'http://localhost:3000/api/datasources/id/Prometheus' ||
+	curl -fu admin:admin -XPOST 'http://localhost:3000/api/datasources' \
 		-H 'Content-Type: application/json;charset=UTF-8' \
 		--data-binary '{
 		  "name": "Prometheus",
@@ -12,7 +13,8 @@ curl -sfu admin:admin 'http://localhost:3000/api/datasources/id/Prometheus' ||
 		  "basicAuth": false
 		}'
 
-curl -sfu admin:admin 'http://localhost:3000/api/dashboards/db' \
+echo "grafana: install/overwrite dashboard"
+curl -fu admin:admin 'http://localhost:3000/api/dashboards/db' \
   -H 'Accept: application/json' \
   -H 'Content-Type: application/json' \
   --data-binary @<( echo "{\"overwrite\": true, \"dashboard\": $(cat ./grafana/dashboard.json)}" | jq . )
