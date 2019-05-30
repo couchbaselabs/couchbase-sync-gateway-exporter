@@ -121,13 +121,13 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'rate(sgw_resource_utilization_pub_net_bytes_sent{instance=~"$instance"}[5m]) + rate(sgw_resource_utilization_admin_net_bytes_sent{instance=~"$instance"}[5m])',
+        'increase(sgw_resource_utilization_pub_net_bytes_sent{instance=~"$instance"}[5m]) + rate(sgw_resource_utilization_admin_net_bytes_sent{instance=~"$instance"}[5m])',
         legendFormat='{{ instance }} sent',
       )
     )
     .addTarget(
       prometheus.target(
-        'rate(sgw_resource_utilization_pub_net_bytes_recv{instance=~"$instance"}[5m]) + rate(sgw_resource_utilization_admin_net_bytes_recv{instance=~"$instance"}[5m])',
+        'increase(sgw_resource_utilization_pub_net_bytes_recv{instance=~"$instance"}[5m]) + rate(sgw_resource_utilization_admin_net_bytes_recv{instance=~"$instance"}[5m])',
         legendFormat='{{ instance }} recv',
       )
     )
@@ -206,7 +206,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Garbage Collection',
+      'Garbage Collection time / sec',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -425,7 +425,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'New Replications Per Second',
+      'New Replications / sec',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -433,7 +433,6 @@ dashboard.new(
       legend_current=true,
       legend_sort='current',
       legend_sortDesc=true,
-      format='ops',
     )
     .addTarget(
       prometheus.target(
@@ -458,14 +457,16 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'sgw_database_num_replications_total{instance=~"$instance",database=~"$database"} - sgw_database_num_replications_active{instance=~"$instance",database=~"$database"}',
+        'sgw_database_num_replications_total{instance=~"$instance",database=~"$database"} -
+          sgw_database_num_replications_active{instance=~"$instance",database=~"$database"}
+        ',
         legendFormat='{{ database }}',
       )
     )
   )
   .addPanel(
     graphPanel.new(
-      'Document writes/sec',
+      'Document writes / sec',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -473,7 +474,6 @@ dashboard.new(
       legend_current=true,
       legend_sort='current',
       legend_sortDesc=true,
-      format='ops',
       min=0,
       nullPointMode='null as zero',
     )
@@ -498,14 +498,16 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'sgw_replication_push_conflict_write_count{instance=~"$instance",database=~"$database"} / sgw_database_num_doc_writes{instance=~"$instance",database=~"$database"}',
+        'sgw_replication_push_conflict_write_count{instance=~"$instance",database=~"$database"} /
+          sgw_database_num_doc_writes{instance=~"$instance",database=~"$database"}
+        ',
         legendFormat='{{ database }}',
       )
     )
   )
   .addPanel(
     graphPanel.new(
-      'Document reads/sec',
+      'Document reads / sec',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -513,7 +515,6 @@ dashboard.new(
       legend_current=true,
       legend_sort='current',
       legend_sortDesc=true,
-      format='ops',
       min=0,
       nullPointMode='null as zero',
     )
@@ -575,7 +576,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of documents sent to SG as a delta',
+      'Number of documents sent to SG as a delta / sec',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -583,7 +584,6 @@ dashboard.new(
       legend_current=true,
       legend_sort='current',
       legend_sortDesc=true,
-      format='ops',
       min=0,
       nullPointMode='null as zero',
     )
@@ -596,7 +596,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of pull replications using deltas',
+      'Number of pull replications using deltas / sec',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -623,7 +623,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of docs imported',
+      'Number of docs imported / sec',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -631,7 +631,6 @@ dashboard.new(
       legend_current=true,
       legend_sort='current',
       legend_sortDesc=true,
-      format='ops',
       min=0,
       nullPointMode='null as zero',
     )
@@ -644,7 +643,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of errors as a result of doc import',
+      'Number of errors as a result of doc import / sec',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -652,7 +651,6 @@ dashboard.new(
       legend_current=true,
       legend_sort='current',
       legend_sortDesc=true,
-      format='ops',
       min=0,
       nullPointMode='null as zero',
     )
@@ -692,7 +690,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Documents pushed per second',
+      'Documents pushed / sec',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -700,7 +698,6 @@ dashboard.new(
       legend_current=true,
       legend_sort='current',
       legend_sortDesc=true,
-      format='ops',
       min=0,
       nullPointMode='null as zero',
     )
@@ -764,7 +761,6 @@ dashboard.new(
       legend_current=true,
       legend_sort='current',
       legend_sortDesc=true,
-      format='ops',
       min=0,
       nullPointMode='null as zero',
     )
@@ -777,7 +773,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of attachments pushed per second',
+      'Number of attachments pushed / sec',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -785,7 +781,6 @@ dashboard.new(
       legend_current=true,
       legend_sort='current',
       legend_sortDesc=true,
-      format='ops',
       min=0,
       nullPointMode='null as zero',
     )
@@ -833,7 +828,7 @@ dashboard.new(
       legend_current=true,
       legend_sort='current',
       legend_sortDesc=true,
-      format='ns',
+      format='s',
       min=0,
       nullPointMode='null as zero',
     )
@@ -890,7 +885,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of attachments pulled per second',
+      'Number of attachments pulled / sec',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -898,7 +893,6 @@ dashboard.new(
       legend_current=true,
       legend_sort='current',
       legend_sortDesc=true,
-      format='s',
       min=0,
       nullPointMode='null as zero',
     )
@@ -933,7 +927,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Documents pulled per second in 2.x',
+      'Documents pulled in 2.x / sec',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -941,7 +935,6 @@ dashboard.new(
       legend_current=true,
       legend_sort='current',
       legend_sortDesc=true,
-      format='bytes',
       min=0,
       nullPointMode='null as zero',
     )
@@ -962,7 +955,6 @@ dashboard.new(
       legend_current=true,
       legend_sort='current',
       legend_sortDesc=true,
-      format='bytes',
       min=0,
       nullPointMode='null as zero',
     )
@@ -989,7 +981,6 @@ dashboard.new(
       legend_current=true,
       legend_sort='current',
       legend_sortDesc=true,
-      format='bytes',
       min=0,
       nullPointMode='null as zero',
     )
@@ -1008,7 +999,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of New Initial Replications per second',
+      'Number of New Initial Replications / sec',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -1016,7 +1007,6 @@ dashboard.new(
       legend_current=true,
       legend_sort='current',
       legend_sortDesc=true,
-      format='bytes',
       min=0,
       nullPointMode='null as zero',
     )
@@ -1037,7 +1027,6 @@ dashboard.new(
       legend_current=true,
       legend_sort='current',
       legend_sortDesc=true,
-      format='bytes',
       min=0,
       nullPointMode='null as zero',
     )
@@ -1056,7 +1045,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Sync Function Doc Rejections Count',
+      'Sync Function Doc Rejections Count/sec',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -1064,7 +1053,6 @@ dashboard.new(
       legend_current=true,
       legend_sort='current',
       legend_sortDesc=true,
-      format='ops',
       min=0,
       nullPointMode='null as zero',
     )
@@ -1077,7 +1065,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Sync Function Access Failure Count',
+      'Sync Function Access Failure Count/sec',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -1085,7 +1073,6 @@ dashboard.new(
       legend_current=true,
       legend_sort='current',
       legend_sortDesc=true,
-      format='ops',
       min=0,
       nullPointMode='null as zero',
     )
@@ -1112,13 +1099,12 @@ dashboard.new(
       legend_current=true,
       legend_sort='current',
       legend_sortDesc=true,
-      format='ops',
       min=0,
       nullPointMode='null as zero',
     )
     .addTarget(
       prometheus.target(
-        'rate(sgw::gsi::total_queries{instance=~"$instance",database=~"$database"}[5m])',
+        'increase(sgw::gsi::total_queries{instance=~"$instance",database=~"$database"}[5m])',
         legendFormat='{{ database }}',
       )
     )
@@ -1133,13 +1119,12 @@ dashboard.new(
       legend_current=true,
       legend_sort='current',
       legend_sortDesc=true,
-      format='ops',
       min=0,
       nullPointMode='null as zero',
     )
     .addTarget(
       prometheus.target(
-        'rate(sgw_gsi_views_channels_count{instance=~"$instance",database=~"$database"}[5m])',
+        'increase(sgw_gsi_views_channels_count{instance=~"$instance",database=~"$database"}[5m])',
         legendFormat='{{ database }}',
       )
     )
@@ -1154,20 +1139,19 @@ dashboard.new(
       legend_current=true,
       legend_sort='current',
       legend_sortDesc=true,
-      format='ops',
       min=0,
       nullPointMode='null as zero',
     )
     .addTarget(
       prometheus.target(
-        'rate(sgw_gsi_views_access_count{instance=~"$instance",database=~"$database"}[5m])',
+        'increase(sgw_gsi_views_access_count{instance=~"$instance",database=~"$database"}[5m])',
         legendFormat='{{ database }}',
       )
     )
   )
   .addPanel(
     graphPanel.new(
-      'Number of all Docs queries/sec',
+      'Number of allDocs queries/sec',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -1175,13 +1159,12 @@ dashboard.new(
       legend_current=true,
       legend_sort='current',
       legend_sortDesc=true,
-      format='ops',
       min=0,
       nullPointMode='null as zero',
     )
     .addTarget(
       prometheus.target(
-        'rate(sgw_gsi_views_allDocs_count{instance=~"$instance",database=~"$database"}[5m])',
+        'increase(sgw_gsi_views_allDocs_count{instance=~"$instance",database=~"$database"}[5m])',
         legendFormat='{{ database }}',
       )
     )
@@ -1196,13 +1179,12 @@ dashboard.new(
       legend_current=true,
       legend_sort='current',
       legend_sortDesc=true,
-      format='ops',
       min=0,
       nullPointMode='null as zero',
     )
     .addTarget(
       prometheus.target(
-        'rate(sgw_gsi_views_roleAccess_count{instance=~"$instance",database=~"$database"}[5m])',
+        'increase(sgw_gsi_views_roleAccess_count{instance=~"$instance",database=~"$database"}[5m])',
         legendFormat='{{ database }}',
       )
     )
@@ -1217,7 +1199,6 @@ dashboard.new(
       legend_current=true,
       legend_sort='current',
       legend_sortDesc=true,
-      format='ops',
       min=0,
       nullPointMode='null as zero',
     )
@@ -1240,7 +1221,7 @@ dashboard.new(
   )
   .addPanel(
     singlestat.new(
-      '# of docs pushed total',
+      'Number of docs pushed total',
       format='none',
       span=2,
       valueName='current',
@@ -1263,7 +1244,7 @@ dashboard.new(
   )
   .addPanel(
     singlestat.new(
-      '# of attachments pushed total',
+      'Number of attachments pushed total',
       format='none',
       span=2,
       valueName='current',
@@ -1287,7 +1268,7 @@ dashboard.new(
   .addPanel(
     singlestat.new(
       'Attachment bytes transferred',
-      format='none',
+      format='bytes',
       span=2,
       valueName='current',
       valueFontSize='200%',
@@ -1309,7 +1290,7 @@ dashboard.new(
   )
   .addPanel(
     singlestat.new(
-      '# partial bulk docs permanent errors (not retried)',
+      'Number of partial bulk docs permanent errors (not retried)',
       format='none',
       span=2,
       valueName='current',
@@ -1355,7 +1336,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      '# of docs pushed / sec',
+      'number of docs pushed / sec',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -1363,13 +1344,12 @@ dashboard.new(
       legend_current=true,
       legend_sort='current',
       legend_sortDesc=true,
-      format='ops',
       min=0,
       nullPointMode='null as zero',
     )
     .addTarget(
       prometheus.target(
-        'increase(sgw_replication_sgr_num_docs_pushed{instance=~"$instance",replication=~"$replication"}[5m],)',
+        'increase(sgw_replication_sgr_num_docs_pushed{instance=~"$instance",replication=~"$replication"}[5m])',
         legendFormat='{{ replication }}',
       )
     )
