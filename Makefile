@@ -1,6 +1,10 @@
 start:
 	docker-compose build
-	docker-compose up
+	docker-compose up -d
+.PHONY: start
+
+stop:
+	docker-compose down
 .PHONY: start
 
 rm:
@@ -17,7 +21,7 @@ lite:
 .PHONY: lite
 
 lint:
-	golangci-lint run --enable-all --deadline 5m ./...
+	golangci-lint run --enable-all --disable dupl --deadline 5m ./...
 .PHONY: lint
 
 test:
