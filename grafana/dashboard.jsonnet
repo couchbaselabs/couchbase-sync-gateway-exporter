@@ -43,17 +43,6 @@ dashboard.new(
     multi=true,
   )
 )
-.addTemplate(
-  grafana.template.new(
-    'replication',
-    '$PROMETHEUS_DS',
-    'label_values(sgw_replication_sgr_num_docs_pushed{instance=~"$instance"}, replication)',
-    label='Replication',
-    refresh='load',
-    includeAll=true,
-    multi=true,
-  )
-)
 .addRow(
   row.new(
     title='Resources',
@@ -1238,7 +1227,7 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'sum(sgw_replication_sgr_num_docs_pushed{instance=~"$instance",replication=~"$replication"})',
+        'sum(sgw_replication_sgr_num_docs_pushed{instance=~"$instance"})',
       )
     )
   )
@@ -1261,7 +1250,7 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'sum(sgw_replication_sgr_num_attachments_transferred{instance=~"$instance",replication=~"$replication"})',
+        'sum(sgw_replication_sgr_num_attachments_transferred{instance=~"$instance"})',
       )
     )
   )
@@ -1284,7 +1273,7 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'sum(sgw_replication_sgr_num_attachment_bytes_transferred{instance=~"$instance",replication=~"$replication"})',
+        'sum(sgw_replication_sgr_num_attachment_bytes_transferred{instance=~"$instance"})',
       )
     )
   )
@@ -1307,7 +1296,7 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'sum(sgw_replication_sgr_num_docs_failed_to_push{instance=~"$instance",replication=~"$replication"})',
+        'sum(sgw_replication_sgr_num_docs_failed_to_push{instance=~"$instance"})',
       )
     )
   )
@@ -1330,7 +1319,7 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'sum(sgw_replication_sgr_docs_checked_sent{instance=~"$instance",replication=~"$replication"})',
+        'sum(sgw_replication_sgr_docs_checked_sent{instance=~"$instance"})',
       )
     )
   )
@@ -1349,7 +1338,7 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'increase(sgw_replication_sgr_num_docs_pushed{instance=~"$instance",replication=~"$replication"}[5m])',
+        'increase by (replication) (sgw_replication_sgr_num_docs_pushed{instance=~"$instance"}[5m])',
         legendFormat='{{ replication }}',
       )
     )
