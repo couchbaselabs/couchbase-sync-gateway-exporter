@@ -293,7 +293,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Channel Hit/Miss',
+      'Channel Cache Hits',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -301,13 +301,7 @@ dashboard.new(
       legend_current=true,
       legend_sort='current',
       legend_sortDesc=true,
-      format='ops',
-    )
-    .addSeriesOverride(
-      {
-        alias: '/misses/',
-        transform: 'negative-Y',
-      }
+      stack=true,
     )
     .addTarget(
       prometheus.target(
