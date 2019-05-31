@@ -307,9 +307,8 @@ func requireGauge(t *testing.T, body, metric string) {
 	requireMetric(t, body, metric, "gauge")
 }
 
-var metricNameExp = regexp.MustCompile("^(\\w+)\\{?.*$")
-
 func requireMetric(t *testing.T, body, metric, typee string) {
+	var metricNameExp = regexp.MustCompile(`^(\w+)\{?.*$`)
 	var name = metricNameExp.FindAllStringSubmatch(metric, -1)[0][1]
 	require.Contains(t, body, fmt.Sprintf("# TYPE %s %s", name, typee))
 	require.Contains(t, body, metric)
