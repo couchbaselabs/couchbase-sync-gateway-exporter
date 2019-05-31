@@ -38,6 +38,12 @@ func newPullCollector() *pullCollector {
 			perDbLabels,
 			nil,
 		),
+		numReplicationsActive: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, subsystem, "num_replications_active"),
+			"num_replications_active",
+			perDbLabels,
+			nil,
+		),
 		numPullReplCaughtUp: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, subsystem, "num_pull_repl_caught_up"),
 			"num_pull_repl_caught_up",
@@ -101,6 +107,7 @@ type pullCollector struct {
 	maxPending                  *prometheus.Desc
 	numPullReplActiveContinuous *prometheus.Desc
 	numPullReplActiveOneShot    *prometheus.Desc
+	numReplicationsActive       *prometheus.Desc
 	numPullReplCaughtUp         *prometheus.Desc
 	numPullReplSinceZero        *prometheus.Desc
 	numPullReplTotalContinuous  *prometheus.Desc
@@ -118,6 +125,7 @@ func (c *pullCollector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- c.maxPending
 	ch <- c.numPullReplActiveContinuous
 	ch <- c.numPullReplActiveOneShot
+	ch <- c.numReplicationsActive
 	ch <- c.numPullReplCaughtUp
 	ch <- c.numPullReplSinceZero
 	ch <- c.numPullReplTotalContinuous
@@ -134,6 +142,7 @@ func (c *pullCollector) Collect(ch chan<- prometheus.Metric, name string, pull c
 	ch <- prometheus.MustNewConstMetric(c.attachmentPullBytes, prometheus.CounterValue, pull.AttachmentPullBytes, name)
 	ch <- prometheus.MustNewConstMetric(c.attachmentPullCount, prometheus.CounterValue, pull.AttachmentPullCount, name)
 	ch <- prometheus.MustNewConstMetric(c.maxPending, prometheus.GaugeValue, pull.MaxPending, name)
+	ch <- prometheus.MustNewConstMetric(c.numReplicationsActive, prometheus.GaugeValue, pull.NumReplicationsActive, name)
 	ch <- prometheus.MustNewConstMetric(c.numPullReplActiveContinuous, prometheus.GaugeValue, pull.NumPullReplActiveContinuous, name)
 	ch <- prometheus.MustNewConstMetric(c.numPullReplActiveOneShot, prometheus.GaugeValue, pull.NumPullReplActiveOneShot, name)
 	ch <- prometheus.MustNewConstMetric(c.numPullReplCaughtUp, prometheus.GaugeValue, pull.NumPullReplCaughtUp, name)
