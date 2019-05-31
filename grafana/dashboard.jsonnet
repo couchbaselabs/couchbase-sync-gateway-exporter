@@ -359,6 +359,7 @@ dashboard.new(
       legend_sortDesc=true,
       format='short',
       min=0,
+      decimals=0,
       nullPointMode='null as zero',
     )
     .addTarget(
@@ -408,6 +409,7 @@ dashboard.new(
       legend_sortDesc=true,
       format='short',
       min=0,
+      decimals=0,
       nullPointMode='null as zero',
     )
     .addTarget(
@@ -448,6 +450,7 @@ dashboard.new(
       legend_sortDesc=true,
       format='short',
       min=0,
+      decimals=0,
       nullPointMode='null as zero',
     )
     .addTarget(
@@ -627,6 +630,7 @@ dashboard.new(
       legend_sort='current',
       legend_sortDesc=true,
       min=0,
+      decimals=0,
       nullPointMode='null as zero',
     )
     .addTarget(
@@ -957,6 +961,7 @@ dashboard.new(
       legend_sort='current',
       legend_sortDesc=true,
       min=0,
+      decimals=0,
       nullPointMode='null as zero',
     )
     .addTarget(
@@ -983,6 +988,7 @@ dashboard.new(
       legend_sort='current',
       legend_sortDesc=true,
       min=0,
+      decimals=0,
       nullPointMode='null as zero',
     )
     .addTarget(
@@ -1029,6 +1035,7 @@ dashboard.new(
       legend_sort='current',
       legend_sortDesc=true,
       min=0,
+      decimals=0,
       nullPointMode='null as zero',
     )
     .addTarget(
