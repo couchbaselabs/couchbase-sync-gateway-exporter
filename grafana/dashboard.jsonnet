@@ -121,13 +121,17 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'increase(sgw_resource_utilization_pub_net_bytes_sent{instance=~"$instance"}[5m]) + rate(sgw_resource_utilization_admin_net_bytes_sent{instance=~"$instance"}[5m])',
+        'rate(sgw_resource_utilization_pub_net_bytes_sent{instance=~"$instance"}[5m]) +
+          rate(sgw_resource_utilization_admin_net_bytes_sent{instance=~"$instance"}[5m])
+        ',
         legendFormat='{{ instance }} sent',
       )
     )
     .addTarget(
       prometheus.target(
-        'increase(sgw_resource_utilization_pub_net_bytes_recv{instance=~"$instance"}[5m]) + rate(sgw_resource_utilization_admin_net_bytes_recv{instance=~"$instance"}[5m])',
+        'rate(sgw_resource_utilization_pub_net_bytes_recv{instance=~"$instance"}[5m]) +
+          rate(sgw_resource_utilization_admin_net_bytes_recv{instance=~"$instance"}[5m])
+        ',
         legendFormat='{{ instance }} recv',
       )
     )
@@ -422,7 +426,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'New Replications / sec',
+      'New Replications [5m]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -464,7 +468,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Document writes / sec',
+      'Document writes [5m]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -505,7 +509,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Document reads / sec',
+      'Document reads [5m]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -574,7 +578,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of documents sent to SG as a delta / sec',
+      'Number of documents sent to SG as a delta [5m]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -594,7 +598,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of pull replications using deltas / sec',
+      'Number of pull replications using deltas [5m]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -648,7 +652,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of errors as a result of doc import / sec',
+      'Number of errors as a result of doc import [5m]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -695,7 +699,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Documents pushed / sec',
+      'Documents pushed [5m]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -758,7 +762,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of ProposeChange messages / sec',
+      'Number of ProposeChange messages [5m]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -778,7 +782,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of attachments pushed / sec',
+      'Number of attachments pushed [5m]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -890,7 +894,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of attachments pulled / sec',
+      'Number of attachments pulled [5m]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -932,7 +936,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Documents pulled in 2.x / sec',
+      'Documents pulled in 2.x [5m]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -1006,7 +1010,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of New Initial Replications / sec',
+      'Number of New Initial Replications [5m]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -1053,7 +1057,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Sync Function Doc Rejections Count / sec',
+      'Sync Function Doc Rejections Count [5m]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -1073,7 +1077,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Sync Function Access Failure Count / sec',
+      'Sync Function Access Failure Count [5m]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -1099,7 +1103,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of queries / sec',
+      'Number of queries [5m]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -1119,7 +1123,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of channel queries / sec',
+      'Number of channel queries [5m]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -1139,7 +1143,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of access queries / sec',
+      'Number of access queries [5m]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -1159,7 +1163,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of allDocs queries / sec',
+      'Number of allDocs queries [5m]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -1179,7 +1183,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of role access queries / sec',
+      'Number of role access queries [5m]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -1199,7 +1203,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Housekeeping Queries / sec',
+      'Housekeeping Queries [5m]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -1344,7 +1348,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'number of docs pushed / sec',
+      'number of docs pushed [5m]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
