@@ -48,7 +48,7 @@ dashboard.new(
     'replication',
     '$PROMETHEUS_DS',
     'label_values(sgw_replication_sgr_num_docs_pushed{instance=~"$instance"}, replication)',
-    label='Replication',
+    label='SGW-SGW Replications',
     refresh='load',
     includeAll=true,
     multi=true,
