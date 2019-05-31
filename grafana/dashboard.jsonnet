@@ -194,7 +194,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Garbage Collection time / sec',
+      'Garbage Collection time [5m]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -230,13 +230,25 @@ dashboard.new(
     .addTarget(
       prometheus.target(
         'sgw_resource_utilization_error_count{instance=~"$instance"}',
-        legendFormat='{{ instance }} errors',
+        legendFormat='{{ instance }} total errors',
+      )
+    )
+    .addTarget(
+      prometheus.target(
+        'rate(sgw_resource_utilization_error_count{instance=~"$instance"}[5m])',
+        legendFormat='{{ instance }} errors/sec',
       )
     )
     .addTarget(
       prometheus.target(
         'sgw_resource_utilization_warn_count{instance=~"$instance"}',
-        legendFormat='{{ instance }} warns',
+        legendFormat='{{ instance }} total warns',
+      )
+    )
+    .addTarget(
+      prometheus.target(
+        'rate(sgw_resource_utilization_warn_count{instance=~"$instance"}[5m])',
+        legendFormat='{{ instance }} warns/sec',
       )
     )
   )
@@ -269,7 +281,7 @@ dashboard.new(
     .addTarget(
       prometheus.target(
         'sgw_cache_chan_cache_tombstone_revs{instance=~"$instance",database=~"$database"}',
-        legendFormat='{{ database }} thombstone revs',
+        legendFormat='{{ database }} tombstone revs',
       )
     )
     .addTarget(
