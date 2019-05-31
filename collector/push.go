@@ -91,13 +91,13 @@ func (c *pushCollector) Describe(ch chan<- *prometheus.Desc) {
 
 // nolint: lll
 func (c *pushCollector) Collect(ch chan<- prometheus.Metric, name string, push client.CblReplicationPush) {
-	ch <- prometheus.MustNewConstMetric(c.attachmentPushBytes, prometheus.CounterValue, float64(push.AttachmentPushBytes), name)
-	ch <- prometheus.MustNewConstMetric(c.attachmentPushCount, prometheus.CounterValue, float64(push.AttachmentPushCount), name)
-	ch <- prometheus.MustNewConstMetric(c.conflictWriteCount, prometheus.CounterValue, float64(push.ConflictWriteCount), name)
-	ch <- prometheus.MustNewConstMetric(c.docPushCount, prometheus.GaugeValue, float64(push.DocPushCount), name)
-	ch <- prometheus.MustNewConstMetric(c.proposeChangeCount, prometheus.CounterValue, float64(push.ProposeChangeCount), name)
-	ch <- prometheus.MustNewConstMetric(c.proposeChangeTime, prometheus.CounterValue, float64(push.ProposeChangeTime), name)
-	ch <- prometheus.MustNewConstMetric(c.syncFunctionCount, prometheus.CounterValue, float64(push.SyncFunctionCount), name)
-	ch <- prometheus.MustNewConstMetric(c.syncFunctionTime, prometheus.CounterValue, float64(push.SyncFunctionTime), name)
-	ch <- prometheus.MustNewConstMetric(c.writeProcessingTime, prometheus.GaugeValue, float64(push.WriteProcessingTime), name)
+	ch <- prometheus.MustNewConstMetric(c.attachmentPushBytes, prometheus.CounterValue, push.AttachmentPushBytes, name)
+	ch <- prometheus.MustNewConstMetric(c.attachmentPushCount, prometheus.CounterValue, push.AttachmentPushCount, name)
+	ch <- prometheus.MustNewConstMetric(c.conflictWriteCount, prometheus.CounterValue, push.ConflictWriteCount, name)
+	ch <- prometheus.MustNewConstMetric(c.docPushCount, prometheus.GaugeValue, push.DocPushCount, name)
+	ch <- prometheus.MustNewConstMetric(c.proposeChangeCount, prometheus.CounterValue, push.ProposeChangeCount, name)
+	ch <- prometheus.MustNewConstMetric(c.proposeChangeTime, prometheus.CounterValue, push.ProposeChangeTime, name)
+	ch <- prometheus.MustNewConstMetric(c.syncFunctionCount, prometheus.CounterValue, push.SyncFunctionCount, name)
+	ch <- prometheus.MustNewConstMetric(c.syncFunctionTime, prometheus.CounterValue, push.SyncFunctionTime, name)
+	ch <- prometheus.MustNewConstMetric(c.writeProcessingTime, prometheus.GaugeValue, push.WriteProcessingTime, name)
 }

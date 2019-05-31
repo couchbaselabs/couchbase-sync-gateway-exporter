@@ -67,10 +67,10 @@ func (c *deltaSyncCollector) Describe(ch chan<- *prometheus.Desc) {
 
 // nolint: lll
 func (c *deltaSyncCollector) Collect(ch chan<- prometheus.Metric, name string, delta client.DeltaSync) {
-	ch <- prometheus.MustNewConstMetric(c.deltaCacheHit, prometheus.CounterValue, float64(delta.DeltaCacheHit), name)
-	ch <- prometheus.MustNewConstMetric(c.deltaCacheMiss, prometheus.CounterValue, float64(delta.DeltaCacheMiss), name)
-	ch <- prometheus.MustNewConstMetric(c.deltaPullReplicationCount, prometheus.CounterValue, float64(delta.DeltaPullReplicationCount), name)
-	ch <- prometheus.MustNewConstMetric(c.deltaPushDocCount, prometheus.CounterValue, float64(delta.DeltaPushDocCount), name)
-	ch <- prometheus.MustNewConstMetric(c.deltasRequested, prometheus.CounterValue, float64(delta.DeltasRequested), name)
-	ch <- prometheus.MustNewConstMetric(c.deltasSent, prometheus.CounterValue, float64(delta.DeltasSent), name)
+	ch <- prometheus.MustNewConstMetric(c.deltaCacheHit, prometheus.CounterValue, delta.DeltaCacheHit, name)
+	ch <- prometheus.MustNewConstMetric(c.deltaCacheMiss, prometheus.CounterValue, delta.DeltaCacheMiss, name)
+	ch <- prometheus.MustNewConstMetric(c.deltaPullReplicationCount, prometheus.CounterValue, delta.DeltaPullReplicationCount, name)
+	ch <- prometheus.MustNewConstMetric(c.deltaPushDocCount, prometheus.CounterValue, delta.DeltaPushDocCount, name)
+	ch <- prometheus.MustNewConstMetric(c.deltasRequested, prometheus.CounterValue, delta.DeltasRequested, name)
+	ch <- prometheus.MustNewConstMetric(c.deltasSent, prometheus.CounterValue, delta.DeltasSent, name)
 }

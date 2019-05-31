@@ -22,140 +22,141 @@ type Metrics struct {
 
 // Replication stats for each replication config
 type Replication struct {
-	SgrDocsCheckedSent               int `json:"sgr_docs_checked_sent"`
-	SgrNumAttachmentBytesTransferred int `json:"sgr_num_attachment_bytes_transferred"`
-	SgrNumAttachmentsTransferred     int `json:"sgr_num_attachments_transferred"`
-	SgrNumDocsFailedToPush           int `json:"sgr_num_docs_failed_to_push"`
-	SgrNumDocsPushed                 int `json:"sgr_num_docs_pushed"`
+	SgrDocsCheckedSent               float64 `json:"sgr_docs_checked_sent"`
+	SgrNumAttachmentBytesTransferred float64 `json:"sgr_num_attachment_bytes_transferred"`
+	SgrNumAttachmentsTransferred     float64 `json:"sgr_num_attachments_transferred"`
+	SgrNumDocsFailedToPush           float64 `json:"sgr_num_docs_failed_to_push"`
+	SgrNumDocsPushed                 float64 `json:"sgr_num_docs_pushed"`
 }
 
 // ResourceUtilization stats
 type ResourceUtilization struct {
-	AdminNetBytesRecv            int     `json:"admin_net_bytes_recv"`
-	AdminNetBytesSent            int     `json:"admin_net_bytes_sent"`
-	ErrorCount                   int     `json:"error_count"`
-	GoMemstatsHeapalloc          int     `json:"go_memstats_heapalloc"`
-	GoMemstatsHeapidle           int     `json:"go_memstats_heapidle"`
-	GoMemstatsHeapinuse          int     `json:"go_memstats_heapinuse"`
-	GoMemstatsHeapreleased       int     `json:"go_memstats_heapreleased"`
-	GoMemstatsPausetotalns       int     `json:"go_memstats_pausetotalns"`
-	GoMemstatsStackinuse         int     `json:"go_memstats_stackinuse"`
-	GoMemstatsStacksys           int     `json:"go_memstats_stacksys"`
-	GoMemstatsSys                int     `json:"go_memstats_sys"`
-	GoroutinesHighWatermark      int     `json:"goroutines_high_watermark"`
-	NumGoroutines                int     `json:"num_goroutines"`
+	AdminNetBytesRecv            float64 `json:"admin_net_bytes_recv"`
+	AdminNetBytesSent            float64 `json:"admin_net_bytes_sent"`
+	ErrorCount                   float64 `json:"error_count"`
+	GoMemstatsHeapalloc          float64 `json:"go_memstats_heapalloc"`
+	GoMemstatsHeapidle           float64 `json:"go_memstats_heapidle"`
+	GoMemstatsHeapinuse          float64 `json:"go_memstats_heapinuse"`
+	GoMemstatsHeapreleased       float64 `json:"go_memstats_heapreleased"`
+	GoMemstatsPausetotalns       float64 `json:"go_memstats_pausetotalns"`
+	GoMemstatsStackinuse         float64 `json:"go_memstats_stackinuse"`
+	GoMemstatsStacksys           float64 `json:"go_memstats_stacksys"`
+	GoMemstatsSys                float64 `json:"go_memstats_sys"`
+	GoroutinesHighWatermark      float64 `json:"goroutines_high_watermark"`
+	NumGoroutines                float64 `json:"num_goroutines"`
 	ProcessCPUPercentUtilization float64 `json:"process_cpu_percent_utilization"`
 	ProcessMemoryResident        float64 `json:"process_memory_resident"`
-	PubNetBytesRecv              int     `json:"pub_net_bytes_recv"`
-	PubNetBytesSent              int     `json:"pub_net_bytes_sent"`
+	PubNetBytesRecv              float64 `json:"pub_net_bytes_recv"`
+	PubNetBytesSent              float64 `json:"pub_net_bytes_sent"`
 	SystemMemoryTotal            float64 `json:"system_memory_total"`
-	WarnCount                    int     `json:"warn_count"`
+	WarnCount                    float64 `json:"warn_count"`
 }
 
 // Cache stats per db
 type Cache struct {
-	ChanCacheActiveRevs     int `json:"chan_cache_active_revs"`
-	ChanCacheHits           int `json:"chan_cache_hits"`
-	ChanCacheMaxEntries     int `json:"chan_cache_max_entries"`
-	ChanCacheMisses         int `json:"chan_cache_misses"`
-	ChanCacheNumChannels    int `json:"chan_cache_num_channels"`
-	ChanCachePendingQueries int `json:"chan_cache_pending_queries"`
-	ChanCacheRemovalRevs    int `json:"chan_cache_removal_revs"`
-	ChanCacheTombstoneRevs  int `json:"chan_cache_tombstone_revs"`
-	NumSkippedSeqs          int `json:"num_skipped_seqs"`
-	RevCacheHits            int `json:"rev_cache_hits"`
-	RevCacheMisses          int `json:"rev_cache_misses"`
+	ChanCacheActiveRevs     float64 `json:"chan_cache_active_revs"`
+	ChanCacheHits           float64 `json:"chan_cache_hits"`
+	ChanCacheMaxEntries     float64 `json:"chan_cache_max_entries"`
+	ChanCacheMisses         float64 `json:"chan_cache_misses"`
+	ChanCacheNumChannels    float64 `json:"chan_cache_num_channels"`
+	ChanCachePendingQueries float64 `json:"chan_cache_pending_queries"`
+	ChanCacheRemovalRevs    float64 `json:"chan_cache_removal_revs"`
+	ChanCacheTombstoneRevs  float64 `json:"chan_cache_tombstone_revs"`
+	NumSkippedSeqs          float64 `json:"num_skipped_seqs"`
+	RevCacheHits            float64 `json:"rev_cache_hits"`
+	RevCacheMisses          float64 `json:"rev_cache_misses"`
 }
 
 // CblReplicationPull stats per db
 type CblReplicationPull struct {
-	AttachmentPullBytes         int `json:"attachment_pull_bytes"`
-	AttachmentPullCount         int `json:"attachment_pull_count"`
-	MaxPending                  int `json:"max_pending"`
-	NumPullReplActiveContinuous int `json:"num_pull_repl_active_continuous"`
-	NumPullReplActiveOneShot    int `json:"num_pull_repl_active_one_shot"`
-	NumPullReplCaughtUp         int `json:"num_pull_repl_caught_up"`
-	NumPullReplSinceZero        int `json:"num_pull_repl_since_zero"`
-	NumPullReplTotalContinuous  int `json:"num_pull_repl_total_continuous"`
-	NumPullReplTotalOneShot     int `json:"num_pull_repl_total_one_shot"`
-	RequestChangesCount         int `json:"request_changes_count"`
-	RequestChangesTime          int `json:"request_changes_time"`
-	RevProcessingTime           int `json:"rev_processing_time"`
-	RevSendCount                int `json:"rev_send_count"`
-	RevSendLatency              int `json:"rev_send_latency"`
+	AttachmentPullBytes         float64 `json:"attachment_pull_bytes"`
+	AttachmentPullCount         float64 `json:"attachment_pull_count"`
+	MaxPending                  float64 `json:"max_pending"`
+	NumPullReplActiveContinuous float64 `json:"num_pull_repl_active_continuous"`
+	NumPullReplActiveOneShot    float64 `json:"num_pull_repl_active_one_shot"`
+	NumPullReplCaughtUp         float64 `json:"num_pull_repl_caught_up"`
+	NumPullReplSinceZero        float64 `json:"num_pull_repl_since_zero"`
+	NumPullReplTotalContinuous  float64 `json:"num_pull_repl_total_continuous"`
+	NumPullReplTotalOneShot     float64 `json:"num_pull_repl_total_one_shot"`
+	RequestChangesCount         float64 `json:"request_changes_count"`
+	RequestChangesTime          float64 `json:"request_changes_time"`
+	RevProcessingTime           float64 `json:"rev_processing_time"`
+	RevSendCount                float64 `json:"rev_send_count"`
+	RevSendLatency              float64 `json:"rev_send_latency"`
 }
 
 // CblReplicationPush stats per db
 type CblReplicationPush struct {
-	AttachmentPushBytes int `json:"attachment_push_bytes"`
-	AttachmentPushCount int `json:"attachment_push_count"`
-	ConflictWriteCount  int `json:"conflict_write_count"`
-	DocPushCount        int `json:"doc_push_count"`
-	ProposeChangeCount  int `json:"propose_change_count"`
-	ProposeChangeTime   int `json:"propose_change_time"`
-	SyncFunctionCount   int `json:"sync_function_count"`
-	SyncFunctionTime    int `json:"sync_function_time"`
-	WriteProcessingTime int `json:"write_processing_time"`
+	AttachmentPushBytes float64 `json:"attachment_push_bytes"`
+	AttachmentPushCount float64 `json:"attachment_push_count"`
+	ConflictWriteCount  float64 `json:"conflict_write_count"`
+	DocPushCount        float64 `json:"doc_push_count"`
+	ProposeChangeCount  float64 `json:"propose_change_count"`
+	ProposeChangeTime   float64 `json:"propose_change_time"`
+	SyncFunctionCount   float64 `json:"sync_function_count"`
+	SyncFunctionTime    float64 `json:"sync_function_time"`
+	WriteProcessingTime float64 `json:"write_processing_time"`
 }
 
 // Database stats per db
 type Database struct {
-	AbandonedSeqs           int `json:"abandoned_seqs"`
-	Crc32CMatchCount        int `json:"crc32c_match_count"`
-	DcpCachingCount         int `json:"dcp_caching_count"`
-	DcpCachingTime          int `json:"dcp_caching_time"`
-	DcpReceivedCount        int `json:"dcp_received_count"`
-	DcpReceivedTime         int `json:"dcp_received_time"`
-	DocReadsBytesBlip       int `json:"doc_reads_bytes_blip"`
-	DocWritesBytes          int `json:"doc_writes_bytes"`
-	DocWritesBytesBlip      int `json:"doc_writes_bytes_blip"`
-	NumDocReadsBlip         int `json:"num_doc_reads_blip"`
-	NumDocReadsRest         int `json:"num_doc_reads_rest"`
-	NumDocWrites            int `json:"num_doc_writes"`
-	NumReplicationsActive   int `json:"num_replications_active"`
-	NumReplicationsTotal    int `json:"num_replications_total"`
-	SequenceGetCount        int `json:"sequence_get_count"`
-	SequenceReleasedCount   int `json:"sequence_released_count"`
-	SequenceReservedCount   int `json:"sequence_reserved_count"`
-	WarnChannelsPerDocCount int `json:"warn_channels_per_doc_count"`
-	WarnGrantsPerDocCount   int `json:"warn_grants_per_doc_count"`
-	WarnXattrSizeCount      int `json:"warn_xattr_size_count"`
+	AbandonedSeqs           float64 `json:"abandoned_seqs"`
+	Crc32CMatchCount        float64 `json:"crc32c_match_count"`
+	DcpCachingCount         float64 `json:"dcp_caching_count"`
+	DcpCachingTime          float64 `json:"dcp_caching_time"`
+	DcpReceivedCount        float64 `json:"dcp_received_count"`
+	DcpReceivedTime         float64 `json:"dcp_received_time"`
+	DocReadsBytesBlip       float64 `json:"doc_reads_bytes_blip"`
+	DocWritesBytes          float64 `json:"doc_writes_bytes"`
+	DocWritesBytesBlip      float64 `json:"doc_writes_bytes_blip"`
+	NumDocReadsBlip         float64 `json:"num_doc_reads_blip"`
+	NumDocReadsRest         float64 `json:"num_doc_reads_rest"`
+	NumDocWrites            float64 `json:"num_doc_writes"`
+	NumReplicationsActive   float64 `json:"num_replications_active"`
+	NumReplicationsTotal    float64 `json:"num_replications_total"`
+	SequenceGetCount        float64 `json:"sequence_get_count"`
+	SequenceReleasedCount   float64 `json:"sequence_released_count"`
+	SequenceReservedCount   float64 `json:"sequence_reserved_count"`
+	WarnChannelsPerDocCount float64 `json:"warn_channels_per_doc_count"`
+	WarnGrantsPerDocCount   float64 `json:"warn_grants_per_doc_count"`
+	WarnXattrSizeCount      float64 `json:"warn_xattr_size_count"`
 }
 
 // GsiViews stats per db
 type GsiViews struct {
-	AccessCount     int `json:"access_count"`
-	RoleAccessCount int `json:"roleAccess_count"`
-	ChannelsCount   int `json:"channels_count"`
-	AllDocsCount    int `json:"allDocs_count"`
-	PrincipalsCount int `json:"principals_count"`
-	ResyncCount     int `json:"resync_count"`
-	SequencesCount  int `json:"sequences_count"`
-	SessionsCount   int `json:"sessions_count"`
-	TombstonesCount int `json:"tombstones_count"`
+	AccessCount     float64 `json:"access_count"`
+	RoleAccessCount float64 `json:"roleAccess_count"`
+	ChannelsCount   float64 `json:"channels_count"`
+	AllDocsCount    float64 `json:"allDocs_count"`
+	PrincipalsCount float64 `json:"principals_count"`
+	ResyncCount     float64 `json:"resync_count"`
+	SequencesCount  float64 `json:"sequences_count"`
+	SessionsCount   float64 `json:"sessions_count"`
+	TombstonesCount float64 `json:"tombstones_count"`
 }
 
 // Security stats per db
 type Security struct {
-	AuthFailedCount  int `json:"auth_failed_count"`
-	AuthSuccessCount int `json:"auth_success_count"`
-	NumAccessErrors  int `json:"num_access_errors"`
-	NumDocsRejected  int `json:"num_docs_rejected"`
-	TotalAuthTime    int `json:"total_auth_time"`
+	AuthFailedCount  float64 `json:"auth_failed_count"`
+	AuthSuccessCount float64 `json:"auth_success_count"`
+	NumAccessErrors  float64 `json:"num_access_errors"`
+	NumDocsRejected  float64 `json:"num_docs_rejected"`
+	TotalAuthTime    float64 `json:"total_auth_time"`
 }
 
 // SharedBucketImport stats per db
 type SharedBucketImport struct {
-	ImportCount          int   `json:"import_count"`
-	ImportErrorCount     int   `json:"import_error_count"`
-	ImportProcessingTime int64 `json:"import_processing_time"`
+	ImportCount          float64 `json:"import_count"`
+	ImportErrorCount     float64 `json:"import_error_count"`
+	ImportProcessingTime float64 `json:"import_processing_time"`
 }
 
+// DeltaSync stats per db
 type DeltaSync struct {
-	DeltaCacheHit             int `json:"delta_cache_hit"`
-	DeltaCacheMiss            int `json:"delta_cache_miss"`
-	DeltaPullReplicationCount int `json:"delta_pull_replication_count"`
-	DeltaPushDocCount         int `json:"delta_push_doc_count"`
-	DeltasRequested           int `json:"deltas_requested"`
-	DeltasSent                int `json:"deltas_sent"`
+	DeltaCacheHit             float64 `json:"delta_cache_hit"`
+	DeltaCacheMiss            float64 `json:"delta_cache_miss"`
+	DeltaPullReplicationCount float64 `json:"delta_pull_replication_count"`
+	DeltaPushDocCount         float64 `json:"delta_push_doc_count"`
+	DeltasRequested           float64 `json:"deltas_requested"`
+	DeltasSent                float64 `json:"deltas_sent"`
 }

@@ -43,7 +43,7 @@ func (c *bucketImportCollector) Describe(ch chan<- *prometheus.Desc) {
 
 // nolint: lll
 func (c *bucketImportCollector) Collect(ch chan<- prometheus.Metric, name string, metrics client.SharedBucketImport) {
-	ch <- prometheus.MustNewConstMetric(c.importCount, prometheus.CounterValue, float64(metrics.ImportCount), name)
-	ch <- prometheus.MustNewConstMetric(c.importErrorCount, prometheus.CounterValue, float64(metrics.ImportErrorCount), name)
-	ch <- prometheus.MustNewConstMetric(c.importProcessingTime, prometheus.GaugeValue, float64(metrics.ImportProcessingTime), name)
+	ch <- prometheus.MustNewConstMetric(c.importCount, prometheus.CounterValue, metrics.ImportCount, name)
+	ch <- prometheus.MustNewConstMetric(c.importErrorCount, prometheus.CounterValue, metrics.ImportErrorCount, name)
+	ch <- prometheus.MustNewConstMetric(c.importProcessingTime, prometheus.GaugeValue, metrics.ImportProcessingTime, name)
 }

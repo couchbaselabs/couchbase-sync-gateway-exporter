@@ -91,13 +91,13 @@ func (c *gsiViewsCollector) Describe(ch chan<- *prometheus.Desc) {
 
 // nolint: lll
 func (c *gsiViewsCollector) Collect(ch chan<- prometheus.Metric, name string, gsi client.GsiViews) {
-	ch <- prometheus.MustNewConstMetric(c.accessCount, prometheus.CounterValue, float64(gsi.AccessCount), name)
-	ch <- prometheus.MustNewConstMetric(c.roleAccessCount, prometheus.CounterValue, float64(gsi.RoleAccessCount), name)
-	ch <- prometheus.MustNewConstMetric(c.channelsCount, prometheus.CounterValue, float64(gsi.ChannelsCount), name)
-	ch <- prometheus.MustNewConstMetric(c.allDocsCount, prometheus.CounterValue, float64(gsi.AllDocsCount), name)
-	ch <- prometheus.MustNewConstMetric(c.principalsCount, prometheus.CounterValue, float64(gsi.PrincipalsCount), name)
-	ch <- prometheus.MustNewConstMetric(c.resyncCount, prometheus.CounterValue, float64(gsi.ResyncCount), name)
-	ch <- prometheus.MustNewConstMetric(c.sequencesCount, prometheus.CounterValue, float64(gsi.SequencesCount), name)
-	ch <- prometheus.MustNewConstMetric(c.sessionsCount, prometheus.CounterValue, float64(gsi.SessionsCount), name)
-	ch <- prometheus.MustNewConstMetric(c.tombstonesCount, prometheus.CounterValue, float64(gsi.TombstonesCount), name)
+	ch <- prometheus.MustNewConstMetric(c.accessCount, prometheus.CounterValue, gsi.AccessCount, name)
+	ch <- prometheus.MustNewConstMetric(c.roleAccessCount, prometheus.CounterValue, gsi.RoleAccessCount, name)
+	ch <- prometheus.MustNewConstMetric(c.channelsCount, prometheus.CounterValue, gsi.ChannelsCount, name)
+	ch <- prometheus.MustNewConstMetric(c.allDocsCount, prometheus.CounterValue, gsi.AllDocsCount, name)
+	ch <- prometheus.MustNewConstMetric(c.principalsCount, prometheus.CounterValue, gsi.PrincipalsCount, name)
+	ch <- prometheus.MustNewConstMetric(c.resyncCount, prometheus.CounterValue, gsi.ResyncCount, name)
+	ch <- prometheus.MustNewConstMetric(c.sequencesCount, prometheus.CounterValue, gsi.SequencesCount, name)
+	ch <- prometheus.MustNewConstMetric(c.sessionsCount, prometheus.CounterValue, gsi.SessionsCount, name)
+	ch <- prometheus.MustNewConstMetric(c.tombstonesCount, prometheus.CounterValue, gsi.TombstonesCount, name)
 }
