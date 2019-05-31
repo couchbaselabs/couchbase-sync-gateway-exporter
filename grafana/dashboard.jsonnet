@@ -623,7 +623,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of docs imported / sec',
+      'Docs Imported',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -636,8 +636,14 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'increase(sgw_shared_bucket_import_import_count{instance=~"$instance",database=~"$database"}[5m])',
-        legendFormat='{{ database }}',
+        'sgw_shared_bucket_import_import_count{instance=~"$instance",database=~"$database"}',
+        legendFormat='{{ database }} total',
+      )
+    )
+    .addTarget(
+      prometheus.target(
+        'rate(sgw_shared_bucket_import_import_count{instance=~"$instance",database=~"$database"}[5m])',
+        legendFormat='{{ database }} per second',
       )
     )
   )
