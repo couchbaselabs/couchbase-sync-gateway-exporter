@@ -7,15 +7,6 @@ stop:
 	docker-compose down
 .PHONY: start
 
-rm:
-	yes | docker-compose rm
-.PHONY: rm
-
-open:
-	@open http://localhost:8091
-	@open http://localhost:4985/_expvar
-.PHONY: open
-
 lite:
 	@./.bin/cblite cp --bidi --continuous --user demo:password ws://localhost:4984/travel-sample/ travel.cblite2
 .PHONY: lite
@@ -28,6 +19,9 @@ test:
 	go test -v -failfast -race -coverpkg=./... -covermode=atomic -coverprofile=coverage.txt ./... -timeout=2m
 .PHONY: test
 
+ci: test lint
+.PHONY: ci
+
 cover: test
 	go tool cover -html=coverage.txt
 .PHONY: cover
@@ -35,5 +29,9 @@ cover: test
 grafana:
 	@echo "Generating dashboard at ./grafana/dashboard.json"
 	@jsonnet -J grafana grafana/dashboard.jsonnet -o ./grafana/dashboard.json
-	@./scripts/setup_grafana
 .PHONY: grafana
+
+grafana-dev:
+	@make grafana
+	@./scripts/setup-grafana
+.PHONY: grafana-dev

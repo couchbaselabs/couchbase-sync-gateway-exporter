@@ -70,7 +70,7 @@ open http://localhost:9090
 
 You should see something like this:
 
-![](/kubernetes/screen-1sgw.png)
+![](/docs/kubernetes/screen-1sgw.png)
 
 Then we can scale the sync gateway with:
 
@@ -81,7 +81,7 @@ kubectl scale -n couchbase deploy/sync-gateway --replicas 2
 And refresh that page, so you can see something like this:
 
 
-![](/kubernetes/screen-2sgw.png)
+![](/docs/kubernetes/screen-2sgw.png)
 
 ## Grafana
 
@@ -105,12 +105,12 @@ make grafana
 And then you should be able to find the Sync Gateway dashboard on
 http://localhost:3000:
 
-![](/kubernetes/dash.png)
+![](/docs/kubernetes/dash.png)
 
 By default it will show metrics for all Sync Gateway instances, but you can
 of course filter them:
 
-![](/kubernetes/choose-instances.png)
+![](/docs/kubernetes/choose-instances.png)
 
 Those values are queried on dashboard load, so you may need to reload it as
 new instances come online.
