@@ -125,3 +125,13 @@ the [docs/kubebernetes](/docs/kubernetes) folder.
 
 Note that this is just an example configuration, and you would probably
 want to customize it.
+
+---
+
+## Cutting a new release
+
+**Requirement**: [GoReleaser](https://goreleaser.com) v0.107.0+
+
+- `git tag` the new release in the [SemVer](https://semver.org/) format;
+- push the tag;
+- run `goreleaser`.
