@@ -18,7 +18,8 @@ import (
 func TestMetricsSimple(t *testing.T) {
 	var collector = NewCollector(newFakeClient(t, "testdata/metrics2.json", nil))
 	testCollector(t, collector, func(t *testing.T, status int, body string) {
-		require.Equal(t, 200, status)
+		requireSuccess(t, status, body)
+
 		requireGauge(t, body, `sgw_cache_chan_cache_active_revs{database="travel-sample"} 0`)
 		requireCounter(t, body, `sgw_cache_chan_cache_hits{database="travel-sample"} 0`)
 		requireGauge(t, body, `sgw_cache_chan_cache_max_entries{database="travel-sample"} 0`)
@@ -105,16 +106,14 @@ func TestMetricsSimple(t *testing.T) {
 		requireCounter(t, body, `sgw_shared_bucket_import_import_error_count{database="travel-sample"} 0`)
 		// nolint: lll
 		requireGauge(t, body, `sgw_shared_bucket_import_import_processing_time{database="travel-sample"} 1.9499618564e+10`)
-		require.Regexp(t, "sgw_scrape_duration_seconds \\d+\\.\\d+", body)
-		requireGauge(t, body, `sgw_up 1`)
-
 	})
 }
 
 func TestMetricsWithReplication(t *testing.T) {
 	var collector = NewCollector(newFakeClient(t, "testdata/metrics1.json", nil))
 	testCollector(t, collector, func(t *testing.T, status int, body string) {
-		require.Equal(t, 200, status)
+		requireSuccess(t, status, body)
+
 		requireGauge(t, body, `sgw_cache_chan_cache_active_revs{database="travel-sample"} 102`)
 		requireCounter(t, body, `sgw_cache_chan_cache_hits{database="travel-sample"} 3685`)
 		requireGauge(t, body, `sgw_cache_chan_cache_max_entries{database="travel-sample"} 50`)
@@ -220,15 +219,13 @@ func TestMetricsWithReplication(t *testing.T) {
 		requireCounter(t, body, `sgw_shared_bucket_import_import_count{database="travel-sample"} 10031`)
 		requireCounter(t, body, `sgw_shared_bucket_import_import_error_count{database="travel-sample"} 0`)
 		requireGauge(t, body, `sgw_shared_bucket_import_import_processing_time{database="travel-sample"} 1.44880768e+11`)
-		require.Regexp(t, "sgw_scrape_duration_seconds \\d+\\.\\d+", body)
-		requireGauge(t, body, `sgw_up 1`)
 	})
 }
 
 func TestMetricsDelta(t *testing.T) {
 	var collector = NewCollector(newFakeClient(t, "testdata/metrics3.json", nil))
 	testCollector(t, collector, func(t *testing.T, status int, body string) {
-		require.Equal(t, 200, status)
+		requireSuccess(t, status, body)
 
 		requireCounter(t, body, `sgw_delta_sync_delta_cache_hit{database="travel-sample"} 0`)
 		requireCounter(t, body, `sgw_delta_sync_delta_cache_miss{database="travel-sample"} 20`)
@@ -236,25 +233,19 @@ func TestMetricsDelta(t *testing.T) {
 		requireCounter(t, body, `sgw_delta_sync_delta_push_doc_count{database="travel-sample"} 0`)
 		requireCounter(t, body, `sgw_delta_sync_deltas_requested{database="travel-sample"} 20`)
 		requireCounter(t, body, `sgw_delta_sync_deltas_sent{database="travel-sample"} 20`)
-
-		require.Regexp(t, "sgw_scrape_duration_seconds \\d+\\.\\d+", body)
-		requireGauge(t, body, `sgw_up 1`)
 	})
 }
 
 func TestMetricsGsi(t *testing.T) {
 	var collector = NewCollector(newFakeClient(t, "testdata/metrics3.json", nil))
 	testCollector(t, collector, func(t *testing.T, status int, body string) {
-		require.Equal(t, 200, status)
+		requireSuccess(t, status, body)
 
 		requireCounter(t, body, `sgw_gsi_views_principals_count{database="travel-sample"} 0`)
 		requireCounter(t, body, `sgw_gsi_views_resync_count{database="travel-sample"} 0`)
 		requireCounter(t, body, `sgw_gsi_views_sequences_count{database="travel-sample"} 2`)
 		requireCounter(t, body, `sgw_gsi_views_sessions_count{database="travel-sample"} 0`)
 		requireCounter(t, body, `sgw_gsi_views_tombstones_count{database="travel-sample"} 0`)
-
-		require.Regexp(t, "sgw_scrape_duration_seconds \\d+\\.\\d+", body)
-		requireGauge(t, body, `sgw_up 1`)
 	})
 }
 
@@ -299,6 +290,12 @@ func newFakeClient(t *testing.T, path string, err error) client.Client {
 	var metrics client.Metrics
 	require.NoError(t, json.Unmarshal(bts, &metrics))
 	return &fakeClient{metrics: metrics}
+}
+
+func requireSuccess(t *testing.T, status int, body string) {
+	require.Equal(t, 200, status)
+	requireGauge(t, body, `sgw_up 1`)
+	require.Regexp(t, "sgw_scrape_duration_seconds \\d+\\.\\d+", body)
 }
 
 func requireCounter(t *testing.T, body, metric string) {
