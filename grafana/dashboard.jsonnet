@@ -384,14 +384,19 @@ dashboard.new(
       legend_sort='current',
       legend_sortDesc=true,
       format='short',
+      stack=true,
+      min=0,
     )
     .addTarget(
       prometheus.target(
-        'sgw_cache_rev_cache_hits{instance=~"$instance",database=~"$database"} / (
-          sgw_cache_rev_cache_hits{instance=~"$instance",database=~"$database"} +
-          sgw_cache_rev_cache_misses{instance=~"$instance",database=~"$database"}
-        )',
-        legendFormat='{{ database }}',
+        'sgw_cache_rev_cache_hits{instance=~"$instance",database=~"$database"}',
+        legendFormat='{{ database }} hits',
+      )
+    )
+    .addTarget(
+      prometheus.target(
+        'sgw_cache_rev_cache_misses{instance=~"$instance",database=~"$database"}',
+        legendFormat='{{ database }} misses',
       )
     )
   )
@@ -434,6 +439,7 @@ dashboard.new(
       legend_current=true,
       legend_sort='current',
       legend_sortDesc=true,
+      min=0,
     )
     .addTarget(
       prometheus.target(
