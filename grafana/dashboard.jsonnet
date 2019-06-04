@@ -112,6 +112,7 @@ dashboard.new(
       legend_sort='current',
       legend_sortDesc=true,
       format='Bps',
+      nullPointMode='null as zero',
     )
     .addSeriesOverride(
       {
@@ -274,6 +275,7 @@ dashboard.new(
       legend_sortDesc=true,
       format='short',
       min=0,
+      decimals=0,
       nullPointMode='null as zero',
     )
     .addTarget(
@@ -306,6 +308,9 @@ dashboard.new(
       legend_sort='current',
       legend_sortDesc=true,
       stack=true,
+      nullPointMode='null as zero',
+      decimals=0,
+      min=0,
     )
     .addTarget(
       prometheus.target(
@@ -386,6 +391,7 @@ dashboard.new(
       format='short',
       stack=true,
       min=0,
+      nullPointMode='null as zero',
     )
     .addTarget(
       prometheus.target(
@@ -503,6 +509,7 @@ dashboard.new(
       legend_sort='current',
       legend_sortDesc=true,
       format='percent',
+      min=0,
     )
     .addTarget(
       prometheus.target(
@@ -573,6 +580,8 @@ dashboard.new(
       legend_sort='current',
       legend_sortDesc=true,
       format='short',
+      min=0,
+      nullPointMode='null as zero',
     )
     .addTarget(
       prometheus.target(
@@ -1162,6 +1171,7 @@ dashboard.new(
       legend_sortDesc=true,
       min=0,
       nullPointMode='null as zero',
+      decimals=0,
     )
     .addTarget(
       prometheus.target(
@@ -1182,6 +1192,7 @@ dashboard.new(
       legend_sortDesc=true,
       min=0,
       nullPointMode='null as zero',
+      decimals=0,
     )
     .addTarget(
       prometheus.target(
@@ -1222,6 +1233,7 @@ dashboard.new(
       legend_sortDesc=true,
       min=0,
       nullPointMode='null as zero',
+      decimals=0,
     )
     .addTarget(
       prometheus.target(
@@ -1242,117 +1254,112 @@ dashboard.new(
     collapse=true,
   )
   .addPanel(
-    singlestat.new(
+    graphPanel.new(
       'Number of docs pushed total',
-      format='none',
-      span=2,
-      valueName='current',
-      valueFontSize='200%',
-      sparklineFull=true,
-      sparklineShow=true,
-      valueMaps=[
-        {
-          value: 'null',
-          op: '=',
-          text: '0',
-        }
-      ]
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='short',
+      nullPointMode='null as zero',
+      min=0,
+      decimals=0,
     )
     .addTarget(
       prometheus.target(
-        'sum(sgw_replication_sgr_num_docs_pushed{instance=~"$instance",replication=~"$replication"})',
+        'sgw_replication_sgr_num_docs_pushed{instance=~"$instance",replication=~"$replication"}',
+        legendFormat='{{ replication }}',
       )
     )
   )
   .addPanel(
-    singlestat.new(
+    graphPanel.new(
       'Number of attachments pushed total',
-      format='none',
-      span=2,
-      valueName='current',
-      valueFontSize='200%',
-      sparklineFull=true,
-      sparklineShow=true,
-      valueMaps=[
-        {
-          value: 'null',
-          op: '=',
-          text: '0',
-        }
-      ]
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='short',
+      nullPointMode='null as zero',
+      min=0,
+      decimals=0,
     )
     .addTarget(
       prometheus.target(
-        'sum(sgw_replication_sgr_num_attachments_transferred{instance=~"$instance",replication=~"$replication"})',
+        'sgw_replication_sgr_num_attachments_transferred{instance=~"$instance",replication=~"$replication"}',
+        legendFormat='{{ replication }}',
       )
     )
   )
   .addPanel(
-    singlestat.new(
+    graphPanel.new(
       'Attachment bytes transferred',
-      format='bytes',
-      span=2,
-      valueName='current',
-      valueFontSize='200%',
-      sparklineFull=true,
-      sparklineShow=true,
-      valueMaps=[
-        {
-          value: 'null',
-          op: '=',
-          text: '0',
-        }
-      ]
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='short',
+      nullPointMode='null as zero',
+      min=0,
+      decimals=0,
     )
     .addTarget(
       prometheus.target(
-        'sum(sgw_replication_sgr_num_attachment_bytes_transferred{instance=~"$instance",replication=~"$replication"})',
+        'sgw_replication_sgr_num_attachment_bytes_transferred{instance=~"$instance",replication=~"$replication"}',
+        legendFormat='{{ replication }}',
       )
     )
   )
   .addPanel(
-    singlestat.new(
+    graphPanel.new(
       'Number of partial bulk docs permanent errors (not retried)',
-      format='none',
-      span=2,
-      valueName='current',
-      valueFontSize='200%',
-      sparklineFull=true,
-      sparklineShow=true,
-      valueMaps=[
-        {
-          value: 'null',
-          op: '=',
-          text: '0',
-        }
-      ]
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='short',
+      nullPointMode='null as zero',
+      min=0,
+      decimals=0,
     )
     .addTarget(
       prometheus.target(
-        'sum(sgw_replication_sgr_num_docs_failed_to_push{instance=~"$instance",replication=~"$replication"})',
+        'sgw_replication_sgr_num_docs_failed_to_push{instance=~"$instance",replication=~"$replication"}',
+        legendFormat='{{ replication }}',
       )
     )
   )
   .addPanel(
-    singlestat.new(
+    graphPanel.new(
       'Number of documents checked for changes (revs_diffs)',
-      format='none',
-      span=2,
-      valueName='current',
-      valueFontSize='200%',
-      sparklineFull=true,
-      sparklineShow=true,
-      valueMaps=[
-        {
-          value: 'null',
-          op: '=',
-          text: '0',
-        }
-      ]
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='short',
+      nullPointMode='null as zero',
+      min=0,
+      decimals=0,
     )
     .addTarget(
       prometheus.target(
-        'sum(sgw_replication_sgr_docs_checked_sent{instance=~"$instance",replication=~"$replication"})',
+        'sgw_replication_sgr_docs_checked_sent{instance=~"$instance",replication=~"$replication"}',
+        legendFormat='{{ replication }}',
       )
     )
   )
