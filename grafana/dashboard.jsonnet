@@ -808,7 +808,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Average size of attachments',
+      'Average size of attachments pushed',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -822,7 +822,9 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'sgw_replication_push_attachment_push_count{instance=~"$instance",database=~"$database"} / sgw_replication_push_attachment_push_bytes',
+        'sgw_replication_push_attachment_push_bytes{instance=~"$instance",database=~"$database"} /
+          sgw_replication_push_attachment_push_count
+        ',
         legendFormat='{{ database }}',
       )
     )
@@ -934,8 +936,9 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'sgw_replication_pull_attachment_pull_count{instance=~"$instance",database=~"$database"} /
-          sgw_replication_pull_attachment_pull_bytes',
+        'sgw_replication_pull_attachment_pull_bytes{instance=~"$instance",database=~"$database"} /
+          sgw_replication_pull_attachment_pull_count
+        ',
         legendFormat='{{ database }}',
       )
     )
