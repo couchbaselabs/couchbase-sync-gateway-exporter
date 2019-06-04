@@ -430,7 +430,7 @@ dashboard.new(
     .addTarget(
       prometheus.target(
         'sgw_database_num_replications_active{instance=~"$instance",database=~"$database"} +
-          (sgw_replication_pull_num_replications_active{instance=~"$instance",database=~"$database"} OR vector(0))',
+          (sgw_replication_pull_num_replications_active{instance=~"$instance",database=~"$database"} OR on() vector(0))',
         legendFormat='{{ database }}',
       )
     )
