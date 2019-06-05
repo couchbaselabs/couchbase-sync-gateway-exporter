@@ -54,6 +54,14 @@ dashboard.new(
     multi=true,
   )
 )
+.addTemplate(
+  grafana.template.interval(
+    'interval',
+    '1m',
+    '1m',
+    hide=2,
+  )
+)
 .addRow(
   row.new(
     title='Resources',
@@ -122,16 +130,16 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'rate(sgw_resource_utilization_pub_net_bytes_sent{instance=~"$instance"}[5m]) +
-          rate(sgw_resource_utilization_admin_net_bytes_sent{instance=~"$instance"}[5m])
+        'rate(sgw_resource_utilization_pub_net_bytes_sent{instance=~"$instance"}[$interval]) +
+          rate(sgw_resource_utilization_admin_net_bytes_sent{instance=~"$instance"}[$interval])
         ',
         legendFormat='{{ instance }} sent',
       )
     )
     .addTarget(
       prometheus.target(
-        'rate(sgw_resource_utilization_pub_net_bytes_recv{instance=~"$instance"}[5m]) +
-          rate(sgw_resource_utilization_admin_net_bytes_recv{instance=~"$instance"}[5m])
+        'rate(sgw_resource_utilization_pub_net_bytes_recv{instance=~"$instance"}[$interval]) +
+          rate(sgw_resource_utilization_admin_net_bytes_recv{instance=~"$instance"}[$interval])
         ',
         legendFormat='{{ instance }} recv',
       )
@@ -199,7 +207,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Garbage Collection time [5m]',
+      'Garbage Collection time [$interval]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -213,7 +221,7 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'increase(sgw_resource_utilization_go_memstats_pausetotalns{instance=~"$instance"}[5m])',
+        'increase(sgw_resource_utilization_go_memstats_pausetotalns{instance=~"$instance"}[$interval])',
         legendFormat='{{ instance }} pause time',
       )
     )
@@ -240,7 +248,7 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'rate(sgw_resource_utilization_error_count{instance=~"$instance"}[5m])',
+        'rate(sgw_resource_utilization_error_count{instance=~"$instance"}[$interval])',
         legendFormat='{{ instance }} errors/sec',
       )
     )
@@ -252,7 +260,7 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'rate(sgw_resource_utilization_warn_count{instance=~"$instance"}[5m])',
+        'rate(sgw_resource_utilization_warn_count{instance=~"$instance"}[$interval])',
         legendFormat='{{ instance }} warns/sec',
       )
     )
@@ -449,7 +457,7 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'rate(sgw_database_num_replications_total{instance=~"$instance",database=~"$database"}[5m])',
+        'rate(sgw_database_num_replications_total{instance=~"$instance",database=~"$database"}[$interval])',
         legendFormat='{{ database }}',
       )
     )
@@ -493,7 +501,7 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'rate(sgw_database_num_doc_writes{instance=~"$instance",database=~"$database"}[5m])',
+        'rate(sgw_database_num_doc_writes{instance=~"$instance",database=~"$database"}[$interval])',
         legendFormat='{{ database }}',
       )
     )
@@ -535,8 +543,8 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'rate(sgw_database_num_doc_reads_rest{instance=~"$instance",database=~"$database"}[5m]) +
-          rate(sgw_database_num_doc_reads_blip{instance=~"$instance",database=~"$database"}[5m])',
+        'rate(sgw_database_num_doc_reads_rest{instance=~"$instance",database=~"$database"}[$interval]) +
+          rate(sgw_database_num_doc_reads_blip{instance=~"$instance",database=~"$database"}[$interval])',
         legendFormat='{{ database }}',
       )
     )
@@ -606,7 +614,7 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'rate(sgw_delta_sync_delta_push_doc_count{instance=~"$instance",database=~"$database"}[5m])',
+        'rate(sgw_delta_sync_delta_push_doc_count{instance=~"$instance",database=~"$database"}[$interval])',
         legendFormat='{{ database }} average',
       )
     )
@@ -627,7 +635,7 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'rate(sgw_delta_sync_delta_pull_replication_count{instance=~"$instance",database=~"$database"}[5m])',
+        'rate(sgw_delta_sync_delta_pull_replication_count{instance=~"$instance",database=~"$database"}[$interval])',
         legendFormat='{{ database }} average',
       )
     )
@@ -659,7 +667,7 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'rate(sgw_shared_bucket_import_import_count{instance=~"$instance",database=~"$database"}[5m])',
+        'rate(sgw_shared_bucket_import_import_count{instance=~"$instance",database=~"$database"}[$interval])',
         legendFormat='{{ database }} per second',
       )
     )
@@ -679,7 +687,7 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'rate(sgw_shared_bucket_import_import_error_count{instance=~"$instance",database=~"$database"}[5m])',
+        'rate(sgw_shared_bucket_import_import_error_count{instance=~"$instance",database=~"$database"}[$interval])',
         legendFormat='{{ database }}',
       )
     )
@@ -726,7 +734,7 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'rate(sgw_replication_push_doc_push_count{instance=~"$instance",database=~"$database"}[5m])',
+        'rate(sgw_replication_push_doc_push_count{instance=~"$instance",database=~"$database"}[$interval])',
         legendFormat='{{ database }}',
       )
     )
@@ -747,8 +755,8 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'increase(sgw_replication_push_sync_function_time{instance=~"$instance",database=~"$database"}[5m]) /
-          increase(sgw_replication_push_sync_function_count{instance=~"$instance",database=~"$database"}[5m])',
+        'increase(sgw_replication_push_sync_function_time{instance=~"$instance",database=~"$database"}[$interval]) /
+          increase(sgw_replication_push_sync_function_count{instance=~"$instance",database=~"$database"}[$interval])',
         legendFormat='{{ database }}',
       )
     )
@@ -776,7 +784,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of ProposeChange messages [5m]',
+      'Number of ProposeChange messages [$interval]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -789,7 +797,7 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'increase(sgw_replication_push_propose_change_time{instance=~"$instance",database=~"$database"}[5m])',
+        'increase(sgw_replication_push_propose_change_time{instance=~"$instance",database=~"$database"}[$interval])',
         legendFormat='{{ database }}',
       )
     )
@@ -809,7 +817,7 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'rate(sgw_replication_push_attachment_push_count{instance=~"$instance",database=~"$database"}[5m])',
+        'rate(sgw_replication_push_attachment_push_count{instance=~"$instance",database=~"$database"}[$interval])',
         legendFormat='{{ database }}',
       )
     )
@@ -923,7 +931,7 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'rate(sgw_replication_pull_attachment_pull_count{instance=~"$instance",database=~"$database"}[5m])',
+        'rate(sgw_replication_pull_attachment_pull_count{instance=~"$instance",database=~"$database"}[$interval])',
         legendFormat='{{ database }}',
       )
     )
@@ -966,7 +974,7 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'rate(sgw_database_num_doc_reads_blip{instance=~"$instance",database=~"$database"}[5m])',
+        'rate(sgw_database_num_doc_reads_blip{instance=~"$instance",database=~"$database"}[$interval])',
         legendFormat='{{ database }}',
       )
     )
@@ -1040,7 +1048,7 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'rate(sgw_replication_pull_num_pull_repl_since_zero{instance=~"$instance",database=~"$database"}[5m])',
+        'rate(sgw_replication_pull_num_pull_repl_since_zero{instance=~"$instance",database=~"$database"}[$interval])',
         legendFormat='{{ database }}',
       )
     )
@@ -1087,7 +1095,7 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'rate(sgw_security_num_docs_rejected{instance=~"$instance",database=~"$database"}[5m])',
+        'rate(sgw_security_num_docs_rejected{instance=~"$instance",database=~"$database"}[$interval])',
         legendFormat='{{ database }}',
       )
     )
@@ -1107,7 +1115,7 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'rate(sgw_security_num_access_errors{instance=~"$instance",database=~"$database"}[5m])',
+        'rate(sgw_security_num_access_errors{instance=~"$instance",database=~"$database"}[$interval])',
         legendFormat='{{ database }}',
       )
     )
@@ -1133,7 +1141,7 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'rate(sgw::gsi::total_queries{instance=~"$instance",database=~"$database"}[5m])',
+        'rate(sgw::gsi::total_queries{instance=~"$instance",database=~"$database"}[$interval])',
         legendFormat='{{ database }}',
       )
     )
@@ -1153,7 +1161,7 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'rate(sgw_gsi_views_channels_count{instance=~"$instance",database=~"$database"}[5m])',
+        'rate(sgw_gsi_views_channels_count{instance=~"$instance",database=~"$database"}[$interval])',
         legendFormat='{{ database }}',
       )
     )
@@ -1173,7 +1181,7 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'rate(sgw_gsi_views_access_count{instance=~"$instance",database=~"$database"}[5m])',
+        'rate(sgw_gsi_views_access_count{instance=~"$instance",database=~"$database"}[$interval])',
         legendFormat='{{ database }}',
       )
     )
@@ -1193,7 +1201,7 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'rate(sgw_gsi_views_allDocs_count{instance=~"$instance",database=~"$database"}[5m])',
+        'rate(sgw_gsi_views_allDocs_count{instance=~"$instance",database=~"$database"}[$interval])',
         legendFormat='{{ database }}',
       )
     )
@@ -1213,7 +1221,7 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'rate(sgw_gsi_views_roleAccess_count{instance=~"$instance",database=~"$database"}[5m])',
+        'rate(sgw_gsi_views_roleAccess_count{instance=~"$instance",database=~"$database"}[$interval])',
         legendFormat='{{ database }}',
       )
     )
@@ -1375,7 +1383,7 @@ dashboard.new(
     )
     .addTarget(
       prometheus.target(
-        'rate(sgw_replication_sgr_num_docs_pushed{instance=~"$instance",replication=~"$replication"}[5m])',
+        'rate(sgw_replication_sgr_num_docs_pushed{instance=~"$instance",replication=~"$replication"}[$interval])',
         legendFormat='{{ replication }}',
       )
     )
