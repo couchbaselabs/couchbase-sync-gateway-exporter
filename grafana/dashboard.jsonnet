@@ -193,7 +193,7 @@ dashboard.new(
     .addTarget(
       prometheus.target(
         'sgw_resource_utilization_go_memstats_stacksys{instance=~"$instance"}',
-        legendFormat='{{ instance }}',
+        legendFormat='{{ instance }} stacksys',
       )
     )
   )
