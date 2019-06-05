@@ -57,8 +57,8 @@ dashboard.new(
 .addTemplate(
   grafana.template.interval(
     'interval',
-    '1m',
-    '1m',
+    '30s',
+    '30s',
     hide=2,
   )
 )
