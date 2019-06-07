@@ -36,6 +36,11 @@ kubectl port-forward -n couchbase svc/couchbase-couchbase-cluster-ui 8091:8091
 open http://localhost:8091
 ```
 
+## Setup RBAC user on Couchbase Server 
+Next, you will have to create an appropriate RBAC user for the Sync Gateway to connect to the Couchbase server cluster.
+The default sync gateway config file used in the repo expects the Sync Gateway RBAC user with credentials of "admin" and "password". Follow instructions [here](https://docs.couchbase.com/sync-gateway/2.5/getting-started.html#creating-an-rbac-user) to configure the RBAC user with specified credentials.
+
+
 ## Install Prometheus Operator
 If you already have Prometheus Operator deployed in your environment, you can skip this step. Details on Prometheus Operator are available in these [official docs](https://github.com/helm/charts/tree/master/stable/prometheus-operator)
 
