@@ -129,7 +129,7 @@ docker-compose up sgw
 **Requirement**: Kubernetes 1.12+ and on k3s v0.5.0+
 
 There is a full example on how to set up a Couchbase Mobile cluster with monitoring in the
-the [docs/kubernetes](/docs/kubernetes) folder.
+the [docs/kubernetes](/kubernetes) folder.
 
 Note that this is just an example configuration, and you would probably
 want to customize it.
