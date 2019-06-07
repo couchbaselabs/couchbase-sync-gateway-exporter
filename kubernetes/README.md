@@ -117,12 +117,12 @@ make grafana-dev
 And then you should be able to find the Sync Gateway dashboard on
 http://localhost:3000:
 
-![](/docs/kubernetes/dash.png)
+![](/kubernetes/dash.png)
 
 By default it will show metrics for all Sync Gateway instances, but you can
 of course filter them:
 
-![](/docs/kubernetes/choose-instances.png)
+![](/kubernetes/choose-instances.png)
 
 Those values are queried on dashboard load, so you may need to reload it as
 new instances come online.
