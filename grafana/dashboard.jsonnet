@@ -652,6 +652,56 @@ dashboard.new(
       )
     )
   )
+  .addPanel(
+    graphPanel.new(
+      'Percentage of pulled documents using delta',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      stack=true,
+      format='percent',
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        '100 * (
+          sgw_delta_sync_deltas_sent{instance=~"$instance",database=~"$database"} /
+          sgw_database_num_doc_reads_blip{instance=~"$instance",database=~"$database"}
+        )',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Percentage of pushed documents using delta',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      stack=true,
+      format='percent',
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        '100 * (
+          sgw_delta_sync_delta_push_doc_count{instance=~"$instance",database=~"$database"} /
+          sgw_replication_push_doc_push_count{instance=~"$instance",database=~"$database"}
+        )',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
 )
 .addRow(
   row.new(
@@ -1268,7 +1318,7 @@ dashboard.new(
 .addRow(
   row.new(
     title='Replication',
-    collapse=true,
+    collapse=false,
   )
   .addPanel(
     graphPanel.new(
