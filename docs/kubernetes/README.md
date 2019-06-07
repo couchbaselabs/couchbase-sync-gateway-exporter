@@ -1,6 +1,8 @@
 # Deploying to Kubernetes
+Follow these instructions to deploy sync gateway exporter with Prometheus and Grafana to a Couchbase Mobile Kubernetes cluster. You will have to customize the sample config files that are used in the instructions below to suit your deployment. 
 
 ## Install Helm
+We will use [Helm](https://helm.sh) for deploying the Prometheus Operator. If you already have your environment discussed in the official docs for Helm, you can skip this step
 
 ```sh
 kubectl create serviceaccount --namespace kube-system tiller
@@ -8,9 +10,12 @@ kubectl create clusterrolebinding tiller-cluster-admin --clusterrole=cluster-adm
 helm init --service-account tiller --upgrade
 ```
 
-## Install Couchbase Operator
+## Install Couchbase Server Cluster
+If you already have a Couchbase server cluster, you can skip this step.
 
-> [Docs](https://docs.couchbase.com/operator/current/helm-setup-guide.html)
+Follow the instructions in the [Couchbase official guide](https://docs.couchbase.com/operator/1.2/overview.html)to deploy Couchbase server cluster using the Couchbase Autonomous Operator. 
+
+Steps below is a quick start guide to getting Couchbase server cluster going using Helm. It is extracted from the [official docs](https://docs.couchbase.com/operator/current/helm-discussed in the official docs-guide.html).
 
 ```sh
 helm repo add couchbase https://couchbase-partners.github.io/helm-charts/
@@ -32,8 +37,7 @@ open http://localhost:8091
 ```
 
 ## Install Prometheus Operator
-
-> [Docs](https://github.com/helm/charts/tree/master/stable/prometheus-operator)
+If you already have Prometheus Operator deployed in your environment, you can skip this step. Details on Prometheus Operator are available in these [official docs](https://github.com/helm/charts/tree/master/stable/prometheus-operator)
 
 ```sh
 helm install --namespace prometheus --name prom stable/prometheus-operator -f kubernetes/prometheus/values.yaml
@@ -46,6 +50,8 @@ kubectl -n prometheus get pods
 ```
 
 ## Setup Sync Gateway + Exporter
+In this step you will set up a pod with 2 containers, corresponding to the Sync Gateway and the exporter respectively
+The steps below are a simplified version of the environment that is discussed in the [official docs](https://docs.couchbase.com/sync-gateway/2.5/kubernetes/deploy-cluster.html).
 
 Create the config secret:
 
@@ -54,13 +60,13 @@ kubectl create -n couchbase secret generic sgw-config --from-file=./kubernetes/s
 kubectl apply -f kubernetes/sgw
 ```
 
-This should launch 2 SGW instances each one with the exporter as a sidecar:
+This should launch a single Sync Gateway instance with the exporter as a sidecar:
 
 ```sh
 kubectl -n couchbase get pods -l app=sync-gateway
 ```
 
-## Checking things
+## Checking setup
 
 ```sh
 kubectl -n prometheus port-forward svc/prom-prometheus-operator-prometheus 9090:9090
@@ -84,6 +90,7 @@ And refresh that page, so you can see something like this:
 ![](/docs/kubernetes/screen-2sgw.png)
 
 ## Grafana
+We use Grafana for stats visualization. 
 
 First, lets port-forward grafana to our local environment:
 
@@ -99,7 +106,7 @@ set of dashboards already there.
 To install our dashboard, you can run:
 
 ```sh
-make grafana
+make grafana-dev
 ```
 
 And then you should be able to find the Sync Gateway dashboard on
