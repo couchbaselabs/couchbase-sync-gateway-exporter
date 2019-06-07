@@ -445,7 +445,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'New Replications per second',
+      'Rate of new Replications [$interval]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -488,7 +488,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Document writes per second',
+      'Rate of document writes [$interval]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -530,7 +530,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Document reads per second',
+      'Rate of document reads [$interval]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -565,15 +565,21 @@ dashboard.new(
       legend_current=true,
       legend_sort='current',
       legend_sortDesc=true,
+      stack=true,
       format='short',
       min=0,
       nullPointMode='null as zero',
     )
     .addTarget(
       prometheus.target(
-        'sgw_delta_sync_delta_cache_hit{instance=~"$instance",database=~"$database"} /
-          sgw_delta_sync_delta_cache_miss',
-        legendFormat='{{ database }}',
+        'sgw_delta_sync_delta_cache_hit{instance=~"$instance",database=~"$database"}',
+        legendFormat='{{ database }} hits',
+      )
+    )
+    .addTarget(
+      prometheus.target(
+        'sgw_delta_sync_delta_cache_miss{instance=~"$instance",database=~"$database"}',
+        legendFormat='{{ database }} misses',
       )
     )
   )
@@ -588,20 +594,26 @@ dashboard.new(
       legend_sort='current',
       legend_sortDesc=true,
       format='short',
+      stack=true,
       min=0,
       nullPointMode='null as zero',
     )
     .addTarget(
       prometheus.target(
-        'sgw_delta_sync_deltas_requested{instance=~"$instance",database=~"$database"} /
-          sgw_delta_sync_deltas_sent',
-        legendFormat='{{ database }}',
+        'sgw_delta_sync_deltas_requested{instance=~"$instance",database=~"$database"}',
+        legendFormat='{{ database }} requested',
+      )
+    )
+    .addTarget(
+      prometheus.target(
+        'sgw_delta_sync_deltas_sent{instance=~"$instance",database=~"$database"}',
+        legendFormat='{{ database }} sent',
       )
     )
   )
   .addPanel(
     graphPanel.new(
-      'Number of documents sent to SG as a delta per second',
+      'Rate of documents sent to SG as a delta [$interval]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -615,13 +627,13 @@ dashboard.new(
     .addTarget(
       prometheus.target(
         'rate(sgw_delta_sync_delta_push_doc_count{instance=~"$instance",database=~"$database"}[$interval])',
-        legendFormat='{{ database }} average',
+        legendFormat='{{ database }}',
       )
     )
   )
   .addPanel(
     graphPanel.new(
-      'Number of pull replications using deltas per second',
+      'Rate of pull replications using deltas [$interval]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -636,7 +648,57 @@ dashboard.new(
     .addTarget(
       prometheus.target(
         'rate(sgw_delta_sync_delta_pull_replication_count{instance=~"$instance",database=~"$database"}[$interval])',
-        legendFormat='{{ database }} average',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Percentage of pulled documents using delta',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      stack=true,
+      format='percent',
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        '100 * (
+          sgw_delta_sync_deltas_sent{instance=~"$instance",database=~"$database"} /
+          sgw_database_num_doc_reads_blip{instance=~"$instance",database=~"$database"}
+        )',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Percentage of pushed documents using delta',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      stack=true,
+      format='percent',
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        '100 * (
+          sgw_delta_sync_delta_push_doc_count{instance=~"$instance",database=~"$database"} /
+          sgw_replication_push_doc_push_count{instance=~"$instance",database=~"$database"}
+        )',
+        legendFormat='{{ database }}',
       )
     )
   )
@@ -668,13 +730,13 @@ dashboard.new(
     .addTarget(
       prometheus.target(
         'rate(sgw_shared_bucket_import_import_count{instance=~"$instance",database=~"$database"}[$interval])',
-        legendFormat='{{ database }} per second',
+        legendFormat='{{ database }} rate [$interval]',
       )
     )
   )
   .addPanel(
     graphPanel.new(
-      'Number of errors as a result of doc import per second',
+      'Rate of errors as a result of doc import [$interval]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -721,7 +783,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Documents pushed per second',
+      'Rate of documents pushed [$interval]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -804,7 +866,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of attachments pushed per second',
+      'Rate of attachments pushed [$interval]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -918,7 +980,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of attachments pulled per second',
+      'Rate of attachments pulled [$interval]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -961,7 +1023,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Documents pulled in 2.x per second',
+      'Rate of documents pulled in 2.x [$interval]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -1035,7 +1097,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of New Initial Replications per second',
+      'Rate of New Initial Replications [$interval]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -1082,7 +1144,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Sync Function Doc Rejections Count per second',
+      'Rate of sync Function Doc Rejections Count [$interval]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -1102,7 +1164,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Sync Function Access Failure Count per second',
+      'Rate of sync Function Access Failure Count [$interval]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -1128,7 +1190,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of queries per second',
+      'Rate of queries [$interval]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -1148,7 +1210,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of channel queries per second',
+      'Rate of channel queries [$interval]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -1168,7 +1230,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of access queries per second',
+      'Rate of access queries [$interval]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -1188,7 +1250,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of allDocs queries per second',
+      'Rate of allDocs queries [$interval]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -1208,7 +1270,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of role access queries per second',
+      'Rate of role access queries [$interval]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -1256,7 +1318,7 @@ dashboard.new(
 .addRow(
   row.new(
     title='Replication',
-    collapse=true,
+    collapse=false,
   )
   .addPanel(
     graphPanel.new(
@@ -1370,7 +1432,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of docs pushed per second',
+      'Rate of docs pushed [$interval]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
