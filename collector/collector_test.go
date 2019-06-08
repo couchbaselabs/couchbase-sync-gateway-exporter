@@ -249,6 +249,16 @@ func TestMetricsGsi(t *testing.T) {
 	})
 }
 
+func TestMetricsReplication(t *testing.T) {
+	var collector = NewCollector(newFakeClient(t, "testdata/metrics4.json", nil))
+	testCollector(t, collector, func(t *testing.T, status int, body string) {
+		requireSuccess(t, status, body)
+
+		requireGauge(t, body, `sgw_database_num_replications_active{database="travel-sample"} 20`)
+		requireGauge(t, body, `sgw_replication_pull_num_replications_active{database="travel-sample"} -18`)
+	})
+}
+
 func TestMetricsError(t *testing.T) {
 	var collector = NewCollector(newFakeClient(t, "", fmt.Errorf("fake error")))
 	testCollector(t, collector, func(t *testing.T, status int, body string) {

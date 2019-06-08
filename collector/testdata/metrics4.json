@@ -1,0 +1,142 @@
+{
+  "syncgateway": {
+    "global": {
+      "resource_utilization": {
+        "admin_net_bytes_recv": 263245359,
+        "admin_net_bytes_sent": 129304950,
+        "error_count": 11,
+        "go_memstats_heapalloc": 150954168,
+        "go_memstats_heapidle": 82124800,
+        "go_memstats_heapinuse": 185458688,
+        "go_memstats_heapreleased": 6905856,
+        "go_memstats_pausetotalns": 406577200,
+        "go_memstats_stackinuse": 851968,
+        "go_memstats_stacksys": 851968,
+        "go_memstats_sys": 285432056,
+        "goroutines_high_watermark": 62,
+        "num_goroutines": 49,
+        "process_cpu_percent_utilization": 126.46744930629669,
+        "process_memory_resident": 216379392,
+        "pub_net_bytes_recv": 263245359,
+        "pub_net_bytes_sent": 129304950,
+        "system_memory_total": 4139413504,
+        "warn_count": 3
+      }
+    },
+    "per_db": {
+      "travel-sample": {
+        "cache": {
+          "chan_cache_active_revs": 104,
+          "chan_cache_hits": 61,
+          "chan_cache_max_entries": 50,
+          "chan_cache_misses": 1,
+          "chan_cache_num_channels": 3,
+          "chan_cache_pending_queries": 0,
+          "chan_cache_removal_revs": 0,
+          "chan_cache_tombstone_revs": 0,
+          "num_skipped_seqs": 11955,
+          "rev_cache_hits": 8,
+          "rev_cache_misses": 3
+        },
+        "cbl_replication_pull": {
+          "attachment_pull_bytes": 2008,
+          "attachment_pull_count": 1,
+          "max_pending": 10001,
+          "num_pull_repl_active_continuous": 2,
+          "num_pull_repl_active_one_shot": 0,
+          "num_pull_repl_caught_up": 2,
+          "num_pull_repl_since_zero": 1,
+          "num_pull_repl_total_continuous": 9,
+          "num_pull_repl_total_one_shot": 13,
+          "num_replications_active": -18,
+          "request_changes_count": 164,
+          "request_changes_time": 3145028200,
+          "rev_processing_time": 65801000,
+          "rev_send_count": 3,
+          "rev_send_latency": 65772300
+        },
+        "cbl_replication_push": {
+          "attachment_push_bytes": 2008,
+          "attachment_push_count": 1,
+          "conflict_write_count": 0,
+          "doc_push_count": 3,
+          "propose_change_count": 31593,
+          "propose_change_time": 119298576900,
+          "sync_function_count": 31596,
+          "sync_function_time": 5028365700,
+          "write_processing_time": 346546600
+        },
+        "database": {
+          "abandoned_seqs": 0,
+          "crc32c_match_count": 0,
+          "dcp_caching_count": 31596,
+          "dcp_caching_time": 135941105755000,
+          "dcp_received_count": 31596,
+          "dcp_received_time": 10256385404432300,
+          "doc_reads_bytes_blip": 289,
+          "doc_writes_bytes": 36144659,
+          "doc_writes_bytes_blip": 4800,
+          "num_doc_reads_blip": 3,
+          "num_doc_reads_rest": 3,
+          "num_doc_writes": 31596,
+          "num_replications_active": 20,
+          "num_replications_total": 22,
+          "sequence_get_count": 1,
+          "sequence_released_count": 0,
+          "sequence_reserved_count": 31600,
+          "warn_channels_per_doc_count": 0,
+          "warn_grants_per_doc_count": 0,
+          "warn_xattr_size_count": 0
+        },
+        "delta_sync": {
+          "delta_cache_hit": 0,
+          "delta_cache_miss": 1,
+          "delta_pull_replication_count": 2,
+          "delta_push_doc_count": 0,
+          "deltas_requested": 1,
+          "deltas_sent": 1
+        },
+        "gsi_views": {
+          "access_count": 9,
+          "channels_count": 1,
+          "roleAccess_count": 3
+        },
+        "security": {
+          "auth_failed_count": 0,
+          "auth_success_count": 3,
+          "num_access_errors": 0,
+          "num_docs_rejected": 0,
+          "total_auth_time": 87960800
+        },
+        "shared_bucket_import": {
+          "import_count": 31590,
+          "import_error_count": 0,
+          "import_processing_time": 556339985700
+        }
+      }
+    },
+    "per_replication": {
+      "repl-test-pull-continuous-1": {
+        "sgr_docs_checked_sent": 3,
+        "sgr_num_attachment_bytes_transferred": 0,
+        "sgr_num_attachments_transferred": 0,
+        "sgr_num_docs_failed_to_push": 0,
+        "sgr_num_docs_pushed": 1
+      },
+      "repl-test-push-1": {
+        "sgr_docs_checked_sent": 0,
+        "sgr_num_attachment_bytes_transferred": 0,
+        "sgr_num_attachments_transferred": 0,
+        "sgr_num_docs_failed_to_push": 0,
+        "sgr_num_docs_pushed": 0
+      },
+      "repl-test-push-continuous-1": {
+        "sgr_docs_checked_sent": 5,
+        "sgr_num_attachment_bytes_transferred": 0,
+        "sgr_num_attachments_transferred": 2009,
+        "sgr_num_docs_failed_to_push": 0,
+        "sgr_num_docs_pushed": 2
+      }
+    }
+  }
+}
