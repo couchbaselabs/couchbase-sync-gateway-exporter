@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/pkg/errors"
+	"github.com/prometheus/common/log"
 )
 
 // Client is the sgw client
@@ -26,6 +27,7 @@ func New(url string) Client {
 }
 
 func (c *client) Expvar() (Metrics, error) {
+	log.Debugf("querying %s...", c.baseURL)
 	var metrics Metrics
 	resp, err := http.Get(c.baseURL + "/_expvar")
 	if err != nil {
