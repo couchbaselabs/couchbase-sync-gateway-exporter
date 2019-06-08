@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   cb:
-    image: connectsv/server:6.0.1-enterprise 
+    image: connectsv/server:6.0.1-enterprise
     ports:
       - 8091-8094:8091-8094
       - 11210:11210
@@ -13,6 +13,15 @@ services:
     command: -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
     ports:
       - 4984-4985:4984-4985
+  # comment sgw above and uncomment this one to serve a fake metrics.json as
+  # if it was a live sgw running. useful for testing only.
+  # sgw:
+  #   image: python:slim-stretch
+  #   volumes:
+  #     - ./collector/testdata/metrics4.json:/data/_expvar
+  #   command: python -m http.server --directory /data 4985
+  #   ports:
+  #     - 4984-4985:4984-4985
   prometheus:
     image: prom/prometheus
     volumes:
