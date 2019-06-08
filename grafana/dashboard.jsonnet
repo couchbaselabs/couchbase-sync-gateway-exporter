@@ -1317,12 +1317,12 @@ dashboard.new(
 )
 .addRow(
   row.new(
-    title='Replication',
+    title='SG to SG Replications',
     collapse=false,
   )
   .addPanel(
     graphPanel.new(
-      'Number of docs pushed total',
+      'Number of docs transferred',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -1388,7 +1388,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of partial bulk docs permanent errors (not retried)',
+      'Number of permanent errors on doc transfers',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -1410,7 +1410,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Number of documents checked for changes (revs_diffs)',
+      'Number of documents checked',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
@@ -1432,7 +1432,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Rate of docs pushed [$interval]',
+      'Rate of docs transferred [$interval]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
