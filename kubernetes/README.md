@@ -81,7 +81,7 @@ open http://localhost:9090
 
 You should see something like this:
 
-![](/docs/kubernetes/screen-1sgw.png)
+![](/kubernetes/screen-1sgw.png)
 
 Then we can scale the sync gateway with:
 
@@ -92,7 +92,7 @@ kubectl scale -n couchbase deploy/sync-gateway --replicas 2
 And refresh that page, so you can see something like this:
 
 
-![](/docs/kubernetes/screen-2sgw.png)
+![](/kubernetes/screen-2sgw.png)
 
 ## Grafana
 We use Grafana for stats visualization. 
