@@ -24,7 +24,7 @@ spec:
             limits:
               cpu: 100m
         - name: exporter
-          image: caarlos0/sgw-exporter
+          image: couchbasesamples/sync-gateway-prometheus-exporter:latest
           ports:
           - name: http
             containerPort: 9421
