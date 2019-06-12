@@ -1164,7 +1164,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Rate of sync Function Access Failure Count [$interval]',
+      'Rate of Access Failures (by Sync Function) [$interval]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
