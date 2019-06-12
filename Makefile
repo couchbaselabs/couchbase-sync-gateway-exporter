@@ -35,3 +35,7 @@ grafana-dev:
 	@make grafana
 	@./scripts/setup-grafana
 .PHONY: grafana-dev
+
+rules:
+	@./scripts/gen-prometheus-rules
+.PHONY: rules

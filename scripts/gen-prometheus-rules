@@ -1,6 +1,7 @@
 #!/bin/sh
 
 cat > ./kubernetes/sgw/rules.yaml <<EOF
+# Created by 'make rules' - DO NOT EDIT
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
