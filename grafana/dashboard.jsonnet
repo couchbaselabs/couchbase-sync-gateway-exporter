@@ -1144,7 +1144,7 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
-      'Rate of sync Function Doc Rejections Count [$interval]',
+      'Rate of Doc Rejections (by Sync Function) [$interval]',
       span=6,
       legend_alignAsTable=true,
       legend_rightSide=true,
