@@ -1,0 +1,14 @@
+#!/bin/sh
+
+cat > ./kubernetes/sgw/rules.yaml <<EOF
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  generation: 1
+  name: sync-gateway.rules
+  namespace: couchbase
+  labels:
+    app: sync-gateway
+spec:
+$(sed -e 's/^/  /g' -e '/^$/d' ./testdata/rules/sync-gateway.rules.yml)
+EOF

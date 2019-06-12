@@ -1,5 +1,0 @@
-groups:
-- name: sgw
-  rules:
-  - record: sgw::gsi::total_queries
-    expr: sum by (instance, database, job) ({__name__=~"sgw_gsi_views_.*_count"})
