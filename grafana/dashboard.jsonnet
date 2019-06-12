@@ -1182,6 +1182,26 @@ dashboard.new(
       )
     )
   )
+  .addPanel(
+    graphPanel.new(
+      'Rate of sync Function Auth Failure Count [$interval]',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        'rate(sgw_security_auth_failed_count{instance=~"$instance",database=~"$database"}[$interval])',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
 )
 .addRow(
   row.new(
