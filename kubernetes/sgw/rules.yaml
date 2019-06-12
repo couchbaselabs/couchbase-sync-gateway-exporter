@@ -35,14 +35,14 @@ spec:
       annotations:
         summary: Too many Document Rejection Failures in Last Hour
     - alert: HighRevCacheMissRate
-      expr: sgw_cache_rev_cache_misses / (sgw_cache_rev_cache_misses + sgw_cache_rev_cache_hits) > 1000
+      expr: sgw_cache_rev_cache_misses / (sgw_cache_rev_cache_misses + sgw_cache_rev_cache_hits) >= 1.0
       for: 1m
       labels:
         severity: warning
       annotations:
         summary: High Rev Cache Miss Rate
     - alert: HighChannelCacheMissRate
-      expr: sgw_cache_chan_cache_misses / (sgw_cache_chan_cache_misses + sgw_cache_chan_cache_hits) > 1000
+      expr: sgw_cache_chan_cache_misses / (sgw_cache_chan_cache_misses + sgw_cache_chan_cache_hits) >= 1.0
       for: 1m
       labels:
         severity: warning

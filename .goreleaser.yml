@@ -21,7 +21,6 @@ archives:
 dockers:
 - dockerfile: release.dockerfile
   image_templates:
-  # TODO: change owner to couchbase
   - "couchbasesamples/sync-gateway-prometheus-exporter:latest"
   - "couchbasesamples/sync-gateway-prometheus-exporter:{{ .Tag }}"
   build_flag_templates:
