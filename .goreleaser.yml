@@ -17,7 +17,7 @@ archives:
     files:
     - grafana/dashboard.json
     - testdata/prometheus.yml
-    - testdata/rules/sgw.rules.yml
+    - testdata/rules/sync-gateway.rules.yml 
 dockers:
 - dockerfile: release.dockerfile
   image_templates:
