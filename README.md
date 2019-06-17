@@ -144,6 +144,11 @@ want to customize it.
 This generates a `dashboard.json` file from a `dashboard.jsonnet` file, using
 jsonnet and [grafonnet-lib](https://github.com/grafana/grafonnet-lib). 
 
+First pull relevant submodule for jsonnet
+```sh
+git submodule update --init --rebase --remote --recursive
+```
+
 ```sh
 # grafana script generates the grafana dashboard and pushes the dashboard to
 # a running grafana instance on localhost:3000. So be sure that your
