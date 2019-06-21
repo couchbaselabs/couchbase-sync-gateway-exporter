@@ -17,9 +17,10 @@ archives:
     files:
     - grafana/dashboard.json
     - testdata/prometheus.yml
-    - testdata/rules/sync-gateway.rules.yml 
+    - testdata/rules/sync-gateway.rules.yml
 dockers:
 - dockerfile: release.dockerfile
+  skip_push: true
   image_templates:
   - "couchbasesamples/sync-gateway-prometheus-exporter:latest"
   - "couchbasesamples/sync-gateway-prometheus-exporter:{{ .Tag }}"
