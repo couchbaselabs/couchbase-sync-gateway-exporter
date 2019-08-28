@@ -38,7 +38,7 @@ open http://localhost:8091
 
 ## Setup RBAC user on Couchbase Server 
 Next, you will have to create an appropriate RBAC user for the Sync Gateway to connect to the Couchbase server cluster.
-The default sync gateway config file used in the repo expects the Sync Gateway RBAC user with credentials of "admin" and "password". Follow instructions [here](https://docs.couchbase.com/sync-gateway/2.5/getting-started.html#creating-an-rbac-user) to configure the RBAC user with specified credentials.
+The default sync gateway config file used in the repo expects the Sync Gateway RBAC user with credentials of "admin" and "password". Follow instructions [here](https://docs.couchbase.com/sync-gateway/current/getting-started.html#creating-an-rbac-user) to configure the RBAC user with specified credentials.
 
 
 ## Install Prometheus Operator
@@ -56,7 +56,7 @@ kubectl -n prometheus get pods
 
 ## Setup Sync Gateway + Exporter
 In this step you will set up a pod with 2 containers, corresponding to the Sync Gateway and the exporter respectively
-The steps below are a simplified version of the environment that is discussed in the [official docs](https://docs.couchbase.com/sync-gateway/2.5/kubernetes/deploy-cluster.html).
+The steps below are a simplified version of the environment that is discussed in the [official docs](https://docs.couchbase.com/sync-gateway/current/kubernetes/deploy-cluster.html).
 
 Create the config secret:
 

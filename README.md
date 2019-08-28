@@ -1,6 +1,6 @@
 # couchbase-sync-gateway-exporter
 
-A [Prometheus][] exporter for monitoring [Couchbase Sync Gateway][sgw]. The Sync Gateway stats are reported in JSON format through a [REST endpoint](https://docs.couchbase.com/sync-gateway/2.5/admin-rest-api.html#/server/get__expvar). The stats that are exported to Prometheus can be visualized using [Grafana](https://grafana.com).
+A [Prometheus][] exporter for monitoring [Couchbase Sync Gateway][sgw]. The Sync Gateway stats are reported in JSON format through a [REST endpoint](https://docs.couchbase.com/sync-gateway/current/admin-rest-api.html#/server/get__expvar). The stats that are exported to Prometheus can be visualized using [Grafana](https://grafana.com).
 
 ---
 Read the blog at https://blog.couchbase.com/monitoring-sync-gateway-prometheus-grafana/
