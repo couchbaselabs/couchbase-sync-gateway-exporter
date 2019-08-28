@@ -1,5 +1,6 @@
 {
-  "adminInterface": ":4985",
+  "interface":":4984",
+  "log": ["*"],
   "logging": {
     "log_file_path": "/var/tmp/sglogs",
     "console": {
@@ -28,77 +29,52 @@
     }
   },
   "databases": {
-    "db": {
-      "server": "couchbase-couchbase-cluster-ui:8091",
-      "bucket": "default",
-      "username": "Administrator",
+    "travel-sample": {
+      "import_docs": "continuous",
+      "bucket":"travel-sample",
+      "server": "http://cb:8091",
+      "enable_shared_bucket_access":true,
+      "delta_sync": {
+        "enabled":true
+      },
+      "import_filter": `
+        function(doc) {
+
+          return true;
+        }
+        `,
+      "username": "admin",
       "password": "password",
       "users":{
+          "GUEST": { "disabled": false, "admin_channels": ["*"] },
           "admin": {"password": "password", "admin_channels": ["*"]},
-          "GUEST": { "disabled": false, "admin_channels": ["*"] }
+          "demo": {"password": "password"},
+          "tester": {"password": "password"}
       },
-      "num_index_replicas": 0,
-      "allow_conflicts": false,
-      "revs_limit": 20,
-      "enable_shared_bucket_access": true,
-      "delta_sync": {
-        "enabled": true
+     "num_index_replicas":0,
+     "cache" :{
+      "channel_cache":{
+        "max_number":50000
       },
-       "sync": `
+      "rev_cache" :{
+        "size":5000
+      }
+     },
+    "sync": `
 function sync(doc, oldDoc) {
   /* sanity check */
   // check if document was removed from server or via SDK
   // In this case, just return
 
-
   if (isRemoved()) {
     return;
   }
-  if (doc.type == "user") {
-
-
-  /* validation */
-   var username = getUserName();
-
-
-   if (!isDelete()) {
-      // Validate required fields.
-      validateNotEmpty("username", doc.username);
-
-      // Restrict access to "user" type docs 
-      requireUser(doc.username);
-
-      if (!isCreate()) {
-         // Validate that the username hasn't changed.
-        validateReadOnly("username", doc.username, oldDoc.username);
-      }
-
-    }
-
+  if (doc.channels ) {
 
     /* Routing */
-    // Add doc to the user's channel.
-   channel("channel." + username);
+    // Add doc to the channels specified in the document.
+   channel(doc.channels);
 
-
-    // Give user read access to channel
-     if (!isDelete()) {
-     // Deletion of user document is essentially deletion of user
-       access(username,"channel." + username)
-    }
-  }
-  else {
-    // put the static travel sample docs in a public channel
-     channel("!");
-
-  }
-
-  function getType() {
-    return (isDelete() ? oldDoc.type : doc.type);
-  }
-
-  function getUserName() {
-    return (isDelete() ? oldDoc.username : doc.username);
   }
 
   function isCreate() {
