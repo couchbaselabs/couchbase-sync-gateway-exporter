@@ -268,6 +268,51 @@ func TestMetricsError(t *testing.T) {
 	})
 }
 
+func TestMercuryCacheMetrics(t *testing.T) {
+	var collector = NewCollector(newFakeClient(t, "testdata/metrics5.json", nil))
+	testCollector(t, collector, func(t *testing.T, status int, body string) {
+		requireSuccess(t, status, body)
+
+		requireCounter(t, body, `sgw_cache_abandoned_seqs{database="db"} 0`)
+		requireCounter(t, body, `sgw_cache_chan_cache_bypass_count{database="db"} 0`)
+		requireCounter(t, body, `sgw_cache_chan_cache_channels_added{database="db"} 1`)
+		requireCounter(t, body, `sgw_cache_chan_cache_channels_evicted_inactive{database="db"} 0`)
+		requireCounter(t, body, `sgw_cache_chan_cache_channels_evicted_nru{database="db"} 0`)
+		requireCounter(t, body, `sgw_cache_chan_cache_compact_count{database="db"} 0`)
+		requireCounter(t, body, `sgw_cache_chan_cache_compact_time{database="db"} 0`)
+		requireGauge(t, body, `sgw_cache_high_seq_cached{database="db"} 0`)
+		requireGauge(t, body, `sgw_cache_high_seq_stable{database="db"} 0`)
+		requireGauge(t, body, `sgw_cache_num_active_channels{database="db"} 0`)
+		requireGauge(t, body, `sgw_cache_pending_seq_len{database="db"} 0`)
+		requireGauge(t, body, `sgw_cache_rev_cache_bypass{database="db"} 0`)
+		requireGauge(t, body, `sgw_cache_skipped_seq_len{database="db"} 0`)
+	})
+}
+
+func TestMercuryDatabaseMetrics(t *testing.T) {
+	var collector = NewCollector(newFakeClient(t, "testdata/metrics5.json", nil))
+	testCollector(t, collector, func(t *testing.T, status int, body string) {
+		requireSuccess(t, status, body)
+
+		requireCounter(t, body, `sgw_database_doc_writes_xattr_bytes{database="db"} 0`)
+		requireCounter(t, body, `sgw_database_high_seq_feed{database="db"} 0`)
+		requireCounter(t, body, `sgw_database_num_tombstones_compacted{database="db"} 0`)
+		requireCounter(t, body, `sgw_database_sequence_assigned_count{database="db"} 0`)
+		requireCounter(t, body, `sgw_database_sequence_incr_count{database="db"} 0`)
+	})
+}
+
+func TestMercurySharedBucketImportMetrics(t *testing.T) {
+	var collector = NewCollector(newFakeClient(t, "testdata/metrics5.json", nil))
+	testCollector(t, collector, func(t *testing.T, status int, body string) {
+		requireSuccess(t, status, body)
+
+		requireCounter(t, body, `sgw_shared_bucket_import_import_cancel_cas{database="db"} 0`)
+		requireGauge(t, body, `sgw_shared_bucket_import_import_high_seq{database="db"} 123`)
+		requireGauge(t, body, `sgw_shared_bucket_import_import_partitions{database="db"} 0`)
+	})
+}
+
 func testCollector(t *testing.T, collector prometheus.Collector, checker func(t *testing.T, status int, body string)) {
 	var registry = prometheus.NewRegistry()
 	registry.MustRegister(collector)

@@ -56,6 +56,18 @@ func newDatabaseCollector() *databaseCollector {
 			perDbLabels,
 			nil,
 		),
+		docWritesXattrBytes: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, subsystem, "doc_writes_xattr_bytes"),
+			"doc_writes_xattr_bytes",
+			perDbLabels,
+			nil,
+		),
+		highSeqFeed: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, subsystem, "high_seq_feed"),
+			"high_seq_feed",
+			perDbLabels,
+			nil,
+		),
 		docWritesBytesBlip: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, subsystem, "doc_writes_bytes_blip"),
 			"doc_writes_bytes_blip",
@@ -92,9 +104,27 @@ func newDatabaseCollector() *databaseCollector {
 			perDbLabels,
 			nil,
 		),
+		numTombstonesCompacted: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, subsystem, "num_tombstones_compacted"),
+			"num_tombstones_compacted",
+			perDbLabels,
+			nil,
+		),
+		sequenceAssignedCount: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, subsystem, "sequence_assigned_count"),
+			"sequence_assigned_count",
+			perDbLabels,
+			nil,
+		),
 		sequenceGetCount: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, subsystem, "sequence_get_count"),
 			"sequence_get_count",
+			perDbLabels,
+			nil,
+		),
+		sequenceIncrCount: prometheus.NewDesc(
+			prometheus.BuildFQName(namespace, subsystem, "sequence_incr_count"),
+			"sequence_incr_count",
 			perDbLabels,
 			nil,
 		),
@@ -141,12 +171,17 @@ type databaseCollector struct {
 	docReadsBytesBlip       *prometheus.Desc
 	docWritesBytes          *prometheus.Desc
 	docWritesBytesBlip      *prometheus.Desc
+	docWritesXattrBytes     *prometheus.Desc
+	highSeqFeed             *prometheus.Desc
 	numDocReadsBlip         *prometheus.Desc
 	numDocReadsRest         *prometheus.Desc
 	numDocWrites            *prometheus.Desc
 	numReplicationsActive   *prometheus.Desc
 	numReplicationsTotal    *prometheus.Desc
+	numTombstonesCompacted  *prometheus.Desc
+	sequenceAssignedCount   *prometheus.Desc
 	sequenceGetCount        *prometheus.Desc
+	sequenceIncrCount       *prometheus.Desc
 	sequenceReleasedCount   *prometheus.Desc
 	sequenceReservedCount   *prometheus.Desc
 	warnChannelsPerDocCount *prometheus.Desc
@@ -164,12 +199,17 @@ func (c *databaseCollector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- c.docReadsBytesBlip
 	ch <- c.docWritesBytes
 	ch <- c.docWritesBytesBlip
+	ch <- c.docWritesXattrBytes
+	ch <- c.highSeqFeed
 	ch <- c.numDocReadsBlip
 	ch <- c.numDocReadsRest
 	ch <- c.numDocWrites
 	ch <- c.numReplicationsActive
 	ch <- c.numReplicationsTotal
+	ch <- c.numTombstonesCompacted
+	ch <- c.sequenceAssignedCount
 	ch <- c.sequenceGetCount
+	ch <- c.sequenceIncrCount
 	ch <- c.sequenceReleasedCount
 	ch <- c.sequenceReservedCount
 	ch <- c.warnChannelsPerDocCount
@@ -188,12 +228,17 @@ func (c *databaseCollector) Collect(ch chan<- prometheus.Metric, name string, db
 	ch <- prometheus.MustNewConstMetric(c.docReadsBytesBlip, prometheus.CounterValue, db.DocReadsBytesBlip, name)
 	ch <- prometheus.MustNewConstMetric(c.docWritesBytes, prometheus.CounterValue, db.DocWritesBytes, name)
 	ch <- prometheus.MustNewConstMetric(c.docWritesBytesBlip, prometheus.CounterValue, db.DocWritesBytesBlip, name)
+	ch <- prometheus.MustNewConstMetric(c.docWritesXattrBytes, prometheus.CounterValue, db.DocWritesXattrBytes, name)
+	ch <- prometheus.MustNewConstMetric(c.highSeqFeed, prometheus.CounterValue, db.HighSeqFeed, name)
 	ch <- prometheus.MustNewConstMetric(c.numDocReadsBlip, prometheus.CounterValue, db.NumDocReadsBlip, name)
 	ch <- prometheus.MustNewConstMetric(c.numDocReadsRest, prometheus.CounterValue, db.NumDocReadsRest, name)
 	ch <- prometheus.MustNewConstMetric(c.numDocWrites, prometheus.CounterValue, db.NumDocWrites, name)
 	ch <- prometheus.MustNewConstMetric(c.numReplicationsActive, prometheus.GaugeValue, db.NumReplicationsActive, name)
 	ch <- prometheus.MustNewConstMetric(c.numReplicationsTotal, prometheus.CounterValue, db.NumReplicationsTotal, name)
+	ch <- prometheus.MustNewConstMetric(c.numTombstonesCompacted, prometheus.CounterValue, db.NumTombstonesCompacted, name)
+	ch <- prometheus.MustNewConstMetric(c.sequenceAssignedCount, prometheus.CounterValue, db.SequenceAssignedCount, name)
 	ch <- prometheus.MustNewConstMetric(c.sequenceGetCount, prometheus.CounterValue, db.SequenceGetCount, name)
+	ch <- prometheus.MustNewConstMetric(c.sequenceIncrCount, prometheus.CounterValue, db.SequenceIncrCount, name)
 	ch <- prometheus.MustNewConstMetric(c.sequenceReleasedCount, prometheus.CounterValue, db.SequenceReleasedCount, name)
 	ch <- prometheus.MustNewConstMetric(c.sequenceReservedCount, prometheus.CounterValue, db.SequenceReservedCount, name)
 	ch <- prometheus.MustNewConstMetric(c.warnChannelsPerDocCount, prometheus.CounterValue, db.WarnChannelsPerDocCount, name)

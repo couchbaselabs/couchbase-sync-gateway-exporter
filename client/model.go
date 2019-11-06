@@ -54,17 +54,30 @@ type ResourceUtilization struct {
 
 // Cache stats per db
 type Cache struct {
-	ChanCacheActiveRevs     float64 `json:"chan_cache_active_revs"`
-	ChanCacheHits           float64 `json:"chan_cache_hits"`
-	ChanCacheMaxEntries     float64 `json:"chan_cache_max_entries"`
-	ChanCacheMisses         float64 `json:"chan_cache_misses"`
-	ChanCacheNumChannels    float64 `json:"chan_cache_num_channels"`
-	ChanCachePendingQueries float64 `json:"chan_cache_pending_queries"`
-	ChanCacheRemovalRevs    float64 `json:"chan_cache_removal_revs"`
-	ChanCacheTombstoneRevs  float64 `json:"chan_cache_tombstone_revs"`
-	NumSkippedSeqs          float64 `json:"num_skipped_seqs"`
-	RevCacheHits            float64 `json:"rev_cache_hits"`
-	RevCacheMisses          float64 `json:"rev_cache_misses"`
+	AbandonedSeqs                    float64 `json:"abandoned_seqs"`
+	ChanCacheActiveRevs              float64 `json:"chan_cache_active_revs"`
+	ChanCacheBypassCount             float64 `json:"chan_cache_bypass_count"`
+	ChanCacheChannelsAdded           float64 `json:"chan_cache_channels_added"`
+	ChanCacheChannelsEvictedInactive float64 `json:"chan_cache_channels_evicted_inactive"`
+	ChanCacheChannelsEvictedNRU      float64 `json:"chan_cache_channels_evicted_nru"`
+	ChanCacheCompactCount            float64 `json:"chan_cache_compact_count"`
+	ChanCacheCompactTime             float64 `json:"chan_cache_compact_time"`
+	ChanCacheHits                    float64 `json:"chan_cache_hits"`
+	ChanCacheMaxEntries              float64 `json:"chan_cache_max_entries"`
+	ChanCacheMisses                  float64 `json:"chan_cache_misses"`
+	ChanCacheNumChannels             float64 `json:"chan_cache_num_channels"`
+	ChanCachePendingQueries          float64 `json:"chan_cache_pending_queries"`
+	ChanCacheRemovalRevs             float64 `json:"chan_cache_removal_revs"`
+	ChanCacheTombstoneRevs           float64 `json:"chan_cache_tombstone_revs"`
+	HighSeqCached                    float64 `json:"high_seq_cached"`
+	HighSeqStable                    float64 `json:"high_seq_stable"`
+	NumActiveChannels                float64 `json:"num_active_channels"`
+	NumSkippedSeqs                   float64 `json:"num_skipped_seqs"`
+	PendingSeqLen                    float64 `json:"pending_seq_len"`
+	RevCacheBypass                   float64 `json:"rev_cache_bypass"`
+	RevCacheHits                     float64 `json:"rev_cache_hits"`
+	RevCacheMisses                   float64 `json:"rev_cache_misses"`
+	SkippedSeqLen                    float64 `json:"skipped_seq_len"`
 }
 
 // CblReplicationPull stats per db
@@ -110,12 +123,17 @@ type Database struct {
 	DocReadsBytesBlip       float64 `json:"doc_reads_bytes_blip"`
 	DocWritesBytes          float64 `json:"doc_writes_bytes"`
 	DocWritesBytesBlip      float64 `json:"doc_writes_bytes_blip"`
+	DocWritesXattrBytes     float64 `json:"doc_writes_xattr_bytes"`
+	HighSeqFeed             float64 `json:"high_seq_feed"`
 	NumDocReadsBlip         float64 `json:"num_doc_reads_blip"`
 	NumDocReadsRest         float64 `json:"num_doc_reads_rest"`
 	NumDocWrites            float64 `json:"num_doc_writes"`
 	NumReplicationsActive   float64 `json:"num_replications_active"`
 	NumReplicationsTotal    float64 `json:"num_replications_total"`
+	NumTombstonesCompacted  float64 `json:"num_tombstones_compacted"`
+	SequenceAssignedCount   float64 `json:"sequence_assigned_count"`
 	SequenceGetCount        float64 `json:"sequence_get_count"`
+	SequenceIncrCount       float64 `json:"sequence_incr_count"`
 	SequenceReleasedCount   float64 `json:"sequence_released_count"`
 	SequenceReservedCount   float64 `json:"sequence_reserved_count"`
 	WarnChannelsPerDocCount float64 `json:"warn_channels_per_doc_count"`
@@ -148,8 +166,11 @@ type Security struct {
 // SharedBucketImport stats per db
 type SharedBucketImport struct {
 	ImportCount          float64 `json:"import_count"`
+	ImportCancelCAS      float64 `json:"import_cancel_cas"`
 	ImportErrorCount     float64 `json:"import_error_count"`
 	ImportProcessingTime float64 `json:"import_processing_time"`
+	ImportHighSeq        float64 `json:"import_high_seq"`
+	ImportPartitions     float64 `json:"import_partitions"`
 }
 
 // DeltaSync stats per db
