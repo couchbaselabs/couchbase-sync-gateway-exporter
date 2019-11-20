@@ -71,6 +71,6 @@ func (c *bucketImportCollector) Collect(ch chan<- prometheus.Metric, name string
 	ch <- prometheus.MustNewConstMetric(c.importCancelCAS, prometheus.CounterValue, metrics.ImportCancelCAS, name)
 	ch <- prometheus.MustNewConstMetric(c.importErrorCount, prometheus.CounterValue, metrics.ImportErrorCount, name)
 	ch <- prometheus.MustNewConstMetric(c.importProcessingTime, prometheus.GaugeValue, metrics.ImportProcessingTime, name)
-	ch <- prometheus.MustNewConstMetric(c.importHighSeq, prometheus.GaugeValue, metrics.ImportHighSeq, name)
+	ch <- prometheus.MustNewConstMetric(c.importHighSeq, prometheus.CounterValue, metrics.ImportHighSeq, name)
 	ch <- prometheus.MustNewConstMetric(c.importPartitions, prometheus.GaugeValue, metrics.ImportPartitions, name)
 }
