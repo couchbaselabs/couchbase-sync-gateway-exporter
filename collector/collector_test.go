@@ -280,8 +280,8 @@ func TestMercuryCacheMetrics(t *testing.T) {
 		requireCounter(t, body, `sgw_cache_chan_cache_channels_evicted_nru{database="db"} 0`)
 		requireCounter(t, body, `sgw_cache_chan_cache_compact_count{database="db"} 0`)
 		requireCounter(t, body, `sgw_cache_chan_cache_compact_time{database="db"} 0`)
-		requireGauge(t, body, `sgw_cache_high_seq_cached{database="db"} 0`)
-		requireGauge(t, body, `sgw_cache_high_seq_stable{database="db"} 0`)
+		requireCounter(t, body, `sgw_cache_high_seq_cached{database="db"} 0`)
+		requireCounter(t, body, `sgw_cache_high_seq_stable{database="db"} 0`)
 		requireGauge(t, body, `sgw_cache_num_active_channels{database="db"} 0`)
 		requireGauge(t, body, `sgw_cache_pending_seq_len{database="db"} 0`)
 		requireGauge(t, body, `sgw_cache_rev_cache_bypass{database="db"} 0`)
@@ -308,7 +308,7 @@ func TestMercurySharedBucketImportMetrics(t *testing.T) {
 		requireSuccess(t, status, body)
 
 		requireCounter(t, body, `sgw_shared_bucket_import_import_cancel_cas{database="db"} 0`)
-		requireGauge(t, body, `sgw_shared_bucket_import_import_high_seq{database="db"} 123`)
+		requireCounter(t, body, `sgw_shared_bucket_import_import_high_seq{database="db"} 123`)
 		requireGauge(t, body, `sgw_shared_bucket_import_import_partitions{database="db"} 0`)
 	})
 }
