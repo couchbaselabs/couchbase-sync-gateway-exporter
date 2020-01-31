@@ -4,14 +4,14 @@ services:
   # This image of Couchbase Server comes pre-intalled with TravelSample bucket
   # and is preconfigured with a RBAC user for Sync Gateway access
   cb:
-    image: connectsv/server:6.0.1-enterprise
+    image: couchbase/server-sandbox:6.5.0
     ports:
       - 8091-8094:8091-8094
       - 11210:11210
   # There is nothing custom in this image of Sync Gateway. It is just hosted 
   # in a separate repo
   sgw:
-    image: couchbase/sync-gateway:2.6.0-enterprise
+    image: couchbase/sync-gateway:2.7.0-enterprise
     volumes:
     - ./testdata/sync-gateway-config.json:/etc/sync_gateway/sync_gateway.json
     command: -adminInterface :4985 /etc/sync_gateway/sync_gateway.json

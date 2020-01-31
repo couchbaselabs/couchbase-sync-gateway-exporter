@@ -307,6 +307,40 @@ dashboard.new(
   )
   .addPanel(
     graphPanel.new(
+      'Channel Cache Management',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      format='short',
+      min=0,
+      decimals=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        'sgw_cache_chan_cache_channels_added{instance=~"$instance",database=~"$database"}',
+        legendFormat='{{ database }} channels added',
+      )
+    )
+    .addTarget(
+      prometheus.target(
+        'sgw_cache_chan_cache_channels_evicted_inactive{instance=~"$instance",database=~"$database"}',
+        legendFormat='{{ database }} channels evicted(inactive)',
+      )
+    )
+    .addTarget(
+      prometheus.target(
+        'sgw_cache_chan_cache_channels_evicted_nru{instance=~"$instance",database=~"$database"}',
+        legendFormat='{{ database }} channels evicted(nru)',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
       'Channel Cache Hits',
       span=6,
       legend_alignAsTable=true,
@@ -750,6 +784,52 @@ dashboard.new(
     .addTarget(
       prometheus.target(
         'rate(sgw_shared_bucket_import_import_error_count{instance=~"$instance",database=~"$database"}[$interval])',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Import cancels as a result of CAS match [$interval]',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        'sgw_shared_bucket_import_import_cancel_cas{instance=~"$instance",database=~"$database"}',
+        legendFormat='{{ database }} total',
+      )
+    )
+    .addTarget(
+      prometheus.target(
+        'rate(sgw_shared_bucket_import_import_cancel_cas{instance=~"$instance",database=~"$database"}[$interval])',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Import Processing Time [$interval]',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        'rate(sgw_shared_bucket_import_import_processing_time{instance=~"$instance",database=~"$database"}[$interval])',
         legendFormat='{{ database }}',
       )
     )
@@ -1304,6 +1384,106 @@ dashboard.new(
     .addTarget(
       prometheus.target(
         'rate(sgw_gsi_views_roleAccess_count{instance=~"$instance",database=~"$database"}[$interval])',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Rate of principal queries [$interval]',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        'rate(sgw_gsi_views_principals_count{instance=~"$instance",database=~"$database"}[$interval])',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Rate of resync queries [$interval]',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        'rate(sgw_gsi_views_resync_count{instance=~"$instance",database=~"$database"}[$interval])',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Rate of sequences queries [$interval]',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        'rate(sgw_gsi_views_sequences_count{instance=~"$instance",database=~"$database"}[$interval])',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Rate of sessions queries [$interval]',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        'rate(sgw_gsi_views_sessions_count{instance=~"$instance",database=~"$database"}[$interval])',
+        legendFormat='{{ database }}',
+      )
+    )
+  )
+  .addPanel(
+    graphPanel.new(
+      'Rate of tombstone queries [$interval]',
+      span=6,
+      legend_alignAsTable=true,
+      legend_rightSide=true,
+      legend_values=true,
+      legend_current=true,
+      legend_sort='current',
+      legend_sortDesc=true,
+      min=0,
+      nullPointMode='null as zero',
+    )
+    .addTarget(
+      prometheus.target(
+        'rate(sgw_gsi_views_tombstones_count{instance=~"$instance",database=~"$database"}[$interval])',
         legendFormat='{{ database }}',
       )
     )
