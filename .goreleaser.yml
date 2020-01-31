@@ -12,6 +12,8 @@ builds:
   goos:
   - linux
   - darwin
+release:
+  disable: true
 archives:
   -
     files:
