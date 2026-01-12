@@ -1,3 +1,9 @@
+> [!WARNING]
+> **This project is obsolete and unsupported.**
+> 
+> Sync Gateway now has native support for Prometheus, so this project should no longer be used.
+> For more information, see the [Integrate Prometheus](https://docs.couchbase.com/sync-gateway/current/deploy/stats-prometheus.html) section of the Sync Gateway documentation.
+
 # couchbase-sync-gateway-exporter
 
 A [Prometheus][] exporter for monitoring [Couchbase Sync Gateway][sgw]. The Sync Gateway stats are reported in JSON format through a [REST endpoint](https://docs.couchbase.com/sync-gateway/current/admin-rest-api.html#/server/get__expvar). The stats that are exported to Prometheus can be visualized using [Grafana](https://grafana.com).
